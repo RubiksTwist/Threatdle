@@ -104,7 +104,7 @@ body {
   margin: 0 auto;
   padding: 1rem 1.5rem 1.5rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
@@ -114,6 +114,8 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  order: 2;
+  margin-left: auto;
 }
 
 .site-footer-links p {
@@ -126,6 +128,7 @@ body {
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
+  order: 1;
 }
 
 .site-footer a {
