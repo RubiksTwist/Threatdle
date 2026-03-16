@@ -3,28 +3,38 @@ import { mkdirSync } from "node:fs";
 import path from "node:path";
 
 const rootDir = process.cwd();
-const snapshotId = process.env.GAME_SNAPSHOT_ID;
 const timezone = process.env.GAME_TIMEZONE || "America/New_York";
+const startDay = process.env.GAME_START_DAY;
+const dayCount = process.env.GAME_DAYS || "365";
+const themeMode = process.env.GAME_THEME_MODE || "prefer";
+const chainMode = process.env.GAME_CHAIN_MODE || "linked";
 const outDir = path.resolve(rootDir, "build", "runtime");
-
-if (!snapshotId) {
-  console.error("GAME_SNAPSHOT_ID is required to build the Netlify runtime bundle.");
-  process.exit(1);
-}
 
 mkdirSync(outDir, { recursive: true });
 
 const baseArgs = [
   "-m",
   "threatdle",
-  "export-live-runtime",
-  "--snapshot-id",
-  snapshotId,
+  "build-live-runtime",
   "--out-dir",
   outDir,
   "--timezone",
-  timezone
+  timezone,
+  "--days",
+  dayCount,
+  "--theme-mode",
+  themeMode,
+  "--chain-mode",
+  chainMode
 ];
+
+if (process.env.GAME_SNAPSHOT_ID) {
+  baseArgs.push("--snapshot-id", process.env.GAME_SNAPSHOT_ID);
+}
+
+if (startDay) {
+  baseArgs.push("--start-day", startDay);
+}
 
 const candidates = process.platform === "win32"
   ? [

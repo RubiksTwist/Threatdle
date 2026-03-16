@@ -22,6 +22,7 @@ from threatdle.ingest.overrides import ingest_overrides
 from threatdle.services.campaign_report import build_campaign_match_report
 from threatdle.services.actor_backfill_report import build_actor_backfill_report
 from threatdle.services.live_runtime_export import export_live_runtime
+from threatdle.services.live_runtime_build import build_live_runtime_from_sources, default_live_snapshot_id
 from threatdle.services.puzzle_generator import generate_puzzle_day, generate_puzzle_range, preview_puzzle_day
 from threatdle.services.review_validation import validate_review_snapshot
 from threatdle.services.puzzle_views import build_puzzle_tables
@@ -151,6 +152,45 @@ def build_parser() -> argparse.ArgumentParser:
         "--timezone",
         default="America/New_York",
         help="Authoritative game timezone for server-owned day selection",
+    )
+
+    build_live_runtime_parser = subparsers.add_parser(
+        "build-live-runtime",
+        help="Fetch sources, ingest, bake puzzle days, and export a private live runtime bundle",
+    )
+    build_live_runtime_parser.add_argument("--snapshot-id", help="Optional snapshot identifier override")
+    build_live_runtime_parser.add_argument(
+        "--out-dir",
+        type=Path,
+        default=None,
+        help="Output directory for the private runtime bundle (default: <root>/build/runtime)",
+    )
+    build_live_runtime_parser.add_argument(
+        "--timezone",
+        default="America/New_York",
+        help="Authoritative game timezone for server-owned day selection",
+    )
+    build_live_runtime_parser.add_argument(
+        "--start-day",
+        help="Optional first puzzle day in YYYY-MM-DD format (default: current day in the game timezone)",
+    )
+    build_live_runtime_parser.add_argument(
+        "--days",
+        type=int,
+        default=365,
+        help="Number of days to bake into the runtime bundle",
+    )
+    build_live_runtime_parser.add_argument(
+        "--theme-mode",
+        choices=("off", "prefer", "strict"),
+        default="prefer",
+        help="Theme selection mode",
+    )
+    build_live_runtime_parser.add_argument(
+        "--chain-mode",
+        choices=("linked", "exact"),
+        default="linked",
+        help="Puzzle chaining mode",
     )
 
     return parser
@@ -413,6 +453,31 @@ def main(argv: list[str] | None = None) -> None:
                 args.snapshot_id,
                 out_dir=out_dir,
                 timezone_name=args.timezone,
+            ),
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return
+
+    if args.command == "build-live-runtime":
+        paths = get_paths(root_dir=args.root_dir)
+        out_dir = args.out_dir or (paths.root_dir / "build" / "runtime")
+        snapshot_id = args.snapshot_id or default_live_snapshot_id(
+            args.timezone,
+            commit_ref=os.environ.get("COMMIT_REF") or os.environ.get("GITHUB_SHA"),
+        )
+        result = run_with_connection(
+            args.root_dir,
+            args.db_path,
+            lambda connection: build_live_runtime_from_sources(
+                connection,
+                snapshot_id,
+                root_dir=args.root_dir,
+                out_dir=out_dir,
+                timezone_name=args.timezone,
+                start_day=args.start_day,
+                days=args.days,
+                theme_mode=args.theme_mode,
+                chain_mode=args.chain_mode,
             ),
         )
         print(json.dumps(result, indent=2, sort_keys=True))
