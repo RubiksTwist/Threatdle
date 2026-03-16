@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Threatdle</title>
+  <link rel="stylesheet" href="/css/game.css">
+</head>
+<body>
+
+  <div id="game-app">
+    <header class="game-header">
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="/images/logo.png" alt="Threatdle Logo" class="game-logo">
+          <h1>Threatdle</h1>
+        </div>
+        <div class="header-controls">
+          <span id="current-date">Loading...</span>
+          <button id="archive-btn" class="archive-btn" title="Case Files Archive">📁 ARCHIVES</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="game-container">
+      
+      <!-- Day Banner -->
+      <section class="banner-section">
+        <h2 class="incident-title">Investigate Today's Threat Actor</h2>
+        <p class="incident-subtitle">Solve all 3 phases to identify the actor, the malware they use, and the techniques they rely on.</p>
+        <div id="mode-progress-indicators" class="progress-bar">
+          <div class="progress-dot" data-mode="actor"></div>
+          <div class="progress-dot" data-mode="malware"></div>
+          <div class="progress-dot" data-mode="technique"></div>
+        </div>
+      </section>
+
+      <!-- Game Board Container -->
+      <div id="game-modes-container" class="modes-grid">
+        <!-- Modes will be injected here by JS -->
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <a href="/sources.html">Sources &amp; Methodology</a>
+    </div>
+  </footer>
+
+  <!-- Case Files Drawer -->
+  <div id="drawer-overlay" class="drawer-overlay hidden"></div>
+  <div id="case-files-drawer" class="case-files-drawer">
+    <div class="drawer-header">
+      <h2>📁 Case Files Archive</h2>
+      <button id="drawer-close" class="drawer-close">&times;</button>
+    </div>
+    <div id="drawer-content" class="drawer-content">
+      <!-- Case cards injected by JS -->
+    </div>
+  </div>
+
+  <!-- End of Day Modal -->
+  <div id="summary-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 class="modal-title">Threat Profile Revealed</h2>
+      <div id="summary-content">
+        <!-- Injected via JS -->
+      </div>
+      <button id="close-modal-btn" class="modal-btn">Close Report</button>
+    </div>
+  </div>
+
+  <script src="/js/game.js" type="module"></script>
+</body>
+</html>

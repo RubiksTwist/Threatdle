@@ -1,0 +1,87 @@
+[
+  {
+    "filename": "sony_lazarus.json",
+    "incident_name": "Sony Pictures Intrusion",
+    "actor_attack_id": "G0032",
+    "actor_name": "Lazarus Group",
+    "primary_sources": [
+      "https://www.fbi.gov/contact-us/field-offices/sandiego/news/press-releases/update-on-sony-investigation",
+      "https://www.operationblockbuster.com/wp-content/uploads/2016/02/Operation-Blockbuster-Report.pdf"
+    ],
+    "technique_chain_source": "FBI attribution notice plus Operation Blockbuster incident summary, compressed into a linearized delivery-to-destruction chain.",
+    "expected_attack_ids": [
+      "T1566.001",
+      "T1204.002",
+      "T1059.003",
+      "T1041",
+      "T1485"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "Selected to stay distinct from the existing WannaCry Lazarus flow by focusing on phishing delivery, command execution, exfiltration, and destructive wipe behavior described in public Sony reporting.",
+    "status": "accepted"
+  },
+  {
+    "filename": "bangladesh_bank_lazarus.json",
+    "incident_name": "Bangladesh Bank Heist",
+    "actor_attack_id": "G0032",
+    "actor_name": "Lazarus Group",
+    "primary_sources": [
+      "https://www.justice.gov/d9/press-releases/attachments/2018/09/06/2018_09_06_park_complaint_unsealed_0.pdf",
+      "https://cloud.google.com/blog/topics/threat-intelligence/apt38-un-usual-suspects/"
+    ],
+    "technique_chain_source": "Park Jin Hyok complaint and Mandiant APT38 reporting, compressed into initial spearphishing, tool delivery, C2 communications, fraudulent account use, and cleanup.",
+    "expected_attack_ids": [
+      "T1566.002",
+      "T1105",
+      "T1071.001",
+      "T1078",
+      "T1070.004"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "This chain is intentionally differentiated from the Sony and WannaCry Lazarus flows by centering the bank-heist tradecraft rather than destructive terminal behavior.",
+    "status": "accepted"
+  },
+  {
+    "filename": "shamoon_apt33.json",
+    "incident_name": "Shamoon Wiper Campaign",
+    "actor_attack_id": "G0064",
+    "actor_name": "APT33",
+    "primary_sources": [
+      "https://attack.mitre.org/groups/G0064/",
+      "https://attack.mitre.org/software/S0140/",
+      "https://unit42.paloaltonetworks.com/unit42-shamoon-2-delivering-disttrack/"
+    ],
+    "technique_chain_source": "ATT&CK Shamoon software procedures and Unit42 delivery analysis, linearized around lateral spread, remote execution, and destructive wipe behavior.",
+    "expected_attack_ids": [
+      "T1021.002",
+      "T1053.005",
+      "T1112",
+      "T1569.002",
+      "T1561.002"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "The chain follows the published Shamoon propagation and wipe sequence. Attribution to G0064 follows the batch plan and ATT&CK APT33 public reporting rather than a single campaign page.",
+    "status": "accepted"
+  },
+  {
+    "filename": "singhealth_whitefly.json",
+    "incident_name": "SingHealth Breach",
+    "actor_attack_id": "G0107",
+    "actor_name": "Whitefly",
+    "primary_sources": [
+      "https://www.security.com/threat-intelligence/whitefly-espionage-singapore",
+      "https://file.go.gov.sg/singhealthcoi.pdf"
+    ],
+    "technique_chain_source": "Symantec's Whitefly intrusion description, confirmed against the SingHealth Committee of Inquiry report and compressed into the initial access and credential-theft sequence.",
+    "expected_attack_ids": [
+      "T1204.002",
+      "T1574.001",
+      "T1105",
+      "T1068",
+      "T1003.001"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "Chosen from the Whitefly report's explicit dropper, DLL hijacking, tool download, privilege-escalation, and Mimikatz credential-dumping sequence, which stays well below the overlap threshold with the existing corpus.",
+    "status": "accepted"
+  }
+]

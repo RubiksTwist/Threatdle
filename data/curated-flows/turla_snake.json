@@ -1,0 +1,110 @@
+{
+  "type": "bundle",
+  "id": "bundle--turla-snake",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0010",
+      "name": "Turla",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0010"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--turla-snake",
+      "name": "Turla Snake Scenario",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/turla_snake.yaml"
+        },
+        {
+          "source_name": "report",
+          "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/Snake_Scenario.md"
+        },
+        {
+          "source_name": "report",
+          "url": "https://attack.mitre.org/groups/G0010/"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-snake-1",
+      "name": "Drive-by Compromise",
+      "technique_id": "T1189"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-snake-2",
+      "name": "Malicious File",
+      "technique_id": "T1204.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-snake-3",
+      "name": "Rootkit",
+      "technique_id": "T1014"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-snake-4",
+      "name": "Service Execution",
+      "technique_id": "T1569.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-snake-5",
+      "name": "Transport Agent",
+      "technique_id": "T1505.002"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-snake-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--turla-snake",
+      "target_ref": "intrusion-set--g0010"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-snake-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--turla-snake",
+      "target_ref": "attack-action--turla-snake-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-snake-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-snake-1",
+      "target_ref": "attack-action--turla-snake-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-snake-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-snake-2",
+      "target_ref": "attack-action--turla-snake-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-snake-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-snake-3",
+      "target_ref": "attack-action--turla-snake-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-snake-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-snake-4",
+      "target_ref": "attack-action--turla-snake-5"
+    }
+  ]
+}

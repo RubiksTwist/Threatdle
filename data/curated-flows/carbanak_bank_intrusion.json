@@ -1,0 +1,102 @@
+{
+  "type": "bundle",
+  "id": "bundle--carbanak-bank-intrusion",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0008",
+      "name": "Carbanak",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0008"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--carbanak-bank-intrusion",
+      "name": "Carbanak Bank Intrusion",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/carbanak/Emulation_Plan/yaml/Carbanak.yaml"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--carbanak-1",
+      "name": "Modify Registry",
+      "technique_id": "T1112"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--carbanak-2",
+      "name": "Deobfuscate/Decode Files or Information",
+      "technique_id": "T1140"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--carbanak-3",
+      "name": "LSASS Memory",
+      "technique_id": "T1003.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--carbanak-4",
+      "name": "Protocol Tunneling",
+      "technique_id": "T1572"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--carbanak-5",
+      "name": "Keylogging",
+      "technique_id": "T1056.001"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--carbanak-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--carbanak-bank-intrusion",
+      "target_ref": "intrusion-set--g0008"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--carbanak-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--carbanak-bank-intrusion",
+      "target_ref": "attack-action--carbanak-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--carbanak-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--carbanak-1",
+      "target_ref": "attack-action--carbanak-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--carbanak-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--carbanak-2",
+      "target_ref": "attack-action--carbanak-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--carbanak-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--carbanak-3",
+      "target_ref": "attack-action--carbanak-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--carbanak-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--carbanak-4",
+      "target_ref": "attack-action--carbanak-5"
+    }
+  ]
+}

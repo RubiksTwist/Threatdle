@@ -1,0 +1,102 @@
+{
+  "type": "bundle",
+  "id": "bundle--cobalt-group-bank-intrusion",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0080",
+      "name": "Cobalt Group",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0080"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--cobalt-group-bank-intrusion",
+      "name": "Cobalt Group Bank Intrusion",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://attack.mitre.org/groups/G0080/"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-1",
+      "name": "Spearphishing Attachment",
+      "technique_id": "T1566.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-2",
+      "name": "Malicious File",
+      "technique_id": "T1204.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-3",
+      "name": "Visual Basic",
+      "technique_id": "T1059.005"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-4",
+      "name": "Regsvr32",
+      "technique_id": "T1218.010"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-5",
+      "name": "Scheduled Task",
+      "technique_id": "T1053.005"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--cobalt-group-bank-intrusion",
+      "target_ref": "intrusion-set--g0080"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--cobalt-group-bank-intrusion",
+      "target_ref": "attack-action--cobalt-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-1",
+      "target_ref": "attack-action--cobalt-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-2",
+      "target_ref": "attack-action--cobalt-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-3",
+      "target_ref": "attack-action--cobalt-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-4",
+      "target_ref": "attack-action--cobalt-5"
+    }
+  ]
+}

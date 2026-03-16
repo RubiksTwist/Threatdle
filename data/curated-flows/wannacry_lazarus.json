@@ -1,0 +1,89 @@
+{
+  "type": "bundle",
+  "id": "bundle--wannacry-lazarus",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0032",
+      "name": "Lazarus Group",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0032"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--wannacry-lazarus",
+      "name": "WannaCry Ransomware",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://www.cisa.gov/news-events/alerts/2017/05/12/indicators-associated-wannacry-ransomware"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--wannacry-1",
+      "name": "Exploitation of Remote Services",
+      "technique_id": "T1210"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--wannacry-2",
+      "name": "Ingress Tool Transfer",
+      "technique_id": "T1105"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--wannacry-3",
+      "name": "Inhibit System Recovery",
+      "technique_id": "T1490"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--wannacry-4",
+      "name": "Data Encrypted for Impact",
+      "technique_id": "T1486"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--wannacry-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--wannacry-lazarus",
+      "target_ref": "intrusion-set--g0032"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--wannacry-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--wannacry-lazarus",
+      "target_ref": "attack-action--wannacry-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--wannacry-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--wannacry-1",
+      "target_ref": "attack-action--wannacry-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--wannacry-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--wannacry-2",
+      "target_ref": "attack-action--wannacry-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--wannacry-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--wannacry-3",
+      "target_ref": "attack-action--wannacry-4"
+    }
+  ]
+}

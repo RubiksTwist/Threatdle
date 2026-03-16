@@ -1,0 +1,102 @@
+{
+  "type": "bundle",
+  "id": "bundle--fin6-pos-intrusion",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0037",
+      "name": "FIN6",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0037"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--fin6-pos-intrusion",
+      "name": "FIN6 POS Intrusion",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://www.fireeye.com/blog/threat-research/2019/04/pick-six-intercepting-a-fin6-intrusion.html"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--fin6-1",
+      "name": "Domain Account",
+      "technique_id": "T1087.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--fin6-2",
+      "name": "Remote System Discovery",
+      "technique_id": "T1018"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--fin6-3",
+      "name": "Access Token Manipulation",
+      "technique_id": "T1134"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--fin6-4",
+      "name": "LSASS Memory",
+      "technique_id": "T1003.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--fin6-5",
+      "name": "Archive via Utility",
+      "technique_id": "T1560.001"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fin6-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--fin6-pos-intrusion",
+      "target_ref": "intrusion-set--g0037"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fin6-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--fin6-pos-intrusion",
+      "target_ref": "attack-action--fin6-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fin6-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--fin6-1",
+      "target_ref": "attack-action--fin6-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fin6-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--fin6-2",
+      "target_ref": "attack-action--fin6-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fin6-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--fin6-3",
+      "target_ref": "attack-action--fin6-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--fin6-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--fin6-4",
+      "target_ref": "attack-action--fin6-5"
+    }
+  ]
+}

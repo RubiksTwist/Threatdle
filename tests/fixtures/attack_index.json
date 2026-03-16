@@ -1,0 +1,13 @@
+{
+  "collections": [
+    {
+      "name": "enterprise-attack",
+      "versions": [
+        {
+          "version": "18.1",
+          "url": "https://example.test/enterprise-attack/enterprise-attack-18.1.json"
+        }
+      ]
+    }
+  ]
+}

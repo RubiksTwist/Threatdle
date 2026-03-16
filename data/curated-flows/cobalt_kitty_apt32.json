@@ -1,0 +1,110 @@
+{
+  "type": "bundle",
+  "id": "bundle--cobalt-kitty-apt32",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0050",
+      "name": "APT32",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0050"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--cobalt-kitty-apt32",
+      "name": "Operation Cobalt Kitty",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/ocean_lotus/Operations_Flow/Operations_Flow.md"
+        },
+        {
+          "source_name": "report",
+          "url": "https://www.cybereason.com/blog/operation-cobalt-kitty-apt"
+        },
+        {
+          "source_name": "report",
+          "url": "https://www.trendmicro.com/en_us/research/20/k/new-macos-backdoor-connected-to-oceanlotus-surfaces.html"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-kitty-1",
+      "name": "Malicious File",
+      "technique_id": "T1204.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-kitty-2",
+      "name": "Ingress Tool Transfer",
+      "technique_id": "T1105"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-kitty-3",
+      "name": "System Information Discovery",
+      "technique_id": "T1082"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-kitty-4",
+      "name": "SSH",
+      "technique_id": "T1021.004"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cobalt-kitty-5",
+      "name": "Exfiltration Over C2 Channel",
+      "technique_id": "T1041"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-kitty-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--cobalt-kitty-apt32",
+      "target_ref": "intrusion-set--g0050"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-kitty-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--cobalt-kitty-apt32",
+      "target_ref": "attack-action--cobalt-kitty-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-kitty-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-kitty-1",
+      "target_ref": "attack-action--cobalt-kitty-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-kitty-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-kitty-2",
+      "target_ref": "attack-action--cobalt-kitty-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-kitty-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-kitty-3",
+      "target_ref": "attack-action--cobalt-kitty-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cobalt-kitty-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cobalt-kitty-4",
+      "target_ref": "attack-action--cobalt-kitty-5"
+    }
+  ]
+}

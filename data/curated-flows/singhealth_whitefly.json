@@ -1,0 +1,106 @@
+{
+  "type": "bundle",
+  "id": "bundle--singhealth-whitefly",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0107",
+      "name": "Whitefly",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0107"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--singhealth-whitefly",
+      "name": "SingHealth Breach",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://www.security.com/threat-intelligence/whitefly-espionage-singapore"
+        },
+        {
+          "source_name": "report",
+          "url": "https://file.go.gov.sg/singhealthcoi.pdf"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--singhealth-1",
+      "name": "Malicious File",
+      "technique_id": "T1204.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--singhealth-2",
+      "name": "DLL",
+      "technique_id": "T1574.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--singhealth-3",
+      "name": "Ingress Tool Transfer",
+      "technique_id": "T1105"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--singhealth-4",
+      "name": "Exploitation for Privilege Escalation",
+      "technique_id": "T1068"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--singhealth-5",
+      "name": "LSASS Memory",
+      "technique_id": "T1003.001"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--singhealth-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--singhealth-whitefly",
+      "target_ref": "intrusion-set--g0107"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--singhealth-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--singhealth-whitefly",
+      "target_ref": "attack-action--singhealth-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--singhealth-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--singhealth-1",
+      "target_ref": "attack-action--singhealth-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--singhealth-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--singhealth-2",
+      "target_ref": "attack-action--singhealth-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--singhealth-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--singhealth-3",
+      "target_ref": "attack-action--singhealth-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--singhealth-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--singhealth-4",
+      "target_ref": "attack-action--singhealth-5"
+    }
+  ]
+}

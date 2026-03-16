@@ -1,0 +1,26 @@
+[attack_stix]
+index_url = "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/index.json"
+pinned_version = "18.1"
+filename = "enterprise-attack.json"
+
+[misp_threat_actors]
+url = "https://raw.githubusercontent.com/MISP/misp-galaxy/main/clusters/threat-actor.json"
+filename = "threat-actor.json"
+ref = "main"
+
+[curated_flows]
+path = "data/curated-flows"
+glob = "*.json"
+ref = "curated-v1"
+
+[ctid_emulation_library]
+url = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/archive/refs/heads/master.zip"
+filename = "adversary_emulation_library.zip"
+extract_glob = "*Emulation_Plan/yaml/*.yaml"
+ref = "master"
+
+[attackevals_ael]
+url = "https://github.com/attackevals/ael/archive/refs/heads/main.zip"
+filename = "attackevals_ael.zip"
+extract_glob = "*Enterprise/*/Emulation_Plan/yaml/*.yaml"
+ref = "main"

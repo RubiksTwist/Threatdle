@@ -1,0 +1,89 @@
+{
+  "type": "bundle",
+  "id": "bundle--apt28-dnc",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0007",
+      "name": "APT28",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0007"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--apt28-dnc",
+      "name": "APT28 DNC Intrusion",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://attack.mitre.org/groups/G0007/"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--apt28-1",
+      "name": "Spearphishing Attachment",
+      "technique_id": "T1566.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--apt28-2",
+      "name": "Windows Management Instrumentation",
+      "technique_id": "T1047"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--apt28-3",
+      "name": "Process Injection",
+      "technique_id": "T1055"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--apt28-4",
+      "name": "Ingress Tool Transfer",
+      "technique_id": "T1105"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--apt28-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--apt28-dnc",
+      "target_ref": "intrusion-set--g0007"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--apt28-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--apt28-dnc",
+      "target_ref": "attack-action--apt28-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--apt28-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--apt28-1",
+      "target_ref": "attack-action--apt28-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--apt28-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--apt28-2",
+      "target_ref": "attack-action--apt28-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--apt28-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--apt28-3",
+      "target_ref": "attack-action--apt28-4"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Threatdle Sources and Methodology</title>
+  <link rel="stylesheet" href="/css/game.css">
+</head>
+<body>
+  <div class="info-page">
+    <header class="game-header">
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="/images/logo.png" alt="Threatdle Logo" class="game-logo">
+          <h1>Threatdle</h1>
+        </div>
+      </div>
+    </header>
+
+    <main class="info-shell">
+      <section class="info-header">
+        <h1>Sources and Methodology</h1>
+        <p>
+          Threatdle is built from public threat intelligence data. We combine structured threat data, curated research,
+          and reviewed overrides to produce a playable daily puzzle while keeping the clue set transparent and grounded
+          in named sources.
+        </p>
+        <div class="info-nav">
+          <a href="/game.html">Back to the game</a>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>Primary Data Sources</h2>
+        <ul>
+          <li><strong>MITRE ATT&amp;CK:</strong> canonical source for threat groups, software, techniques, and campaign relationships. Used for most actor, malware, and technique mappings.</li>
+          <li><strong>MISP Galaxy Threat Actors:</strong> supplemental actor metadata and alias coverage used for enrichment and cross-matching.</li>
+          <li><strong>Curated incident flows:</strong> manually maintained incident chains used for chronology, provenance, and exact-incident experiments.</li>
+          <li><strong>Center for Threat-Informed Defense Adversary Emulation Library:</strong> additional ordered behavior sequences and emulation plans.</li>
+          <li><strong>ATT&amp;CK Evaluations / emulation plans:</strong> supporting attack-flow material used to expand timeline-style sequence coverage.</li>
+          <li><strong>Sophos Threat Profiles:</strong> actor-profile enrichment source used for aliases, tools, objectives, and manual review support during backfill work.</li>
+          <li><strong>Curated incident articles and public reporting:</strong> selected source articles may appear in solved reports when a case has a reviewed incident-source link.</li>
+        </ul>
+      </section>
+
+      <section class="info-section">
+        <h2>How The Current Game Is Built</h2>
+        <p>
+          The live game currently uses a strict 3-phase actor model:
+        </p>
+        <ol class="methodology-list">
+          <li>Identify the threat actor.</li>
+          <li>Identify malware used by that actor.</li>
+          <li>Identify a technique used by that actor.</li>
+        </ol>
+        <p>
+          A publishable actor entry must have complete Phase 1 clue data and enough relationship coverage to support the
+          other two phases. In practice that means the actor must have a country, first-observed year, target categories,
+          motivation tags, at least one malware link, and at least three linked ATT&amp;CK techniques.
+        </p>
+      </section>
+
+      <section class="info-section">
+        <h2>Methodology</h2>
+        <ul>
+          <li>We ingest structured sources into a local snapshot keyed by source hashes and snapshot IDs.</li>
+          <li>We normalize actor names, aliases, malware/software IDs, and ATT&amp;CK techniques across sources.</li>
+          <li>We use manual override files to backfill missing metadata when public reporting supports a defensible value.</li>
+          <li>We exclude actors with missing required clue fields from the live puzzle pool.</li>
+          <li>We validate baked puzzle days to catch missing clue fields, leakage, and exact-chain inconsistencies before publication.</li>
+          <li>We expose MITRE links in the solved report so players can read the canonical ATT&amp;CK entries for the actor, malware, and technique they identified.</li>
+        </ul>
+        <p>
+          The current live snapshot is built from a candidate pool of <strong>88 actor candidates</strong>,
+          <strong>95 malware candidates</strong>, and <strong>691 technique candidates</strong>.
+        </p>
+        <p>
+          That produces a naive cartesian total of <strong>5,776,760</strong> possible actor-malware-technique
+          combinations, but the live game does not use arbitrary mixes. When we require the malware and technique to
+          both be genuinely linked to the same actor in the active snapshot, the real playable pool is
+          <strong>6,267 actor-linked three-phase combinations</strong> across <strong>49 actors</strong>.
+        </p>
+      </section>
+
+      <section class="info-section">
+        <h2>About Sophos Threat Profiles</h2>
+        <p>
+          Sophos threat-profile exports were used as a secondary enrichment layer during the actor backfill process. They
+          were useful for alias review, objective hints, and some country and tool context, but they are not the canonical
+          source for playable actor eligibility. ATT&amp;CK-backed relationships and reviewed overrides remain the primary
+          basis for publication decisions.
+        </p>
+      </section>
+
+      <section class="info-section">
+        <h2>Current Limitations</h2>
+        <p>
+          Not every public source has the same structure or level of certainty. ATT&amp;CK is strong for relationships,
+          but incident chronology often requires curated flows or reviewed source articles. Where attribution or metadata
+          is unclear, we prefer to omit a value or exclude an actor rather than publish a weak clue.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <p>
+          Threatdle is built from public threat intelligence data, including MITRE ATT&amp;CK, MISP Galaxy, curated incident research, emulation resources, and Sophos threat profiles.
+          <a href="/game.html">Back to the game</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

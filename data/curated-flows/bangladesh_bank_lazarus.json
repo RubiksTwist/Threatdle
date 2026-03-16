@@ -1,0 +1,106 @@
+{
+  "type": "bundle",
+  "id": "bundle--bangladesh-bank-lazarus",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0032",
+      "name": "Lazarus Group",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0032"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--bangladesh-bank-lazarus",
+      "name": "Bangladesh Bank Heist",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://www.justice.gov/d9/press-releases/attachments/2018/09/06/2018_09_06_park_complaint_unsealed_0.pdf"
+        },
+        {
+          "source_name": "report",
+          "url": "https://cloud.google.com/blog/topics/threat-intelligence/apt38-un-usual-suspects/"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--bangladesh-1",
+      "name": "Spearphishing Link",
+      "technique_id": "T1566.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--bangladesh-2",
+      "name": "Ingress Tool Transfer",
+      "technique_id": "T1105"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--bangladesh-3",
+      "name": "Web Protocols",
+      "technique_id": "T1071.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--bangladesh-4",
+      "name": "Valid Accounts",
+      "technique_id": "T1078"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--bangladesh-5",
+      "name": "File Deletion",
+      "technique_id": "T1070.004"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bangladesh-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--bangladesh-bank-lazarus",
+      "target_ref": "intrusion-set--g0032"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bangladesh-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--bangladesh-bank-lazarus",
+      "target_ref": "attack-action--bangladesh-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bangladesh-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--bangladesh-1",
+      "target_ref": "attack-action--bangladesh-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bangladesh-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--bangladesh-2",
+      "target_ref": "attack-action--bangladesh-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bangladesh-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--bangladesh-3",
+      "target_ref": "attack-action--bangladesh-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--bangladesh-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--bangladesh-4",
+      "target_ref": "attack-action--bangladesh-5"
+    }
+  ]
+}

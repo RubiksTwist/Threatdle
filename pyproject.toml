@@ -1,0 +1,19 @@
+[project]
+name = "threatdle"
+version = "0.1.0"
+description = "Threatdle ingest and snapshot pipeline"
+requires-python = ">=3.11"
+dependencies = ["PyYAML>=6,<7"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+threatdle = "threatdle.cli:main"

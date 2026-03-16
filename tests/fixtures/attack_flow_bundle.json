@@ -1,0 +1,115 @@
+{
+  "type": "bundle",
+  "id": "bundle--solarwinds-test",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--apt29",
+      "name": "APT29",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0016"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--solarwinds",
+      "name": "SolarWinds Flow",
+      "description": "Synthetic curated test flow",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://example.test/solarwinds"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--a1",
+      "name": "Phish",
+      "technique_id": "T1566.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--a2",
+      "name": "PowerShell",
+      "technique_id": "T1059.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--a3",
+      "name": "Repeat PowerShell",
+      "technique_id": "T1059.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--a4",
+      "name": "Credential Dumping",
+      "technique_id": "T1003"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--a5",
+      "name": "Lateral Movement",
+      "technique_id": "T1021"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--a6",
+      "name": "Unknown Technique",
+      "technique_id": "T9999"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--flow-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--solarwinds",
+      "target_ref": "attack-action--a1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--solarwinds",
+      "target_ref": "intrusion-set--apt29"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a1-a2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--a1",
+      "target_ref": "attack-action--a2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a2-a3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--a2",
+      "target_ref": "attack-action--a3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a3-a4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--a3",
+      "target_ref": "attack-action--a4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a2-a5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--a2",
+      "target_ref": "attack-action--a5"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--a2-a6",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--a2",
+      "target_ref": "attack-action--a6"
+    }
+  ]
+}

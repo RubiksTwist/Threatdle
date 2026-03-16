@@ -1,0 +1,110 @@
+{
+  "type": "bundle",
+  "id": "bundle--turla-carbon",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0010",
+      "name": "Turla",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0010"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--turla-carbon",
+      "name": "Turla Carbon Scenario",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/turla_carbon.yaml"
+        },
+        {
+          "source_name": "report",
+          "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/Carbon_Scenario.md"
+        },
+        {
+          "source_name": "report",
+          "url": "https://attack.mitre.org/groups/G0010/"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-carbon-1",
+      "name": "Spearphishing Link",
+      "technique_id": "T1566.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-carbon-2",
+      "name": "Malicious File",
+      "technique_id": "T1204.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-carbon-3",
+      "name": "Services Registry Permissions Weakness",
+      "technique_id": "T1574.011"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-carbon-4",
+      "name": "Password Spraying",
+      "technique_id": "T1110.003"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--turla-carbon-5",
+      "name": "Lateral Tool Transfer",
+      "technique_id": "T1570"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-carbon-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--turla-carbon",
+      "target_ref": "intrusion-set--g0010"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-carbon-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--turla-carbon",
+      "target_ref": "attack-action--turla-carbon-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-carbon-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-carbon-1",
+      "target_ref": "attack-action--turla-carbon-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-carbon-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-carbon-2",
+      "target_ref": "attack-action--turla-carbon-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-carbon-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-carbon-3",
+      "target_ref": "attack-action--turla-carbon-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--turla-carbon-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--turla-carbon-4",
+      "target_ref": "attack-action--turla-carbon-5"
+    }
+  ]
+}

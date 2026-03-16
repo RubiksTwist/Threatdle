@@ -1,0 +1,56 @@
+{
+  "values": [
+    {
+      "uuid": "uuid-apt29",
+      "value": "APT 29",
+      "meta": {
+        "country": "RU",
+        "synonyms": [
+          "CozyBear"
+        ],
+        "cfr-suspected-state-sponsor": "Russia",
+        "cfr-suspected-victims": [
+          "US"
+        ],
+        "cfr-target-category": [
+          "Government"
+        ],
+        "cfr-type-of-incident": [
+          "Espionage"
+        ]
+      }
+    },
+    {
+      "uuid": "uuid-ambiguous",
+      "value": "Shadow Bear",
+      "meta": {
+        "synonyms": [
+          "ShadowBear"
+        ],
+        "country": "IR"
+      }
+    },
+    {
+      "uuid": "uuid-near",
+      "value": "Cozy Beor",
+      "meta": {
+        "country": "RU"
+      }
+    },
+    {
+      "uuid": "uuid-no-match",
+      "value": "Unknown Crew",
+      "meta": {}
+    },
+    {
+      "uuid": "uuid-override",
+      "value": "Blue Team",
+      "meta": {
+        "country": "RU",
+        "cfr-target-category": [
+          "Government"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "type": "bundle",
+  "id": "bundle--hafnium-exchange",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0125",
+      "name": "HAFNIUM",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0125"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--hafnium-exchange",
+      "name": "HAFNIUM Exchange Exploitation",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-062a"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--hafnium-1",
+      "name": "Exploit Public-Facing Application",
+      "technique_id": "T1190"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--hafnium-2",
+      "name": "Web Shell",
+      "technique_id": "T1505.003"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--hafnium-3",
+      "name": "PowerShell",
+      "technique_id": "T1059.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--hafnium-4",
+      "name": "OS Credential Dumping",
+      "technique_id": "T1003"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--hafnium-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--hafnium-exchange",
+      "target_ref": "intrusion-set--g0125"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--hafnium-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--hafnium-exchange",
+      "target_ref": "attack-action--hafnium-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--hafnium-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--hafnium-1",
+      "target_ref": "attack-action--hafnium-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--hafnium-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--hafnium-2",
+      "target_ref": "attack-action--hafnium-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--hafnium-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--hafnium-3",
+      "target_ref": "attack-action--hafnium-4"
+    }
+  ]
+}

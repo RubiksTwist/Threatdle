@@ -1,0 +1,110 @@
+{
+  "type": "bundle",
+  "id": "bundle--cloud-hopper-menupass",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0045",
+      "name": "menuPass",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0045"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--cloud-hopper-menupass",
+      "name": "Cloud Hopper Intrusion",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/menu_pass/Emulation_Plan/yaml/menupass.yaml"
+        },
+        {
+          "source_name": "report",
+          "url": "https://www.pwc.co.uk/cyber-security/pdf/cloud-hopper-report-final-v4.pdf"
+        },
+        {
+          "source_name": "report",
+          "url": "https://recordedfuture.com/apt10-cyberespionage-campaign/"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cloud-hopper-1",
+      "name": "Ingress Tool Transfer",
+      "technique_id": "T1105"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cloud-hopper-2",
+      "name": "Remote System Discovery",
+      "technique_id": "T1018"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cloud-hopper-3",
+      "name": "Security Account Manager",
+      "technique_id": "T1003.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cloud-hopper-4",
+      "name": "Local Data Staging",
+      "technique_id": "T1074.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--cloud-hopper-5",
+      "name": "Archive via Utility",
+      "technique_id": "T1560.001"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cloud-hopper-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--cloud-hopper-menupass",
+      "target_ref": "intrusion-set--g0045"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cloud-hopper-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--cloud-hopper-menupass",
+      "target_ref": "attack-action--cloud-hopper-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cloud-hopper-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cloud-hopper-1",
+      "target_ref": "attack-action--cloud-hopper-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cloud-hopper-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cloud-hopper-2",
+      "target_ref": "attack-action--cloud-hopper-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cloud-hopper-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cloud-hopper-3",
+      "target_ref": "attack-action--cloud-hopper-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--cloud-hopper-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--cloud-hopper-4",
+      "target_ref": "attack-action--cloud-hopper-5"
+    }
+  ]
+}

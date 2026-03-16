@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threatdle Puzzle Review</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface-hover: #1c2129;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --text-dim: #6e7681;
+  --accent-actor: #58a6ff;
+  --accent-malware: #f85149;
+  --accent-technique: #3fb950;
+  --accent-timeline: #bc8cff;
+  --accent-theme: #f0883e;
+  --tag-bg: rgba(255,255,255,0.06);
+  --answer-bg: rgba(255,255,255,0.04);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-top h1 {
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.controls label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+select {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+select:focus { outline: 1px solid var(--accent-actor); }
+
+.nav-btn {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.nav-btn:hover { background: var(--surface-hover); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+
+.toggles {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.toggle-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toggle-btn.active {
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+/* Theme banner */
+.theme-banner {
+  padding: 8px 24px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-banner.themed {
+  background: rgba(240, 136, 62, 0.08);
+  border-bottom: 1px solid rgba(240, 136, 62, 0.2);
+  color: var(--accent-theme);
+}
+
+.theme-banner.independent {
+  background: rgba(139, 148, 158, 0.06);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.theme-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.theme-dot.themed { background: var(--accent-theme); }
+.theme-dot.independent { background: var(--text-dim); }
+
+.fallback-tag {
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Main grid */
+main {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 800px) {
+  main { grid-template-columns: 1fr; }
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card[data-mode="actor"] .card-header { border-left: 3px solid var(--accent-actor); }
+.card[data-mode="malware"] .card-header { border-left: 3px solid var(--accent-malware); }
+.card[data-mode="technique"] .card-header { border-left: 3px solid var(--accent-technique); }
+.card[data-mode="timeline"] .card-header { border-left: 3px solid var(--accent-timeline); }
+
+.card[data-mode="actor"] .card-header h2 { color: var(--accent-actor); }
+.card[data-mode="malware"] .card-header h2 { color: var(--accent-malware); }
+.card[data-mode="technique"] .card-header h2 { color: var(--accent-technique); }
+.card[data-mode="timeline"] .card-header h2 { color: var(--accent-timeline); }
+
+.connection-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.connection-badge.linked {
+  background: rgba(240, 136, 62, 0.12);
+  color: var(--accent-theme);
+}
+
+.connection-badge.independent {
+  background: rgba(139, 148, 158, 0.1);
+  color: var(--text-dim);
+}
+
+.card-body { padding: 16px; }
+
+/* Clue rows */
+.clue-row {
+  display: flex;
+  align-items: baseline;
+  padding: 4px 0;
+  gap: 8px;
+}
+
+.clue-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.clue-value {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.clue-value.empty {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Tags */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag {
+  background: var(--tag-bg);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* Summary text */
+.summary-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 6px;
+  border-left: 2px solid var(--border);
+  margin: 4px 0;
+}
+
+/* Tier badge */
+.tier-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.tier-badge.tier-1 {
+  background: rgba(63, 185, 80, 0.15);
+  color: var(--accent-technique);
+}
+
+.tier-badge.tier-2 {
+  background: rgba(248, 81, 73, 0.15);
+  color: var(--accent-malware);
+}
+
+/* Timeline steps */
+.timeline-steps {
+  list-style: none;
+  padding: 0;
+  position: relative;
+}
+
+.timeline-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  position: relative;
+}
+
+.step-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(188, 140, 255, 0.15);
+  color: var(--accent-timeline);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-name {
+  font-size: 14px;
+  color: var(--text);
+  padding-top: 2px;
+}
+
+.timeline-step + .timeline-step::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: -4px;
+  width: 2px;
+  height: 12px;
+  background: rgba(188, 140, 255, 0.2);
+}
+
+/* Answer section (hidden by default) */
+.answer-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+  display: none;
+}
+
+.answer-section.visible { display: block; }
+
+.answer-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.answer-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  padding: 6px 10px;
+  background: var(--answer-bg);
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* Raw JSON (hidden by default) */
+.raw-json {
+  margin-top: 12px;
+  display: none;
+}
+
+.raw-json.visible { display: block; }
+
+.raw-json pre {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 11px;
+  line-height: 1.4;
+  overflow-x: auto;
+  color: var(--text-muted);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Loading / empty states */
+.state-message {
+  text-align: center;
+  padding: 80px 24px;
+  color: var(--text-muted);
+  font-size: 14px;
+  grid-column: 1 / -1;
+}
+
+.state-message .hint {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* Count chips */
+.count-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.count-chip {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.count-chip strong {
+  color: var(--text);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>Threatdle Review</h1>
+    <div class="controls">
+      <label>Snapshot</label>
+      <select id="snapshot-select"><option value="">Loading...</option></select>
+      <label style="margin-left:12px">Day</label>
+      <button class="nav-btn" id="prev-day" disabled>&larr;</button>
+      <select id="day-select"><option value="">--</option></select>
+      <button class="nav-btn" id="next-day" disabled>&rarr;</button>
+    </div>
+    <div class="toggles">
+      <button class="toggle-btn" id="toggle-answers">Show Answers</button>
+      <button class="toggle-btn" id="toggle-raw">Show Raw JSON</button>
+    </div>
+  </div>
+</header>
+
+<div class="theme-banner" id="theme-banner" style="display:none"></div>
+
+<main id="puzzle-grid">
+  <div class="state-message" id="empty-state">
+    <div>Select a snapshot and day to begin review</div>
+    <div class="hint">Run: python -m threatdle serve-review</div>
+  </div>
+</main>
+
+<script>
+(function() {
+  // State
+  let snapshots = [];
+  let days = [];
+  let currentDay = null;
+  let showAnswers = false;
+  let showRaw = false;
+
+  // Elements
+  const snapshotSelect = document.getElementById('snapshot-select');
+  const daySelect = document.getElementById('day-select');
+  const prevBtn = document.getElementById('prev-day');
+  const nextBtn = document.getElementById('next-day');
+  const toggleAnswersBtn = document.getElementById('toggle-answers');
+  const toggleRawBtn = document.getElementById('toggle-raw');
+  const themeBanner = document.getElementById('theme-banner');
+  const grid = document.getElementById('puzzle-grid');
+  const emptyState = document.getElementById('empty-state');
+
+  // API helpers
+  async function fetchJSON(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  // Initialize
+  async function init() {
+    try {
+      snapshots = await fetchJSON('/api/snapshots');
+      snapshotSelect.innerHTML = snapshots.length
+        ? snapshots.map(s =>
+            `<option value="${esc(s.snapshot_id)}">${esc(s.snapshot_id)} (${s.day_count} days)</option>`
+          ).join('')
+        : '<option value="">No puzzle data found</option>';
+      if (snapshots.length) {
+        await loadDays(snapshots[0].snapshot_id);
+      }
+    } catch (e) {
+      snapshotSelect.innerHTML = '<option value="">Error loading</option>';
+      console.error(e);
+    }
+  }
+
+  async function loadDays(snapshotId) {
+    if (!snapshotId) return;
+    days = await fetchJSON(`/api/days?snapshot_id=${encodeURIComponent(snapshotId)}`);
+    daySelect.innerHTML = days.length
+      ? days.map(d => `<option value="${esc(d.day_key)}">${esc(d.day_key)}</option>`).join('')
+      : '<option value="">No days</option>';
+    if (days.length) {
+      await loadDay(snapshotId, days[0].day_key);
+    }
+    updateNav();
+  }
+
+  async function loadDay(snapshotId, dayKey) {
+    try {
+      currentDay = await fetchJSON(
+        `/api/day?snapshot_id=${encodeURIComponent(snapshotId)}&day_key=${encodeURIComponent(dayKey)}`
+      );
+      daySelect.value = dayKey;
+      renderDay();
+      updateNav();
+    } catch (e) {
+      console.error(e);
+      currentDay = null;
+      renderEmpty('Error loading day data');
+    }
+  }
+
+  function updateNav() {
+    const idx = days.findIndex(d => d.day_key === daySelect.value);
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx < 0 || idx >= days.length - 1;
+  }
+
+  // Events
+  snapshotSelect.addEventListener('change', () => loadDays(snapshotSelect.value));
+  daySelect.addEventListener('change', () => loadDay(snapshotSelect.value, daySelect.value));
+  prevBtn.addEventListener('click', () => {
+    const idx = days.findIndex(d => d.day_key === daySelect.value);
+    if (idx > 0) loadDay(snapshotSelect.value, days[idx - 1].day_key);
+  });
+  nextBtn.addEventListener('click', () => {
+    const idx = days.findIndex(d => d.day_key === daySelect.value);
+    if (idx < days.length - 1) loadDay(snapshotSelect.value, days[idx + 1].day_key);
+  });
+
+  toggleAnswersBtn.addEventListener('click', () => {
+    showAnswers = !showAnswers;
+    toggleAnswersBtn.classList.toggle('active', showAnswers);
+    document.querySelectorAll('.answer-section').forEach(el =>
+      el.classList.toggle('visible', showAnswers)
+    );
+  });
+  toggleRawBtn.addEventListener('click', () => {
+    showRaw = !showRaw;
+    toggleRawBtn.classList.toggle('active', showRaw);
+    document.querySelectorAll('.raw-json').forEach(el =>
+      el.classList.toggle('visible', showRaw)
+    );
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'SELECT') return;
+    if (e.key === 'ArrowLeft' && !prevBtn.disabled) prevBtn.click();
+    if (e.key === 'ArrowRight' && !nextBtn.disabled) nextBtn.click();
+    if (e.key === 'a') toggleAnswersBtn.click();
+    if (e.key === 'j') toggleRawBtn.click();
+  });
+
+  // Rendering
+  function renderEmpty(msg) {
+    grid.innerHTML = `<div class="state-message"><div>${esc(msg)}</div></div>`;
+    themeBanner.style.display = 'none';
+  }
+
+  function renderDay() {
+    if (!currentDay) return renderEmpty('No data');
+    const theme = currentDay.theme;
+
+    // Theme banner
+    if (theme.themed) {
+      themeBanner.className = 'theme-banner themed';
+      let html = `<span class="theme-dot themed"></span>`;
+      html += `<strong>Themed Day</strong> &mdash; anchor: ${esc(theme.anchor.answer_label)} (${esc(theme.anchor.answer_key)})`;
+      if (theme.fallback_modes.length) {
+        html += ` &mdash; fallback:`;
+        theme.fallback_modes.forEach(m => { html += ` <span class="fallback-tag">${esc(m)}</span>`; });
+      }
+      themeBanner.innerHTML = html;
+    } else {
+      themeBanner.className = 'theme-banner independent';
+      themeBanner.innerHTML = `<span class="theme-dot independent"></span> Independent selection (not themed)`;
+    }
+    themeBanner.style.display = '';
+
+    // Cards
+    const modes = currentDay.modes;
+    grid.innerHTML = '';
+    if (emptyState) emptyState.remove();
+
+    const order = ['actor', 'malware', 'technique', 'timeline'];
+    const titles = { actor: 'APT Guess', malware: 'Malware Guess', technique: 'TTP Wordle', timeline: 'Campaign Timeline' };
+
+    order.forEach(mode => {
+      const data = modes[mode];
+      if (!data) return;
+
+      const isLinked = theme.themed && theme.connected_modes.includes(mode);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.mode = mode;
+
+      let headerExtra = '';
+      if (theme.themed) {
+        headerExtra = isLinked
+          ? '<span class="connection-badge linked">linked</span>'
+          : '<span class="connection-badge independent">independent</span>';
+      }
+
+      let bodyHTML = '';
+      if (mode === 'actor') bodyHTML = renderActorClues(data);
+      else if (mode === 'malware') bodyHTML = renderMalwareClues(data);
+      else if (mode === 'technique') bodyHTML = renderTechniqueClues(data);
+      else if (mode === 'timeline') bodyHTML = renderTimelineClues(data);
+
+      const answerHTML = renderAnswer(mode, data);
+      const rawHTML = renderRawJSON(data);
+
+      card.innerHTML = `
+        <div class="card-header">
+          <h2>${titles[mode]}</h2>
+          ${headerExtra}
+        </div>
+        <div class="card-body">
+          ${bodyHTML}
+          <div class="answer-section${showAnswers ? ' visible' : ''}">${answerHTML}</div>
+          <div class="raw-json${showRaw ? ' visible' : ''}">${rawHTML}</div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function renderActorClues(data) {
+    const clues = data.payload.clues || {};
+    let html = '';
+    html += clueRow('Country', renderCountryFlag(clues.country_code));
+    html += clueRow('First Seen', clues.first_observed_year != null ? String(clues.first_observed_year) : null);
+    html += clueRow('Targets', renderTags(clues.target_categories));
+    html += clueRow('Motivation', renderTags(clues.motivation_tags));
+    html += `<div class="count-row">
+      <span class="count-chip">Malware: <strong>${clues.malware_count || 0}</strong></span>
+      <span class="count-chip">Techniques: <strong>${clues.technique_count || 0}</strong></span>
+    </div>`;
+    return html;
+  }
+
+  function renderMalwareClues(data) {
+    const clues = data.payload.clues || {};
+    const tier = data.summary_tier;
+    let html = '';
+    html += clueRow('Platforms', renderTags(clues.platforms));
+    if (clues.capability_summary) {
+      let tierBadge = '';
+      if (tier === 1) tierBadge = ' <span class="tier-badge tier-1">Tier 1</span>';
+      else if (tier === 2) tierBadge = ' <span class="tier-badge tier-2">Tier 2</span>';
+      html += `<div class="clue-row">
+        <span class="clue-label">Summary${tierBadge}</span>
+      </div>`;
+      html += `<div class="summary-text">${esc(clues.capability_summary)}</div>`;
+    }
+    html += clueRow('Aliases', renderTags(clues.aliases));
+    html += clueRow('Actor Count', String(clues.actor_count || 0));
+    return html;
+  }
+
+  function renderTechniqueClues(data) {
+    const clues = data.payload.clues || {};
+    let html = '';
+    html += clueRow('Tactics', renderTags(clues.tactics));
+    html += clueRow('Platforms', renderTags(clues.platforms));
+    html += clueRow('Subtechnique', clues.is_subtechnique ? 'Yes' : 'No');
+    if (clues.parent_name) {
+      html += clueRow('Parent', clues.parent_name);
+    }
+    return html;
+  }
+
+  function renderTimelineClues(data) {
+    const clues = data.payload.clues || {};
+    const steps = clues.steps || [];
+    let html = `<div class="clue-row"><span class="clue-label">Steps</span><span class="clue-value">${steps.length}</span></div>`;
+    html += '<ol class="timeline-steps">';
+    steps.forEach(step => {
+      html += `<li class="timeline-step">
+        <span class="step-number">${step.step_index}</span>
+        <span class="step-name">${esc(step.technique_name)}</span>
+      </li>`;
+    });
+    html += '</ol>';
+    return html;
+  }
+
+  function renderAnswer(mode, data) {
+    const answer = data.answer || {};
+    let html = '<div class="answer-label">Answer</div>';
+    html += `<div class="answer-value">${esc(answer.answer_label || '?')} (${esc(answer.answer_key || '?')})</div>`;
+
+    if (mode === 'timeline' && answer.answer_type) {
+      html += `<div style="margin-top:8px; font-size:12px; color:var(--text-muted)">
+        Attribution: ${esc(answer.answer_type)}
+      </div>`;
+      if (answer.comparison && answer.comparison.steps) {
+        html += '<div style="margin-top:8px; font-size:12px; color:var(--text-muted)">';
+        html += answer.comparison.steps.map(s =>
+          `<span class="tag">${esc(s.attack_id)}</span>`
+        ).join(' &rarr; ');
+        html += '</div>';
+      }
+    }
+
+    if (mode === 'malware' && answer.comparison) {
+      const actors = answer.comparison.actor_names || [];
+      if (actors.length) {
+        html += `<div style="margin-top:8px; font-size:12px; color:var(--text-muted)">
+          Linked actors: ${actors.map(a => esc(a)).join(', ')}
+        </div>`;
+      }
+    }
+
+    return html;
+  }
+
+  function renderRawJSON(data) {
+    return `
+      <div style="margin-bottom:8px">
+        <div class="answer-label">Payload JSON</div>
+        <pre>${esc(JSON.stringify(data.payload, null, 2))}</pre>
+      </div>
+      <div>
+        <div class="answer-label">Answer JSON</div>
+        <pre>${esc(JSON.stringify(data.answer, null, 2))}</pre>
+      </div>
+    `;
+  }
+
+  // Helpers
+  function clueRow(label, value) {
+    if (value && typeof value === 'string' && value.startsWith('<')) {
+      // Already HTML (tags)
+      return `<div class="clue-row"><span class="clue-label">${label}</span><span class="clue-value">${value}</span></div>`;
+    }
+    const display = value != null && value !== ''
+      ? `<span class="clue-value">${esc(String(value))}</span>`
+      : `<span class="clue-value empty">none</span>`;
+    return `<div class="clue-row"><span class="clue-label">${label}</span>${display}</div>`;
+  }
+
+  function renderTags(items) {
+    if (!items || !items.length) return null;
+    return '<div class="tag-list">' + items.map(i => `<span class="tag">${esc(String(i))}</span>`).join('') + '</div>';
+  }
+
+  function renderCountryFlag(countryCode) {
+    if (!countryCode || typeof countryCode !== 'string') return null;
+    const normalized = countryCode.trim().toUpperCase();
+    if (normalized === 'UN' || normalized === 'ZZ') return 'Unknown';
+    if (!/^[A-Z]{2}$/.test(normalized)) return normalized;
+    const flag = String.fromCodePoint(...Array.from(normalized, ch => 127397 + ch.charCodeAt(0)));
+    return `<span title="${esc(normalized)}">${flag}</span>`;
+  }
+
+  function esc(str) {
+    if (str == null) return '';
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+  }
+
+  // Start
+  init();
+})();
+</script>
+
+</body>
+</html>

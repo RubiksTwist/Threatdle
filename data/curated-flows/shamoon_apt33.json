@@ -1,0 +1,110 @@
+{
+  "type": "bundle",
+  "id": "bundle--shamoon-apt33",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0064",
+      "name": "APT33",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0064"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--shamoon-apt33",
+      "name": "Shamoon Wiper Campaign",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://attack.mitre.org/groups/G0064/"
+        },
+        {
+          "source_name": "report",
+          "url": "https://attack.mitre.org/software/S0140/"
+        },
+        {
+          "source_name": "report",
+          "url": "https://unit42.paloaltonetworks.com/unit42-shamoon-2-delivering-disttrack/"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--shamoon-1",
+      "name": "SMB/Windows Admin Shares",
+      "technique_id": "T1021.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--shamoon-2",
+      "name": "Scheduled Task",
+      "technique_id": "T1053.005"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--shamoon-3",
+      "name": "Modify Registry",
+      "technique_id": "T1112"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--shamoon-4",
+      "name": "Service Execution",
+      "technique_id": "T1569.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--shamoon-5",
+      "name": "Disk Structure Wipe",
+      "technique_id": "T1561.002"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--shamoon-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--shamoon-apt33",
+      "target_ref": "intrusion-set--g0064"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--shamoon-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--shamoon-apt33",
+      "target_ref": "attack-action--shamoon-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--shamoon-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--shamoon-1",
+      "target_ref": "attack-action--shamoon-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--shamoon-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--shamoon-2",
+      "target_ref": "attack-action--shamoon-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--shamoon-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--shamoon-3",
+      "target_ref": "attack-action--shamoon-4"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--shamoon-4-5",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--shamoon-4",
+      "target_ref": "attack-action--shamoon-5"
+    }
+  ]
+}

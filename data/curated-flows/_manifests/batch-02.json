@@ -1,0 +1,90 @@
+[
+  {
+    "filename": "cloud_hopper_menupass.json",
+    "incident_name": "Cloud Hopper Intrusion",
+    "actor_attack_id": "G0045",
+    "actor_name": "menuPass",
+    "primary_sources": [
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/menu_pass/Emulation_Plan/yaml/menupass.yaml",
+      "https://www.pwc.co.uk/cyber-security/pdf/cloud-hopper-report-final-v4.pdf",
+      "https://recordedfuture.com/apt10-cyberespionage-campaign/"
+    ],
+    "technique_chain_source": "CTID menuPass emulation plan and Cloud Hopper reporting, compressed into a discovery-to-collection sequence that stays within the puzzle-friendly 5-step limit.",
+    "expected_attack_ids": [
+      "T1105",
+      "T1018",
+      "T1003.002",
+      "T1074.001",
+      "T1560.001"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "This chain follows the ordered emulation-plan phases for tool transfer, remote discovery, credential dumping, local staging, and archive creation without reusing any existing flow above the overlap threshold.",
+    "status": "accepted"
+  },
+  {
+    "filename": "cobalt_kitty_apt32.json",
+    "incident_name": "Operation Cobalt Kitty",
+    "actor_attack_id": "G0050",
+    "actor_name": "APT32",
+    "primary_sources": [
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/ocean_lotus/Operations_Flow/Operations_Flow.md",
+      "https://www.cybereason.com/blog/operation-cobalt-kitty-apt",
+      "https://www.trendmicro.com/en_us/research/20/k/new-macos-backdoor-connected-to-oceanlotus-surfaces.html"
+    ],
+    "technique_chain_source": "CTID OceanLotus operations flow plus the Cybereason Cobalt Kitty reporting, compressed around delivery, payload staging, host discovery, SSH pivoting, and C2 exfiltration.",
+    "expected_attack_ids": [
+      "T1204.002",
+      "T1105",
+      "T1082",
+      "T1021.004",
+      "T1041"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "This keeps the Cobalt Kitty story distinct by emphasizing the macOS-to-Linux pivot and exfiltration path rather than a generic Windows phishing chain.",
+    "status": "accepted"
+  },
+  {
+    "filename": "turla_carbon.json",
+    "incident_name": "Turla Carbon Scenario",
+    "actor_attack_id": "G0010",
+    "actor_name": "Turla",
+    "primary_sources": [
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/turla_carbon.yaml",
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/Carbon_Scenario.md",
+      "https://attack.mitre.org/groups/G0010/"
+    ],
+    "technique_chain_source": "CTID Turla Carbon emulation plan, compressed into phishing, user execution, service-registry hijack escalation, password spraying, and lateral tool transfer.",
+    "expected_attack_ids": [
+      "T1566.002",
+      "T1204.002",
+      "T1574.011",
+      "T1110.003",
+      "T1570"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "Ordered overlap with turla_snake.json is 0.20, so the pair stays comfortably below the 0.60 threshold. This file leans on the Carbon path's spearphishing, escalation, and password-spraying story rather than Turla's later Exchange operations.",
+    "status": "accepted"
+  },
+  {
+    "filename": "turla_snake.json",
+    "incident_name": "Turla Snake Scenario",
+    "actor_attack_id": "G0010",
+    "actor_name": "Turla",
+    "primary_sources": [
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/turla_snake.yaml",
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/turla/Emulation_Plan/yaml/Snake_Scenario.md",
+      "https://attack.mitre.org/groups/G0010/"
+    ],
+    "technique_chain_source": "CTID Turla Snake emulation plan, compressed into drive-by compromise, malicious update execution, rootkit installation, service execution, and Exchange transport-agent persistence.",
+    "expected_attack_ids": [
+      "T1189",
+      "T1204.002",
+      "T1014",
+      "T1569.002",
+      "T1505.002"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "Ordered overlap with turla_carbon.json is 0.20, so the pair stays comfortably below the 0.60 threshold. This file is intentionally centered on Snake rootkit and LightNeuron transport-agent installation to keep it distinct from the Carbon scenario.",
+    "status": "accepted"
+  }
+]

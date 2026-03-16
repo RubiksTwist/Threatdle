@@ -1,0 +1,89 @@
+{
+  "type": "bundle",
+  "id": "bundle--solarwinds-apt29",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0016",
+      "name": "APT29",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0016"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--solarwinds-apt29",
+      "name": "SolarWinds Intrusion",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-008a"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--solarwinds-1",
+      "name": "Compromise Software Supply Chain",
+      "technique_id": "T1195.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--solarwinds-2",
+      "name": "PowerShell",
+      "technique_id": "T1059.001"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--solarwinds-3",
+      "name": "OS Credential Dumping",
+      "technique_id": "T1003"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--solarwinds-4",
+      "name": "Remote Services",
+      "technique_id": "T1021"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--solarwinds-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--solarwinds-apt29",
+      "target_ref": "intrusion-set--g0016"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--solarwinds-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--solarwinds-apt29",
+      "target_ref": "attack-action--solarwinds-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--solarwinds-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--solarwinds-1",
+      "target_ref": "attack-action--solarwinds-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--solarwinds-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--solarwinds-2",
+      "target_ref": "attack-action--solarwinds-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--solarwinds-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--solarwinds-3",
+      "target_ref": "attack-action--solarwinds-4"
+    }
+  ]
+}

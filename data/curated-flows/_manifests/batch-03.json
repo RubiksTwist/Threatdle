@@ -1,0 +1,90 @@
+[
+  {
+    "filename": "fin7_hospitality.json",
+    "incident_name": "FIN7 Hospitality Intrusion",
+    "actor_attack_id": "G0046",
+    "actor_name": "FIN7",
+    "primary_sources": [
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/fin7/Emulation_Plan/yaml/Fin7.yaml",
+      "https://www.fireeye.com/blog/threat-research/2017/05/fin7-shim-databases-persistence.html",
+      "https://www.fireeye.com/content/dam/fireeye-www/summit/cds-2018/presentations/cds18-technical-s05-att&cking-fin7.pdf"
+    ],
+    "technique_chain_source": "CTID FIN7 emulation plan plus FireEye FIN7 reporting, compressed into command execution, process discovery, SAM dumping, lateral tool transfer, and application shimming persistence.",
+    "expected_attack_ids": [
+      "T1059.003",
+      "T1057",
+      "T1003.002",
+      "T1570",
+      "T1546.011"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "Ordered overlap with fin6_pos_intrusion.json is 0.00, so the two POS-adjacent flows stay clearly separated. This file leans on FIN7's shell execution, credential theft, and shim-database persistence path rather than FIN6-style discovery and collection staging.",
+    "status": "accepted"
+  },
+  {
+    "filename": "fin6_pos_intrusion.json",
+    "incident_name": "FIN6 POS Intrusion",
+    "actor_attack_id": "G0037",
+    "actor_name": "FIN6",
+    "primary_sources": [
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/fin6/Emulation_Plan/yaml/FIN6.yaml",
+      "https://www.fireeye.com/blog/threat-research/2019/04/pick-six-intercepting-a-fin6-intrusion.html",
+      "https://attack.mitre.org/groups/G0037/"
+    ],
+    "technique_chain_source": "CTID FIN6 emulation plan and FireEye's Pick Six intrusion analysis, compressed into account discovery, remote discovery, token manipulation, LSASS dumping, and archive creation.",
+    "expected_attack_ids": [
+      "T1087.002",
+      "T1018",
+      "T1134",
+      "T1003.001",
+      "T1560.001"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "Ordered overlap with fin7_hospitality.json is 0.00, which keeps the two financially motivated actor flows well below the 0.60 threshold. This chain emphasizes FIN6's internal discovery and collection staging path instead of FIN7's malware-delivery and persistence profile.",
+    "status": "accepted"
+  },
+  {
+    "filename": "carbanak_bank_intrusion.json",
+    "incident_name": "Carbanak Bank Intrusion",
+    "actor_attack_id": "G0008",
+    "actor_name": "Carbanak",
+    "primary_sources": [
+      "https://github.com/center-for-threat-informed-defense/adversary_emulation_library/blob/master/carbanak/Emulation_Plan/yaml/Carbanak.yaml",
+      "https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/08064518/Carbanak_APT_eng.pdf",
+      "https://attack.mitre.org/groups/G0008/"
+    ],
+    "technique_chain_source": "CTID Carbanak emulation plan paired with Kaspersky's Carbanak reporting, compressed into registry modification, payload deobfuscation, LSASS dumping, protocol tunneling, and keylogging.",
+    "expected_attack_ids": [
+      "T1112",
+      "T1140",
+      "T1003.001",
+      "T1572",
+      "T1056.001"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "This chain stays distinct from the FIN6 and FIN7 timelines by centering on malware staging, tunneling, and operator keylogging rather than POS-oriented discovery or shim-based persistence.",
+    "status": "accepted"
+  },
+  {
+    "filename": "cobalt_group_bank_intrusion.json",
+    "incident_name": "Cobalt Group Bank Intrusion",
+    "actor_attack_id": "G0080",
+    "actor_name": "Cobalt Group",
+    "primary_sources": [
+      "https://attack.mitre.org/groups/G0080/",
+      "https://www.group-ib.com/blog/cobalt",
+      "https://www.group-ib.com/blog/cobaltphishing/"
+    ],
+    "technique_chain_source": "MITRE ATT&CK G0080 procedure examples and Group-IB reporting, compressed into spearphishing delivery, user execution, Visual Basic macro execution, regsvr32 proxy execution, and scheduled-task persistence.",
+    "expected_attack_ids": [
+      "T1566.001",
+      "T1204.002",
+      "T1059.005",
+      "T1218.010",
+      "T1053.005"
+    ],
+    "expected_step_count": 5,
+    "author_notes": "This flow remains below the overlap threshold with the rest of the financial batch by focusing on phishing-to-regsvr32 execution and scheduled-task persistence rather than credential-dump-first intrusion sequences.",
+    "status": "accepted"
+  }
+]

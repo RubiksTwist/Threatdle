@@ -1,0 +1,89 @@
+{
+  "type": "bundle",
+  "id": "bundle--notpetya-sandworm",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "intrusion-set",
+      "id": "intrusion-set--g0034",
+      "name": "Sandworm Team",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "G0034"
+        }
+      ]
+    },
+    {
+      "type": "attack-flow",
+      "id": "attack-flow--notpetya-sandworm",
+      "name": "NotPetya Outbreak",
+      "description": "Curated linearized flow for timeline gameplay.",
+      "external_references": [
+        {
+          "source_name": "report",
+          "url": "https://www.cisa.gov/news-events/alerts/2018/02/15/russian-government-cyber-activity-targeting-energy-and-other-critical"
+        }
+      ]
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--notpetya-1",
+      "name": "Compromise Software Supply Chain",
+      "technique_id": "T1195.002"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--notpetya-2",
+      "name": "Ingress Tool Transfer",
+      "technique_id": "T1105"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--notpetya-3",
+      "name": "Exploitation of Remote Services",
+      "technique_id": "T1210"
+    },
+    {
+      "type": "attack-action",
+      "id": "attack-action--notpetya-4",
+      "name": "Data Encrypted for Impact",
+      "technique_id": "T1486"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--notpetya-actor",
+      "relationship_type": "attributed-to",
+      "source_ref": "attack-flow--notpetya-sandworm",
+      "target_ref": "intrusion-set--g0034"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--notpetya-start",
+      "relationship_type": "effect",
+      "source_ref": "attack-flow--notpetya-sandworm",
+      "target_ref": "attack-action--notpetya-1"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--notpetya-1-2",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--notpetya-1",
+      "target_ref": "attack-action--notpetya-2"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--notpetya-2-3",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--notpetya-2",
+      "target_ref": "attack-action--notpetya-3"
+    },
+    {
+      "type": "relationship",
+      "id": "relationship--notpetya-3-4",
+      "relationship_type": "effect",
+      "source_ref": "attack-action--notpetya-3",
+      "target_ref": "attack-action--notpetya-4"
+    }
+  ]
+}
