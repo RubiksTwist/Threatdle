@@ -100,6 +100,53 @@
           is unclear, we prefer to omit a value or exclude an actor rather than publish a weak clue.
         </p>
       </section>
+
+      <section class="info-section feedback-section">
+        <h2>Feedback</h2>
+        <p>
+          Found a broken clue, a sourcing issue, or something worth improving? Send a note here.
+        </p>
+        <form
+          name="feedback"
+          method="POST"
+          action="/feedback-success.html"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="feedback-form"
+        >
+          <input type="hidden" name="form-name" value="feedback">
+          <p class="visually-hidden">
+            <label>
+              Leave this field empty
+              <input name="bot-field">
+            </label>
+          </p>
+          <div class="feedback-grid">
+            <label class="field-label">
+              Name
+              <input class="field-input" type="text" name="name" autocomplete="name">
+            </label>
+            <label class="field-label">
+              Email
+              <input class="field-input" type="email" name="email" autocomplete="email">
+            </label>
+          </div>
+          <label class="field-label">
+            Feedback
+            <textarea
+              class="field-input field-textarea"
+              name="message"
+              rows="5"
+              required
+              placeholder="Share a bug, clue issue, sourcing question, or general feedback."
+            ></textarea>
+          </label>
+          <div class="feedback-actions">
+            <button type="submit" class="primary-btn feedback-submit">Send Feedback</button>
+            <p class="form-note">Powered by Netlify Forms.</p>
+          </div>
+        </form>
+      </section>
     </main>
 
     <footer class="site-footer">
