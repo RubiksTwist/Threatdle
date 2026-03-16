@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block function endpoints from indexing
+Disallow: /.netlify/
+Disallow: /api/
+
+# Block puzzle data files from indexing
+Disallow: /puzzles/

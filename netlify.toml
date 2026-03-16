@@ -1,0 +1,42 @@
+[build]
+command = "npm run build"
+publish = "public"
+
+[functions]
+directory = "netlify/functions"
+included_files = ["build/runtime/**"]
+
+[[redirects]]
+from = "/api/game/today"
+to = "/.netlify/functions/game-today"
+status = 200
+
+[[redirects]]
+from = "/api/game/day"
+to = "/.netlify/functions/game-day"
+status = 200
+
+[[redirects]]
+from = "/api/game/pool"
+to = "/.netlify/functions/game-pool"
+status = 200
+
+[[redirects]]
+from = "/api/game/guess"
+to = "/.netlify/functions/game-guess"
+status = 200
+
+[[redirects]]
+from = "/api/game/summary"
+to = "/.netlify/functions/game-summary"
+status = 200
+
+[[redirects]]
+from = "/game"
+to = "/game.html"
+status = 200
+
+[[redirects]]
+from = "/"
+to = "/game.html"
+status = 200

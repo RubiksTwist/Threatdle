@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import os
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
@@ -22,6 +23,7 @@ from threatdle.services.review_export import (
 )
 from threatdle.services.game_api import (
     get_game_day,
+    get_game_today,
     get_game_pool,
     validate_game_guess,
     get_game_summary,
@@ -36,6 +38,8 @@ CONTENT_TYPES = {
     ".png": "image/png",
     ".ico": "image/x-icon",
 }
+
+GAME_TIMEZONE_ENV = "THREATDLE_GAME_TIMEZONE"
 
 
 class ReviewHandler(BaseHTTPRequestHandler):
@@ -140,6 +144,25 @@ class ReviewHandler(BaseHTTPRequestHandler):
                     self._error(f"No puzzle data for {day_key}", 404)
                 else:
                     self._json_response(data)
+            finally:
+                conn.close()
+            return
+
+        if path == "/api/game/today":
+            snapshot_id = params.get("snapshot_id")
+            day_key = params.get("day_key")
+            timezone_name = os.environ.get(GAME_TIMEZONE_ENV, "America/New_York")
+            conn = get_connection(self.db_path)
+            try:
+                data = get_game_today(
+                    conn,
+                    snapshot_id=snapshot_id,
+                    day_key=day_key,
+                    timezone_name=timezone_name,
+                )
+                self._json_response(data)
+            except ValueError as e:
+                self._error(str(e), 400)
             finally:
                 conn.close()
             return

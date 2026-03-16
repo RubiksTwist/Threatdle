@@ -21,6 +21,7 @@ from threatdle.ingest.misp import ingest_misp_actors
 from threatdle.ingest.overrides import ingest_overrides
 from threatdle.services.campaign_report import build_campaign_match_report
 from threatdle.services.actor_backfill_report import build_actor_backfill_report
+from threatdle.services.live_runtime_export import export_live_runtime
 from threatdle.services.puzzle_generator import generate_puzzle_day, generate_puzzle_range, preview_puzzle_day
 from threatdle.services.review_validation import validate_review_snapshot
 from threatdle.services.puzzle_views import build_puzzle_tables
@@ -136,6 +137,20 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=None,
         help="Output directory for the static site bundle (default: <root>/dist/static-demo)",
+    )
+
+    live_runtime_parser = subparsers.add_parser("export-live-runtime", help="Export a private runtime bundle for live server functions")
+    live_runtime_parser.add_argument("--snapshot-id", required=True, help="Snapshot identifier")
+    live_runtime_parser.add_argument(
+        "--out-dir",
+        type=Path,
+        default=None,
+        help="Output directory for the private runtime bundle (default: <root>/build/runtime)",
+    )
+    live_runtime_parser.add_argument(
+        "--timezone",
+        default="America/New_York",
+        help="Authoritative game timezone for server-owned day selection",
     )
 
     return parser
@@ -382,6 +397,22 @@ def main(argv: list[str] | None = None) -> None:
                 args.snapshot_id,
                 out_dir=out_dir,
                 public_dir=paths.root_dir / "public",
+            ),
+        )
+        print(json.dumps(result, indent=2, sort_keys=True))
+        return
+
+    if args.command == "export-live-runtime":
+        paths = get_paths(root_dir=args.root_dir)
+        out_dir = args.out_dir or (paths.root_dir / "build" / "runtime")
+        result = run_with_connection(
+            args.root_dir,
+            args.db_path,
+            lambda connection: export_live_runtime(
+                connection,
+                args.snapshot_id,
+                out_dir=out_dir,
+                timezone_name=args.timezone,
             ),
         )
         print(json.dumps(result, indent=2, sort_keys=True))

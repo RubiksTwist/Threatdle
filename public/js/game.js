@@ -178,6 +178,47 @@ async function apiListDays(snapshotId) {
 }
 
 
+async function apiGetToday(snapshotId = null, requestedDayKey = null) {
+  if (!IS_STATIC_DEMO) {
+    const params = new URLSearchParams();
+    if (snapshotId) params.set('snapshot_id', snapshotId);
+    if (requestedDayKey) params.set('day_key', requestedDayKey);
+    const query = params.toString();
+    const response = await fetch(`${API_BASE}/today${query ? `?${query}` : ''}`);
+    if (!response.ok) {
+      throw new Error('Failed to resolve active game day');
+    }
+    return response.json();
+  }
+
+  const bundle = await getStaticDemoData();
+  const resolvedSnapshotId = snapshotId || bundle.snapshot?.snapshot_id;
+  if (!resolvedSnapshotId) {
+    throw new Error('Static demo snapshot not found');
+  }
+
+  const serverDayKey = getLocalDayKey();
+  const allDayKeys = (bundle.days || []).map(row => row.day_key).slice().sort().reverse();
+  let availableDayKeys = allDayKeys.filter(dayKey => dayKey <= serverDayKey);
+  if (!availableDayKeys.length) {
+    availableDayKeys = allDayKeys;
+  }
+  const latestDayKey = availableDayKeys[0] || null;
+  const selectedDayKey = requestedDayKey && availableDayKeys.includes(requestedDayKey)
+    ? requestedDayKey
+    : latestDayKey;
+
+  return {
+    snapshot_id: resolvedSnapshotId,
+    timezone: 'local-browser',
+    server_day_key: serverDayKey,
+    day_key: selectedDayKey,
+    latest_day: latestDayKey,
+    available_days: deepCopy(availableDayKeys)
+  };
+}
+
+
 async function apiGetDay(snapshotId, dayKey) {
   if (!IS_STATIC_DEMO) {
     const response = await fetch(`${API_BASE}/day?snapshot_id=${snapshotId}&day_key=${dayKey}`);
@@ -542,27 +583,23 @@ function nudgeTimelineStep(index, direction, modeData = currentState.modes.timel
 
 async function initGame() {
   try {
-    const snapshots = await apiListSnapshots();
-    if (!snapshots.length) throw new Error("No snapshots available");
-    
-    const activeSnapshot = snapshots.find(s => s.status === 'ready') || snapshots[0];
-    currentState.snapshot_id = activeSnapshot.snapshot_id;
-    
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('snapshot_id')) currentState.snapshot_id = urlParams.get('snapshot_id');
-    todayKey = getLocalDayKey();
+    const todayPayload = await apiGetToday(
+      urlParams.get('snapshot_id'),
+      urlParams.get('day_key')
+    );
 
-    // Fetch available days for the archive drawer
-    await fetchAvailableDays();
+    currentState.snapshot_id = todayPayload.snapshot_id;
+    todayKey = todayPayload.server_day_key;
+    availableDays = Array.isArray(todayPayload.available_days)
+      ? todayPayload.available_days.slice()
+      : [];
     if (!availableDays.length) {
       throw new Error(`No puzzle days available on or before ${todayKey}`);
     }
 
-    latestDay = availableDays[0];
-    currentState.day_key = latestDay;
-    if (urlParams.has('day_key') && availableDays.includes(urlParams.get('day_key'))) {
-      currentState.day_key = urlParams.get('day_key');
-    }
+    latestDay = todayPayload.latest_day || availableDays[0];
+    currentState.day_key = todayPayload.day_key || latestDay;
 
     syncDayUrl(currentState.day_key);
 

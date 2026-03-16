@@ -5,14 +5,120 @@ Reads from the puzzle_day and candidate tables to serve the player UI.
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 import json
 import random
 import sqlite3
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from threatdle.services.puzzle_generator import _parse_day_key
 from threatdle.services.game_engine import score_guess
 from threatdle.normalize.text import redact_names_from_text
+
+
+DEFAULT_GAME_TIMEZONE = "America/New_York"
+
+
+def _day_key_in_timezone(timezone_name: str, *, now: datetime | None = None) -> str:
+    current = now or datetime.now(UTC)
+    if current.tzinfo is None:
+        current = current.replace(tzinfo=UTC)
+    return current.astimezone(ZoneInfo(timezone_name)).date().isoformat()
+
+
+def _select_game_snapshot(connection: sqlite3.Connection, snapshot_id: str | None) -> sqlite3.Row:
+    if snapshot_id:
+        row = connection.execute(
+            """
+            SELECT
+                pd.snapshot_id,
+                s.status,
+                s.ready_at,
+                COUNT(*) AS row_count,
+                COUNT(DISTINCT pd.day_key) AS day_count,
+                MIN(pd.day_key) AS first_day,
+                MAX(pd.day_key) AS last_day
+            FROM puzzle_day pd
+            LEFT JOIN snapshots s ON s.snapshot_id = pd.snapshot_id
+            WHERE pd.snapshot_id = ?
+            GROUP BY pd.snapshot_id, s.status, s.ready_at
+            """,
+            (snapshot_id,),
+        ).fetchone()
+        if row is None:
+            raise ValueError(f"Snapshot {snapshot_id} has no baked puzzle_day rows")
+        return row
+
+    row = connection.execute(
+        """
+        SELECT
+            pd.snapshot_id,
+            s.status,
+            s.ready_at,
+            COUNT(*) AS row_count,
+            COUNT(DISTINCT pd.day_key) AS day_count,
+            MIN(pd.day_key) AS first_day,
+            MAX(pd.day_key) AS last_day
+        FROM puzzle_day pd
+        LEFT JOIN snapshots s ON s.snapshot_id = pd.snapshot_id
+        GROUP BY pd.snapshot_id, s.status, s.ready_at
+        ORDER BY
+            CASE WHEN s.status = 'ready' THEN 0 ELSE 1 END,
+            COALESCE(s.ready_at, '') DESC,
+            pd.snapshot_id DESC
+        LIMIT 1
+        """
+    ).fetchone()
+    if row is None:
+        raise ValueError("No snapshots available")
+    return row
+
+
+def get_game_today(
+    connection: sqlite3.Connection,
+    *,
+    snapshot_id: str | None = None,
+    day_key: str | None = None,
+    timezone_name: str = DEFAULT_GAME_TIMEZONE,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    """Resolve the active published game day using server time."""
+    snapshot = _select_game_snapshot(connection, snapshot_id)
+    resolved_snapshot_id = str(snapshot["snapshot_id"])
+    server_day_key = _day_key_in_timezone(timezone_name, now=now)
+
+    day_rows = connection.execute(
+        """
+        SELECT day_key
+        FROM puzzle_day
+        WHERE snapshot_id = ?
+        GROUP BY day_key
+        ORDER BY day_key DESC
+        """,
+        (resolved_snapshot_id,),
+    ).fetchall()
+    all_day_keys = [str(row["day_key"]) for row in day_rows]
+    if not all_day_keys:
+        raise ValueError(f"Snapshot {resolved_snapshot_id} has no puzzle days")
+
+    available_days = [value for value in all_day_keys if value <= server_day_key]
+    if not available_days:
+        available_days = list(all_day_keys)
+
+    latest_day = available_days[0]
+    selected_day = latest_day
+    if day_key and day_key in available_days:
+        selected_day = day_key
+
+    return {
+        "snapshot_id": resolved_snapshot_id,
+        "timezone": timezone_name,
+        "server_day_key": server_day_key,
+        "day_key": selected_day,
+        "latest_day": latest_day,
+        "available_days": available_days,
+    }
 
 
 def _shuffle_timeline_steps(snapshot_id: str, day_key: str, steps: list[dict[str, Any]]) -> list[dict[str, Any]]:

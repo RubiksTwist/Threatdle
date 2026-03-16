@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 
 from threatdle.ingest.base import now_utc_iso
-from threatdle.services.game_api import get_game_day, get_game_summary, validate_game_guess
+from threatdle.services.game_api import get_game_day, get_game_summary, get_game_today, validate_game_guess
 
 
 SNAPSHOT_ID = "snap-game"
@@ -323,3 +324,63 @@ def test_get_game_summary_exposes_incident_source_only_for_exact_days(db_connect
         "url": "https://example.test/article",
     }
     assert summary["timeline_provenance"]["flow_name"] == "Timeline Test Flow"
+
+
+def test_get_game_today_uses_server_timezone_and_returns_archive_days(db_connection):
+    _insert_exact_three_phase_day(db_connection)
+    with db_connection:
+        db_connection.execute(
+            """
+            INSERT INTO puzzle_day (
+                day_key,
+                snapshot_id,
+                mode,
+                payload_json,
+                answer_json,
+                created_at
+            )
+            VALUES (?, ?, 'actor', ?, ?, ?)
+            """,
+            (
+                "2026-03-17",
+                SNAPSHOT_ID,
+                json.dumps({"mode": "actor", "clues": {"country_code": "RU"}}, sort_keys=True),
+                json.dumps(
+                    {
+                        "answer_key": "G0016",
+                        "answer_label": "APT29",
+                        "comparison": {"country_code": "RU"},
+                    },
+                    sort_keys=True,
+                ),
+                now_utc_iso(),
+            ),
+        )
+
+    payload = get_game_today(
+        db_connection,
+        snapshot_id=SNAPSHOT_ID,
+        timezone_name="America/New_York",
+        now=datetime(2026, 3, 16, 12, 0, tzinfo=UTC),
+    )
+
+    assert payload["snapshot_id"] == SNAPSHOT_ID
+    assert payload["server_day_key"] == "2026-03-16"
+    assert payload["day_key"] == DAY_KEY
+    assert payload["latest_day"] == DAY_KEY
+    assert payload["available_days"] == [DAY_KEY]
+    assert payload["timezone"] == "America/New_York"
+
+
+def test_get_game_today_allows_valid_archive_override(db_connection):
+    _insert_exact_three_phase_day(db_connection)
+
+    payload = get_game_today(
+        db_connection,
+        snapshot_id=SNAPSHOT_ID,
+        day_key=DAY_KEY,
+        timezone_name="America/New_York",
+        now=datetime(2026, 3, 16, 12, 0, tzinfo=UTC),
+    )
+
+    assert payload["day_key"] == DAY_KEY

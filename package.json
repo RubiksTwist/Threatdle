@@ -1,0 +1,9 @@
+{
+  "name": "threatdle-netlify-runtime",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:runtime": "node scripts/build-netlify-runtime.mjs",
+    "build": "npm run build:runtime"
+  }
+}
