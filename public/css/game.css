@@ -498,6 +498,28 @@ body {
 
 .loading-indicator-dot:nth-child(3) {
   animation-delay: 0.32s;
+
+}
+
+.loading-classified {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.loading-classified-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  animation: classifiedPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes classifiedPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
 }
 
 .mode-header h3 {
@@ -969,6 +991,8 @@ body {
   transition: var(--transition);
   flex: 1 1 calc(50% - 0.75rem);
   min-width: 250px;
+  position: relative;
+  overflow: hidden;
 }
 
 .choices-area {
@@ -978,16 +1002,15 @@ body {
 }
 
 .choice-btn.entering {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.15s ease, border-color 0.15s ease;
   pointer-events: none;
 }
 
 .choice-btn.entering.visible {
-  opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
+}
+
+.choice-btn .choice-redact {
+  border-radius: var(--border-radius);
 }
 
 .choice-btn:hover:not(:disabled) {

@@ -144,7 +144,12 @@ function hydrateEntranceChoices(panel, mode, pool) {
       return;
     }
 
-    button.textContent = option.guess_label;
+    const textSpan = button.querySelector('.choice-btn-text');
+    if (textSpan) {
+      textSpan.textContent = option.guess_label;
+    } else {
+      button.textContent = option.guess_label;
+    }
     button.disabled = Boolean(option.placeholder);
     button.dataset.placeholder = option.placeholder ? 'true' : 'false';
 
@@ -173,10 +178,8 @@ function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], 
   elModesContainer.innerHTML = `
     <div class="board-bridge-loading" role="status" aria-live="polite" aria-label="${escapeHtml(message)}">
       <div class="loading-shell" aria-hidden="true">
-        <div class="loading-indicator">
-          <span class="loading-indicator-dot"></span>
-          <span class="loading-indicator-dot"></span>
-          <span class="loading-indicator-dot"></span>
+        <div class="loading-classified">
+          <span class="loading-classified-text">${escapeHtml(message)}</span>
         </div>
       </div>
       <span class="visually-hidden">${escapeHtml(message)}</span>
@@ -1033,9 +1036,13 @@ function runBoardRevealSequence(panel, finalStatusLabel) {
     }, CARD_START + index * CARD_STAGGER);
   });
 
+  const guessSection = panel.querySelector('.guess-section');
+
   choiceButtons.forEach((button, index) => {
     scheduleRevealStep(() => {
       if (!panel.isConnected) return;
+      const overlay = button.querySelector('.choice-redact');
+      if (overlay) overlay.classList.add('revealed');
       button.classList.add('visible');
     }, CHOICE_START + index * CHOICE_STAGGER);
   });
@@ -1089,7 +1096,7 @@ function renderBoard() {
               ${opt.guess_key ? `data-key="${opt.guess_key}"` : ''}
               data-placeholder="${opt.placeholder ? 'true' : 'false'}"
               ${opt.placeholder ? 'disabled' : ''}
-            >${opt.guess_label}</button>
+            ><span class="choice-btn-text">${opt.guess_label}</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
           `).join('')}
         </div>
       </div>
@@ -1149,10 +1156,8 @@ function renderBoard() {
               ${pool.map((opt) => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
             </div>`
           : `<div class="pool-loading">
-              <div class="loading-indicator loading-indicator-compact" aria-hidden="true">
-                <span class="loading-indicator-dot"></span>
-                <span class="loading-indicator-dot"></span>
-                <span class="loading-indicator-dot"></span>
+              <div class="loading-classified" aria-hidden="true">
+                <span class="loading-classified-text">Retrieving options...</span>
               </div>
             </div>`}
       `;
