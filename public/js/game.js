@@ -109,6 +109,49 @@ function scheduleRevealStep(callback, delay) {
 }
 
 
+function getLoadingCardLabels(mode) {
+  const labelsByMode = {
+    actor: ['Country', 'First Seen', 'Known Malware', 'Motivation', 'Target Categories', 'Known Techniques'],
+    malware: ['Capability Summary', 'Platforms', 'Threat Actors', 'Aliases'],
+    technique: ['Tactics', 'Parent Technique', 'Platforms', 'Technique Scope'],
+  };
+  return labelsByMode[mode] || ['Classified', 'Classified', 'Classified', 'Classified'];
+}
+
+
+function buildLoadingBoardMarkup(mode) {
+  const cardLabels = getLoadingCardLabels(mode);
+  const cardsMarkup = cardLabels.map((label, index) => `
+    <div class="clue-item ${index === 0 && mode === 'malware' ? 'full-width' : ''}">
+      <span class="clue-label">${escapeHtml(label)}</span>
+      <span class="clue-value"><span class="redacted-intel">Classified</span></span>
+      <div class="clue-redact-overlay">
+        <div class="clue-redact-bars">
+          <span class="clue-redact-bar"></span>
+          <span class="clue-redact-bar short"></span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const choiceCount = 4;
+  const choicesMarkup = Array.from({ length: choiceCount }, () => `
+    <button class="choice-btn choice-placeholder" type="button" tabindex="-1" aria-hidden="true">Classified</button>
+  `).join('');
+
+  return `
+    <div class="clues-container ${mode === 'technique' ? 'technique-clues-grid' : ''}">
+      ${cardsMarkup}
+    </div>
+    <div class="guess-section">
+      <div class="multiple-choice-grid">
+        ${choicesMarkup}
+      </div>
+    </div>
+  `;
+}
+
+
 function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Loading today\'s intelligence...') {
   elModesContainer.innerHTML = `
     <div class="mode-panel mode-panel-loading">
@@ -116,23 +159,8 @@ function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], 
         <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
         <span class="mode-status">Preparing Puzzle</span>
       </div>
-      <div class="loading-briefing">
-        <div class="loading-indicator" aria-hidden="true">
-          <span class="loading-indicator-dot"></span>
-          <span class="loading-indicator-dot"></span>
-          <span class="loading-indicator-dot"></span>
-        </div>
-        <p class="loading-label">${escapeHtml(message)}</p>
-      </div>
-      <div class="guess-section">
-        <div class="pool-loading">
-          <div class="loading-indicator loading-indicator-compact" aria-hidden="true">
-            <span class="loading-indicator-dot"></span>
-            <span class="loading-indicator-dot"></span>
-            <span class="loading-indicator-dot"></span>
-          </div>
-        </div>
-      </div>
+      <p class="loading-label">${escapeHtml(message)}</p>
+      ${buildLoadingBoardMarkup(mode)}
     </div>
   `;
 }
