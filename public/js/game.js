@@ -107,6 +107,68 @@ function scheduleRevealStep(callback, delay) {
 }
 
 
+function buildEntranceChoiceButtons(pool) {
+  const options = Array.isArray(pool) ? pool.slice(0, 5) : [];
+  const fillCount = Math.max(0, 5 - options.length);
+  const placeholders = Array.from({ length: fillCount }, () => ({
+    guess_key: '',
+    guess_label: 'Classified',
+    placeholder: true
+  }));
+  return options.concat(placeholders);
+}
+
+
+function wireChoiceButton(button, panel, mode) {
+  if (!button || button.dataset.bound === 'true') return;
+  button.dataset.bound = 'true';
+  button.addEventListener('click', () => {
+    const btns = panel.querySelectorAll('.choice-btn');
+    btns.forEach(b => {
+      b.disabled = true;
+    });
+    submitGuess(mode, button.dataset.key, button.textContent);
+  });
+}
+
+
+function hydrateEntranceChoices(panel, mode, pool) {
+  const buttons = Array.from(panel.querySelectorAll('.choices-area .choice-btn'));
+  if (!buttons.length) return;
+
+  const options = buildEntranceChoiceButtons(pool);
+  buttons.forEach((button, index) => {
+    const option = options[index];
+    if (!option) {
+      button.remove();
+      return;
+    }
+
+    button.textContent = option.guess_label;
+    button.disabled = Boolean(option.placeholder);
+    button.dataset.placeholder = option.placeholder ? 'true' : 'false';
+
+    if (option.placeholder) {
+      button.removeAttribute('data-key');
+      button.classList.add('choice-btn-placeholder');
+      return;
+    }
+
+    button.dataset.key = option.guess_key;
+    button.classList.remove('choice-btn-placeholder');
+
+    if (currentState.guesses[mode].some(g => g.guess_key === option.guess_key)) {
+      button.disabled = true;
+      button.classList.add('guessed-wrong');
+      return;
+    }
+
+    button.classList.remove('guessed-wrong');
+    wireChoiceButton(button, panel, mode);
+  });
+}
+
+
 function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Loading today\'s intelligence...') {
   elModesContainer.innerHTML = `
     <div class="board-bridge-loading" role="status" aria-live="polite" aria-label="${escapeHtml(message)}">
@@ -709,11 +771,6 @@ async function loadDay(dayKey) {
   currentModeIndex = modeOrder.findIndex(m => !currentState.solved[m]);
   if (currentModeIndex === -1) currentModeIndex = modeOrder.length - 1;
   const activeMode = modeOrder[currentModeIndex];
-  if (activeMode) {
-    await fetchPool(activeMode);
-    if (loadToken !== activeDayLoadToken) return;
-  }
-
   const canAnimateEntrance = activeMode &&
     !currentState.solved[activeMode] &&
     activeMode !== 'timeline' &&
@@ -723,6 +780,28 @@ async function loadDay(dayKey) {
     : null;
   renderBoard();
   updateProgressIndicators();
+
+  if (activeMode) {
+    fetchPool(activeMode).then(() => {
+      if (loadToken !== activeDayLoadToken) return;
+      const activePanel = elModesContainer.querySelector('.active-panel');
+      if (!activePanel || activePanel.dataset.mode !== activeMode) {
+        renderBoard();
+        updateProgressIndicators();
+        return;
+      }
+
+      if (activePanel.classList.contains('classified-transition-panel')) {
+        hydrateEntranceChoices(activePanel, activeMode, pools[activeMode]);
+        return;
+      }
+
+      if (modeOrder[currentModeIndex] === activeMode && !currentState.solved[activeMode]) {
+        renderBoard();
+        updateProgressIndicators();
+      }
+    });
+  }
 
   modeOrder
     .filter(mode => mode !== activeMode)
@@ -983,10 +1062,12 @@ function renderBoard() {
   
   const panel = document.createElement('div');
   panel.className = `mode-panel active-panel${animateEntrance ? ' mode-panel-reveal classified-transition-panel' : ''}`;
+  panel.dataset.mode = mode;
 
   if (animateEntrance && !currentState.solved[mode] && mode !== 'timeline') {
     const pool = pools[mode] || [];
     const statusLabel = 'In progress';
+    const entranceButtons = buildEntranceChoiceButtons(pool);
 
     panel.innerHTML = `
       <div class="phase-title">Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</div>
@@ -994,7 +1075,14 @@ function renderBoard() {
       <div class="card-grid" id="clues-${mode}"></div>
       <div class="guess-section" id="guess-section-${mode}">
         <div class="choices-area">
-          ${pool.map((opt) => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
+          ${entranceButtons.map((opt) => `
+            <button
+              class="choice-btn${opt.placeholder ? ' choice-btn-placeholder' : ''}"
+              ${opt.guess_key ? `data-key="${opt.guess_key}"` : ''}
+              data-placeholder="${opt.placeholder ? 'true' : 'false'}"
+              ${opt.placeholder ? 'disabled' : ''}
+            >${opt.guess_label}</button>
+          `).join('')}
         </div>
       </div>
       <div class="stamp-container" aria-hidden="true"><div class="stamp">Classified</div></div>
@@ -1002,14 +1090,7 @@ function renderBoard() {
 
     elModesContainer.appendChild(panel);
     renderClues(mode, modeData.payload.clues, { animateEntrance: true });
-
-    const btns = panel.querySelectorAll('.choice-btn');
-    btns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        btns.forEach(b => b.disabled = true);
-        submitGuess(mode, btn.dataset.key, btn.textContent);
-      });
-    });
+    hydrateEntranceChoices(panel, mode, pool);
 
     runBoardRevealSequence(panel, statusLabel);
     return;
@@ -1147,11 +1228,9 @@ function renderBoard() {
           btn.disabled = true;
           btn.classList.add('guessed-wrong');
         }
-
-        btn.addEventListener('click', () => {
-          btns.forEach(b => b.disabled = true);
-          submitGuess(mode, btn.dataset.key, btn.textContent);
-        });
+        if (!btn.disabled) {
+          wireChoiceButton(btn, panel, mode);
+        }
       });
     }
   } else {
