@@ -20,6 +20,7 @@ const themeMode = process.env.GAME_THEME_MODE || "prefer";
 const chainMode = process.env.GAME_CHAIN_MODE || "linked";
 const outDir = path.resolve(rootDir, "build", "runtime");
 const bundlePath = path.resolve(outDir, "game-data.json");
+const expectedBundleSha256 = runtimeBundleSha256?.trim().toLowerCase() || null;
 
 mkdirSync(outDir, { recursive: true });
 
@@ -65,10 +66,10 @@ async function downloadPrebuiltBundle() {
   }
 
   const text = await response.text();
-  if (runtimeBundleSha256) {
+  if (expectedBundleSha256) {
     const digest = createHash("sha256").update(text, "utf8").digest("hex");
-    if (digest !== runtimeBundleSha256.toLowerCase()) {
-      throw new Error("Downloaded runtime bundle failed SHA-256 verification.");
+    if (digest !== expectedBundleSha256) {
+      throw new Error(`Downloaded runtime bundle failed SHA-256 verification. Expected ${expectedBundleSha256}, got ${digest}.`);
     }
   }
 
@@ -102,10 +103,10 @@ async function downloadBundleFromR2() {
   }
 
   const text = await response.Body.transformToString("utf8");
-  if (runtimeBundleSha256) {
+  if (expectedBundleSha256) {
     const digest = createHash("sha256").update(text, "utf8").digest("hex");
-    if (digest !== runtimeBundleSha256.toLowerCase()) {
-      throw new Error("R2 runtime bundle failed SHA-256 verification.");
+    if (digest !== expectedBundleSha256) {
+      throw new Error(`R2 runtime bundle failed SHA-256 verification. Expected ${expectedBundleSha256}, got ${digest}.`);
     }
   }
 
