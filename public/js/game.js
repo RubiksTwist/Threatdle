@@ -133,7 +133,7 @@ function wireChoiceButton(button, panel, mode) {
 
 
 function hydrateEntranceChoices(panel, mode, pool) {
-  const buttons = Array.from(panel.querySelectorAll('.choices-area .choice-btn'));
+  const buttons = Array.from(panel.querySelectorAll('.choice-btn'));
   if (!buttons.length) return;
 
   const options = buildEntranceChoiceButtons(pool);
@@ -791,7 +791,7 @@ async function loadDay(dayKey) {
         return;
       }
 
-      if (activePanel.classList.contains('classified-transition-panel')) {
+      if (activePanel.classList.contains('is-animating-entrance')) {
         hydrateEntranceChoices(activePanel, activeMode, pools[activeMode]);
         return;
       }
@@ -997,7 +997,7 @@ function runBoardRevealSequence(panel, finalStatusLabel) {
   const stampContainer = panel.querySelector('.stamp-container');
   const status = panel.querySelector('.mode-status, .phase-status');
   const overlays = panel.querySelectorAll('.redact-overlay');
-  const choiceButtons = panel.querySelectorAll('.choices-area .choice-btn');
+  const choiceButtons = panel.querySelectorAll('.choice-btn.entering');
 
   if (!stamp || !overlays.length) {
     pendingEntranceAnimation = null;
@@ -1061,7 +1061,7 @@ function renderBoard() {
   const animateEntrance = shouldAnimateBoardEntrance(mode);
   
   const panel = document.createElement('div');
-  panel.className = `mode-panel active-panel${animateEntrance ? ' mode-panel-reveal classified-transition-panel' : ''}`;
+  panel.className = `mode-panel active-panel${animateEntrance ? ' mode-panel-reveal is-animating-entrance' : ''}`;
   panel.dataset.mode = mode;
 
   if (animateEntrance && !currentState.solved[mode] && mode !== 'timeline') {
@@ -1070,14 +1070,22 @@ function renderBoard() {
     const entranceButtons = buildEntranceChoiceButtons(pool);
 
     panel.innerHTML = `
-      <div class="phase-title">Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</div>
-      <div class="phase-status">${statusLabel}</div>
-      <div class="card-grid" id="clues-${mode}"></div>
+      <div class="mode-header">
+        <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
+        <span class="mode-status">
+          ${statusLabel}
+        </span>
+      </div>
+      
+      <div class="clues-container" id="clues-${mode}"></div>
+      
+      <div class="deduction-grid" id="grid-${mode}"></div>
+      
       <div class="guess-section" id="guess-section-${mode}">
-        <div class="choices-area">
+        <div class="multiple-choice-grid">
           ${entranceButtons.map((opt) => `
             <button
-              class="choice-btn${opt.placeholder ? ' choice-btn-placeholder' : ''}"
+              class="choice-btn${opt.placeholder ? ' choice-btn-placeholder' : ''} entering"
               ${opt.guess_key ? `data-key="${opt.guess_key}"` : ''}
               data-placeholder="${opt.placeholder ? 'true' : 'false'}"
               ${opt.placeholder ? 'disabled' : ''}
@@ -1085,7 +1093,7 @@ function renderBoard() {
           `).join('')}
         </div>
       </div>
-      <div class="stamp-container" aria-hidden="true"><div class="stamp">Classified</div></div>
+      <div class="stamp-container" aria-hidden="true"><div class="stamp">Declassified</div></div>
     `;
 
     elModesContainer.appendChild(panel);
@@ -1137,7 +1145,7 @@ function renderBoard() {
       const hasLoadedPool = pool.length > 0;
       interactionHTML = `
         ${hasLoadedPool
-          ? `<div class="${animateEntrance ? 'choices-area' : 'multiple-choice-grid'}">
+          ? `<div class="multiple-choice-grid">
               ${pool.map((opt) => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
             </div>`
           : `<div class="pool-loading">
@@ -1278,7 +1286,6 @@ function renderClues(mode, clues, options = {}) {
   const container = document.getElementById(`clues-${mode}`);
   container.innerHTML = '';
   container.classList.toggle('technique-clues-grid', mode === 'technique');
-  container.classList.toggle('card-grid', animateEntrance);
   
   if (mode === 'timeline') {
     const stepCount = clues.step_count || (clues.steps || []).length;
@@ -1358,7 +1365,7 @@ function renderClues(mode, clues, options = {}) {
     }
 
     const div = document.createElement('div');
-    div.className = animateEntrance ? 'attr-card' : 'clue-item';
+    div.className = 'clue-item';
     if (key === 'capability_summary' || key === 'description' || (typeof rawTextValue === 'string' && rawTextValue.length > 100)) {
         div.classList.add('full-width');
     }
@@ -1366,19 +1373,10 @@ function renderClues(mode, clues, options = {}) {
         div.classList.add('intel-unsealed', 'intel-unsealed-now');
     }
 
-    if (animateEntrance) {
-      const entranceValueClass = isLocked ? 'attr-value classified' : 'attr-value';
-      const entranceValueMarkup = isLocked ? 'Classified' : displayVal;
-      div.innerHTML = `
-        <div class="attr-label">${getClueLabel(mode, key)}</div>
-        <div class="${entranceValueClass}">${entranceValueMarkup}</div>
-      `;
-    } else {
-      div.innerHTML = `
-        <span class="clue-label">${getClueLabel(mode, key)}</span>
-        <span class="clue-value">${displayVal}</span>
-      `;
-    }
+    div.innerHTML = `
+      <span class="clue-label">${getClueLabel(mode, key)}</span>
+      <span class="clue-value">${displayVal}</span>
+    `;
     bindFlagFallback(div);
     if (animateEntrance) {
       const overlay = document.createElement('div');

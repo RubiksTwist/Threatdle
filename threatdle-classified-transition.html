@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threatdle - Classified Stamp Transition</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #010409;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.demo-wrapper {
+  background: #0d1117;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  color: #c9d1d9;
+  max-width: 640px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.phase-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e6edf3;
+  margin-bottom: 4px;
+}
+
+.phase-status {
+  font-size: 13px;
+  color: #58a6ff;
+  margin-bottom: 20px;
+}
+
+/* ───────────────────────────────────────
+   Attribute card grid
+   ─────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.attr-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 14px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.attr-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b949e;
+  margin-bottom: 6px;
+}
+
+.attr-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e6edf3;
+}
+
+.attr-value.classified {
+  background: rgba(31, 111, 235, 0.13);
+  border: 1px dashed #58a6ff;
+  color: #58a6ff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* ───────────────────────────────────────
+   Redaction overlay (covers each card)
+   ─────────────────────────────────────── */
+.redact-overlay {
+  position: absolute;
+  inset: 0;
+  background: #0d1117;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+  z-index: 2;
+}
+
+.redact-overlay.revealed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.redact-bars {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.redact-bar {
+  height: 8px;
+  background: #21262d;
+  border-radius: 2px;
+}
+
+.redact-bar:nth-child(2) {
+  width: 55%;
+}
+
+/* ───────────────────────────────────────
+   CLASSIFIED stamp
+   ─────────────────────────────────────── */
+.stamp-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.stamp {
+  border: 3px solid #da3633;
+  color: #da3633;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 24px;
+  transform: rotate(-12deg) scale(0);
+  opacity: 0;
+}
+
+.stamp.show {
+  animation: stamp-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.stamp.hide {
+  animation: stamp-out 0.35s ease forwards;
+}
+
+@keyframes stamp-in {
+  0%   { transform: rotate(-12deg) scale(2.5); opacity: 0; }
+  60%  { transform: rotate(-12deg) scale(0.95); opacity: 1; }
+  100% { transform: rotate(-12deg) scale(1);    opacity: 1; }
+}
+
+@keyframes stamp-out {
+  0%   { transform: rotate(-12deg) scale(1);   opacity: 1; }
+  100% { transform: rotate(-12deg) scale(1.1);  opacity: 0; }
+}
+
+/* ───────────────────────────────────────
+   Answer choices
+   ─────────────────────────────────────── */
+.choices-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choice-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #e6edf3;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.15s ease;
+}
+
+.choice-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.choice-btn:hover {
+  border-color: #58a6ff;
+}
+
+/* ───────────────────────────────────────
+   Replay button
+   ─────────────────────────────────────── */
+.replay-btn {
+  margin-top: 20px;
+  background: none;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.replay-btn:hover {
+  color: #e6edf3;
+  border-color: #58a6ff;
+}
+</style>
+</head>
+<body>
+
+<div class="demo-wrapper" id="demo">
+  <div class="phase-title">Phase 1: Advanced persistent threat identification</div>
+  <div class="phase-status" id="status-text">In progress</div>
+
+  <!-- Attribute cards -->
+  <div class="card-grid" id="card-grid">
+    <div class="attr-card">
+      <div class="redact-overlay" id="overlay-0">
+        <div class="redact-bars"><div class="redact-bar"></div><div class="redact-bar"></div></div>
+      </div>
+      <div class="attr-label">Country</div>
+      <div class="attr-value classified">Classified</div>
+    </div>
+    <div class="attr-card">
+      <div class="redact-overlay" id="overlay-1">
+        <div class="redact-bars"><div class="redact-bar"></div><div class="redact-bar"></div></div>
+      </div>
+      <div class="attr-label">First seen</div>
+      <div class="attr-value">2004</div>
+    </div>
+    <div class="attr-card">
+      <div class="redact-overlay" id="overlay-2">
+        <div class="redact-bars"><div class="redact-bar"></div><div class="redact-bar"></div></div>
+      </div>
+      <div class="attr-label">Known malware</div>
+      <div class="attr-value">17</div>
+    </div>
+    <div class="attr-card">
+      <div class="redact-overlay" id="overlay-3">
+        <div class="redact-bars"><div class="redact-bar"></div><div class="redact-bar"></div></div>
+      </div>
+      <div class="attr-label">Motivation</div>
+      <div class="attr-value">Espionage</div>
+    </div>
+    <div class="attr-card">
+      <div class="redact-overlay" id="overlay-4">
+        <div class="redact-bars"><div class="redact-bar"></div><div class="redact-bar"></div></div>
+      </div>
+      <div class="attr-label">Target categories</div>
+      <div class="attr-value classified">Classified</div>
+    </div>
+    <div class="attr-card">
+      <div class="redact-overlay" id="overlay-5">
+        <div class="redact-bars"><div class="redact-bar"></div><div class="redact-bar"></div></div>
+      </div>
+      <div class="attr-label">Known techniques</div>
+      <div class="attr-value">68</div>
+    </div>
+  </div>
+
+  <!-- Answer choices -->
+  <div class="choices-area" id="choices">
+    <button class="choice-btn" id="ch-0">Earth Lusca</button>
+    <button class="choice-btn" id="ch-1">Magic Hound</button>
+    <button class="choice-btn" id="ch-2">BRONZE BUTLER</button>
+    <button class="choice-btn" id="ch-3">Turla</button>
+    <button class="choice-btn" id="ch-4">Contagious Interview</button>
+  </div>
+
+  <!-- Stamp overlay -->
+  <div class="stamp-container" id="stamp-container">
+    <div class="stamp" id="stamp">Classified</div>
+  </div>
+
+  <button class="replay-btn" id="replay-btn" style="display:none">Replay animation</button>
+</div>
+
+<script>
+/**
+ * THREATDLE — Classified stamp transition
+ *
+ * Sequence timeline:
+ *   0ms   → Redacted state (placeholder bars cover each card)
+ *   200ms → CLASSIFIED stamp slams in (scale overshoot easing)
+ *   700ms → Stamp fades out, status updates
+ *   800ms → Cards reveal one-by-one with 80ms stagger
+ *  1400ms → Answer choices slide up with 60ms stagger
+ *
+ * Total runtime: ~1.7s
+ *
+ * INTEGRATION NOTES:
+ * - Call runSequence() once your data fetch resolves
+ * - Adjust STAMP_IN, STAMP_HOLD, CARD_START, CARD_STAGGER
+ *   to taste. Current values add ~1s of theatrics on top
+ *   of a ~0.5s real load.
+ * - The stamp text, rotation angle, and color are all in CSS
+ *   under .stamp — easy to swap to "TOP SECRET" etc.
+ */
+
+const CARD_COUNT = 6;
+const CHOICE_COUNT = 5;
+
+// Timing knobs (ms) — tweak these to taste
+const STAMP_IN     = 200;   // when stamp appears after sequence starts
+const STAMP_HOLD   = 500;   // how long stamp stays visible
+const CARD_START   = 800;   // when first card reveals
+const CARD_STAGGER = 80;    // delay between each card reveal
+const CHOICE_START = 1400;  // when first choice appears
+const CHOICE_STAGGER = 60;  // delay between each choice
+
+function runSequence() {
+  const stamp = document.getElementById('stamp');
+  const statusText = document.getElementById('status-text');
+  const replayBtn = document.getElementById('replay-btn');
+
+  replayBtn.style.display = 'none';
+
+  // Reset everything to redacted state
+  stamp.className = 'stamp';
+  statusText.textContent = 'Preparing dossier...';
+
+  for (let i = 0; i < CARD_COUNT; i++) {
+    document.getElementById('overlay-' + i).classList.remove('revealed');
+  }
+  for (let i = 0; i < CHOICE_COUNT; i++) {
+    document.getElementById('ch-' + i).classList.remove('visible');
+  }
+
+  // Step 1: Stamp slams in
+  setTimeout(() => {
+    stamp.className = 'stamp show';
+  }, STAMP_IN);
+
+  // Step 2: Stamp fades out
+  setTimeout(() => {
+    stamp.className = 'stamp hide';
+    statusText.textContent = 'In progress';
+  }, STAMP_IN + STAMP_HOLD);
+
+  // Step 3: Cards reveal with stagger
+  for (let i = 0; i < CARD_COUNT; i++) {
+    setTimeout(() => {
+      document.getElementById('overlay-' + i).classList.add('revealed');
+    }, CARD_START + i * CARD_STAGGER);
+  }
+
+  // Step 4: Choices fade in
+  for (let i = 0; i < CHOICE_COUNT; i++) {
+    setTimeout(() => {
+      document.getElementById('ch-' + i).classList.add('visible');
+    }, CHOICE_START + i * CHOICE_STAGGER);
+  }
+
+  // Show replay button
+  setTimeout(() => {
+    replayBtn.style.display = 'inline-block';
+  }, 2000);
+}
+
+document.getElementById('replay-btn').addEventListener('click', runSequence);
+
+// Auto-run on page load
+setTimeout(runSequence, 400);
+</script>
+
+</body>
+</html>
