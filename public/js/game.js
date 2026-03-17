@@ -15,6 +15,7 @@ const elProgressDots = document.querySelectorAll('.progress-dot');
 const modeOrder = ['actor', 'malware', 'technique'];
 let currentModeIndex = 0;
 let todayKey = null;
+let activeDayLoadToken = 0;
 
 // Game State
 let currentState = {
@@ -78,6 +79,40 @@ function escapeHtml(value) {
 function deepCopy(value) {
   if (value === null || value === undefined) return value;
   return JSON.parse(JSON.stringify(value));
+}
+
+
+function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Loading today\'s intelligence...') {
+  const skeletonClues = Array.from({ length: 6 }, (_, index) => `
+    <div class="clue-item clue-item-skeleton ${index === 0 ? 'full-width' : ''}">
+      <span class="clue-label skeleton-bar skeleton-bar-short"></span>
+      <span class="clue-value skeleton-bar ${index === 0 ? 'skeleton-bar-wide' : ''}"></span>
+    </div>
+  `).join('');
+
+  const skeletonChoices = Array.from({ length: 4 }, () => `
+    <div class="choice-skeleton">
+      <span class="skeleton-bar skeleton-bar-wide"></span>
+    </div>
+  `).join('');
+
+  elModesContainer.innerHTML = `
+    <div class="mode-panel mode-panel-loading">
+      <div class="mode-header">
+        <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
+        <span class="mode-status">Preparing Puzzle</span>
+      </div>
+      <p class="loading-copy">${escapeHtml(message)}</p>
+      <div class="clues-container loading-clues-grid">
+        ${skeletonClues}
+      </div>
+      <div class="guess-section">
+        <div class="multiple-choice-grid loading-choice-grid">
+          ${skeletonChoices}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 
@@ -636,6 +671,7 @@ async function initGame() {
 }
 
 async function loadDay(dayKey) {
+  const loadToken = ++activeDayLoadToken;
   if (!availableDays.includes(dayKey)) {
     dayKey = latestDay;
   }
@@ -646,19 +682,28 @@ async function loadDay(dayKey) {
   currentState.guesses = { actor: [], malware: [], technique: [] };
   currentState.solved = { actor: false, malware: false, technique: false };
   previousWrongGuessCounts = { actor: 0, malware: 0, technique: 0 };
+  modeOrder.forEach(mode => {
+    pools[mode] = [];
+  });
 
   elDate.textContent = dayKey;
   loadLocalState();
 
   currentModeIndex = modeOrder.findIndex(m => !currentState.solved[m]);
   if (currentModeIndex === -1) currentModeIndex = modeOrder.length - 1;
+  renderLoadingBoard(modeOrder[currentModeIndex], 'Loading puzzle details...');
+  updateProgressIndicators();
 
   const dayData = await apiGetDay(currentState.snapshot_id, dayKey);
+  if (loadToken !== activeDayLoadToken) return;
   currentState.modes = dayData.modes;
   currentModeIndex = modeOrder.findIndex(m => !currentState.solved[m]);
   if (currentModeIndex === -1) currentModeIndex = modeOrder.length - 1;
+  renderBoard();
+  updateProgressIndicators();
 
   await Promise.all(modeOrder.map(mode => fetchPool(mode)));
+  if (loadToken !== activeDayLoadToken) return;
 
   renderBoard();
   updateProgressIndicators();
@@ -871,10 +916,22 @@ function renderBoard() {
       `;
     } else {
       const pool = pools[mode] || [];
+      const hasLoadedPool = pool.length > 0;
       interactionHTML = `
-        <div class="multiple-choice-grid">
-          ${pool.map(opt => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
-        </div>
+        ${hasLoadedPool
+          ? `<div class="multiple-choice-grid">
+              ${pool.map(opt => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
+            </div>`
+          : `<div class="pool-loading">
+              <p class="loading-copy">Loading response options...</p>
+              <div class="multiple-choice-grid loading-choice-grid">
+                ${Array.from({ length: 4 }, () => `
+                  <div class="choice-skeleton">
+                    <span class="skeleton-bar skeleton-bar-wide"></span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>`}
       `;
     }
   } else {
