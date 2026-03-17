@@ -52,6 +52,16 @@ The build script supports a prebuilt bundle through:
 - optional `GAME_RUNTIME_BUNDLE_BEARER_TOKEN`
 - optional `GAME_RUNTIME_BUNDLE_SHA256`
 
+It also supports direct Cloudflare R2 downloads through:
+
+- `R2_ACCOUNT_ID`
+- `R2_BUCKET`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `GAME_RUNTIME_BUNDLE_KEY`
+- optional `R2_REGION` (defaults to `auto`)
+- optional `GAME_RUNTIME_BUNDLE_SHA256`
+
 If those are not set, the build falls back to generating the runtime bundle from source inputs.
 
 ## License

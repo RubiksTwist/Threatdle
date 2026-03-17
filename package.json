@@ -2,6 +2,9 @@
   "name": "threatdle-netlify-runtime",
   "private": true,
   "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.888.0"
+  },
   "scripts": {
     "build:runtime": "node scripts/build-netlify-runtime.mjs",
     "build": "npm run build:runtime"

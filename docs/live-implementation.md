@@ -114,6 +114,13 @@ Recommended shape:
 - configure Netlify to download it into `build/runtime/`
 - bundle it only with Netlify Functions, not with the public site
 
+For the current implementation, Cloudflare R2 is a strong fit for this runtime bundle:
+
+- the artifact is small
+- deploys only need one object read
+- the bucket can remain private
+- Netlify can fetch the object during build with R2 credentials instead of rebuilding puzzle data
+
 This keeps deploy times predictable and avoids rebuilding large puzzle archives during every production publish.
 
 ## Bottom line
