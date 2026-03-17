@@ -103,6 +103,19 @@ The intended live production shape is:
 - client-side persistence in `localStorage`
 - no full authentication in V1
 
+## Deployment note
+
+For production deploys, Threatdle should prefer a prebuilt private runtime bundle over generating puzzle data on Netlify during each deploy.
+
+Recommended shape:
+
+- generate `game-data.json` offline or in CI from the Python pipeline
+- store that artifact in private storage
+- configure Netlify to download it into `build/runtime/`
+- bundle it only with Netlify Functions, not with the public site
+
+This keeps deploy times predictable and avoids rebuilding large puzzle archives during every production publish.
+
 ## Bottom line
 
 Threatdle should launch as a lightweight browser game with a thin server-side validation layer. The key architectural rule is simple: the client can render the puzzle and store local progress, but the server must own the answer and the decision about what puzzle is active today.

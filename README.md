@@ -37,6 +37,23 @@ The hand-authored files in `data/curated-flows/` are intentionally part of the p
 
 The repository contains both source code and data-oriented workflow assets. The intended public repo shape keeps original code, docs, tests, overrides, and curated flows, while excluding generated outputs such as processed databases, baked bundles, Python cache artifacts, and downloaded snapshot/vendor data.
 
+## Deployment notes
+
+For production hosting on Netlify, the preferred deployment model is:
+
+- serve the browser client from `public/`
+- serve clue delivery and guess validation from Netlify Functions
+- keep the hidden runtime bundle out of `public/`
+- prefer downloading a prebuilt private `game-data.json` artifact during deploy instead of regenerating long puzzle ranges on Netlify
+
+The build script supports a prebuilt bundle through:
+
+- `GAME_RUNTIME_BUNDLE_URL`
+- optional `GAME_RUNTIME_BUNDLE_BEARER_TOKEN`
+- optional `GAME_RUNTIME_BUNDLE_SHA256`
+
+If those are not set, the build falls back to generating the runtime bundle from source inputs.
+
 ## License
 
 The original code in this repository is licensed under the MIT License. See [LICENSE](./LICENSE).
