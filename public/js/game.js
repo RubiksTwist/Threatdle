@@ -90,16 +90,12 @@ function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], 
         <span class="mode-status">Preparing Puzzle</span>
       </div>
       <div class="loading-briefing">
-        <span class="loading-kicker">Decrypting Today's Dossier</span>
         <div class="loading-indicator" aria-hidden="true">
           <span class="loading-indicator-dot"></span>
           <span class="loading-indicator-dot"></span>
           <span class="loading-indicator-dot"></span>
         </div>
-        <p class="loading-copy">${escapeHtml(message)}</p>
-        <div class="loading-track" aria-hidden="true">
-          <span class="loading-track-bar"></span>
-        </div>
+        <p class="loading-label">${escapeHtml(message)}</p>
       </div>
       <div class="guess-section">
         <div class="pool-loading">
@@ -108,7 +104,6 @@ function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], 
             <span class="loading-indicator-dot"></span>
             <span class="loading-indicator-dot"></span>
           </div>
-          <p class="loading-copy">Staging response options...</p>
         </div>
       </div>
     </div>
@@ -691,7 +686,7 @@ async function loadDay(dayKey) {
 
   currentModeIndex = modeOrder.findIndex(m => !currentState.solved[m]);
   if (currentModeIndex === -1) currentModeIndex = modeOrder.length - 1;
-  renderLoadingBoard(modeOrder[currentModeIndex], 'Loading puzzle details...');
+  renderLoadingBoard(modeOrder[currentModeIndex], 'Preparing today\'s dossier');
   updateProgressIndicators();
 
   const dayData = await apiGetDay(currentState.snapshot_id, dayKey);
@@ -928,7 +923,6 @@ function renderBoard() {
                 <span class="loading-indicator-dot"></span>
                 <span class="loading-indicator-dot"></span>
               </div>
-              <p class="loading-copy">Loading response options...</p>
             </div>`}
       `;
     }
