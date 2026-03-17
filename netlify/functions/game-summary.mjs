@@ -2,11 +2,11 @@ import { loadGameData } from "./_lib/data.mjs";
 import { errorResponse, getQueryParams, jsonResponse } from "./_lib/http.mjs";
 import { getGameSummary } from "./_lib/game.mjs";
 
-export async function handler(event) {
+export default async (request) => {
   try {
-    const params = getQueryParams(event);
+    const params = getQueryParams(request);
     if (!params.day_key) {
-      return errorResponse("day_key query parameter required");
+      return errorResponse("day_key query parameter required", 400);
     }
     const bundle = await loadGameData();
     const payload = getGameSummary(bundle, {
@@ -15,6 +15,6 @@ export async function handler(event) {
     });
     return jsonResponse(payload);
   } catch (error) {
-    return errorResponse(error instanceof Error ? error.message : "Failed to load game summary");
+    return errorResponse(error instanceof Error ? error.message : "Failed to load game summary", 500);
   }
-}
+};

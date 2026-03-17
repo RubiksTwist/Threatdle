@@ -2,18 +2,18 @@ import { loadGameData } from "./_lib/data.mjs";
 import { errorResponse, parseJsonBody, jsonResponse } from "./_lib/http.mjs";
 import { validateGameGuess } from "./_lib/game.mjs";
 
-export async function handler(event) {
+export default async (request) => {
   try {
-    const body = parseJsonBody(event);
+    const body = await parseJsonBody(request);
     if (!body.snapshot_id || !body.day_key || !body.mode) {
-      return errorResponse("snapshot_id, day_key, and mode are required");
+      return errorResponse("snapshot_id, day_key, and mode are required", 400);
     }
     if (body.mode === "timeline") {
       if (!Array.isArray(body.guess_steps) || !body.guess_steps.length) {
-        return errorResponse("guess_steps is required for timeline guesses");
+        return errorResponse("guess_steps is required for timeline guesses", 400);
       }
     } else if (!body.guess_key) {
-      return errorResponse("guess_key is required for non-timeline guesses");
+      return errorResponse("guess_key is required for non-timeline guesses", 400);
     }
 
     const bundle = await loadGameData();
@@ -26,6 +26,6 @@ export async function handler(event) {
     });
     return jsonResponse(payload);
   } catch (error) {
-    return errorResponse(error instanceof Error ? error.message : "Failed to validate guess");
+    return errorResponse(error instanceof Error ? error.message : "Failed to validate guess", 500);
   }
-}
+};

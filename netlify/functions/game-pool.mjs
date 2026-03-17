@@ -2,11 +2,11 @@ import { loadGameData } from "./_lib/data.mjs";
 import { errorResponse, getQueryParams, jsonResponse } from "./_lib/http.mjs";
 import { getGamePool } from "./_lib/game.mjs";
 
-export async function handler(event) {
+export default async (request) => {
   try {
-    const params = getQueryParams(event);
+    const params = getQueryParams(request);
     if (!params.day_key || !params.mode) {
-      return errorResponse("day_key and mode query parameters required");
+      return errorResponse("day_key and mode query parameters required", 400);
     }
     const bundle = await loadGameData();
     const payload = getGamePool(bundle, {
@@ -16,6 +16,6 @@ export async function handler(event) {
     });
     return jsonResponse(payload);
   } catch (error) {
-    return errorResponse(error instanceof Error ? error.message : "Failed to load game pool");
+    return errorResponse(error instanceof Error ? error.message : "Failed to load game pool", 500);
   }
-}
+};

@@ -1,28 +1,28 @@
 export function jsonResponse(payload, statusCode = 200) {
-  return {
-    statusCode,
+  return new Response(JSON.stringify(payload), {
+    status: statusCode,
     headers: {
       "content-type": "application/json; charset=utf-8",
       "cache-control": "no-store"
-    },
-    body: JSON.stringify(payload)
-  };
+    }
+  });
 }
 
-export function errorResponse(message, statusCode = 400) {
+export function errorResponse(message, statusCode = 500) {
   return jsonResponse({ error: message }, statusCode);
 }
 
-export function getQueryParams(event) {
-  return event?.queryStringParameters || {};
+export function getQueryParams(request) {
+  const url = new URL(request.url);
+  return Object.fromEntries(url.searchParams.entries());
 }
 
-export function parseJsonBody(event) {
-  if (!event?.body) {
+export async function parseJsonBody(request) {
+  if (!request?.body) {
     throw new Error("Request body required");
   }
   try {
-    return JSON.parse(event.body);
+    return await request.json();
   } catch {
     throw new Error("Invalid JSON body");
   }
