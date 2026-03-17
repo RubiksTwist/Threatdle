@@ -19,15 +19,13 @@ let activeDayLoadToken = 0;
 let pendingEntranceAnimation = null;
 let activeRevealTimers = [];
 
-const revealSequenceTimings = {
-  stampIn: 100,
-  stampHold: 280,
-  cardsStart: 360,
-  cardStagger: 70,
-  choicesStart: 680,
-  choiceStagger: 55,
-  cleanup: 1100,
-};
+const STAMP_IN = 200;
+const STAMP_HOLD = 500;
+const CARD_START = 800;
+const CARD_STAGGER = 80;
+const CHOICE_START = 1400;
+const CHOICE_STAGGER = 60;
+const REVEAL_CLEANUP = 2000;
 
 // Game State
 let currentState = {
@@ -122,29 +120,29 @@ function getLoadingCardLabels(mode) {
 function buildLoadingBoardMarkup(mode) {
   const cardLabels = getLoadingCardLabels(mode);
   const cardsMarkup = cardLabels.map((label, index) => `
-    <div class="clue-item ${index === 0 && mode === 'malware' ? 'full-width' : ''}">
+    <div class="clue-item attr-card ${index === 0 && mode === 'malware' ? 'full-width' : ''}">
       <span class="clue-label">${escapeHtml(label)}</span>
       <span class="clue-value"><span class="redacted-intel">Classified</span></span>
-      <div class="clue-redact-overlay">
-        <div class="clue-redact-bars">
-          <span class="clue-redact-bar"></span>
-          <span class="clue-redact-bar short"></span>
+      <div class="redact-overlay">
+        <div class="redact-bars">
+          <span class="redact-bar"></span>
+          <span class="redact-bar short"></span>
         </div>
       </div>
     </div>
   `).join('');
 
-  const choiceCount = 4;
+  const choiceCount = 5;
   const choicesMarkup = Array.from({ length: choiceCount }, () => `
-    <button class="choice-btn choice-placeholder" type="button" tabindex="-1" aria-hidden="true">Classified</button>
+    <button class="choice-btn" type="button" tabindex="-1" aria-hidden="true">Classified</button>
   `).join('');
 
   return `
-    <div class="clues-container ${mode === 'technique' ? 'technique-clues-grid' : ''}">
+    <div class="clues-container card-grid ${mode === 'technique' ? 'technique-clues-grid' : ''}">
       ${cardsMarkup}
     </div>
     <div class="guess-section">
-      <div class="multiple-choice-grid">
+      <div class="choices-area">
         ${choicesMarkup}
       </div>
     </div>
@@ -157,9 +155,8 @@ function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], 
     <div class="mode-panel mode-panel-loading">
       <div class="mode-header">
         <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
-        <span class="mode-status">Preparing Puzzle</span>
+        <span class="mode-status">${escapeHtml(message)}</span>
       </div>
-      <p class="loading-label">${escapeHtml(message)}</p>
       ${buildLoadingBoardMarkup(mode)}
     </div>
   `;
@@ -743,7 +740,7 @@ async function loadDay(dayKey) {
 
   currentModeIndex = modeOrder.findIndex(m => !currentState.solved[m]);
   if (currentModeIndex === -1) currentModeIndex = modeOrder.length - 1;
-  renderLoadingBoard(modeOrder[currentModeIndex], 'Preparing today\'s dossier');
+  renderLoadingBoard(modeOrder[currentModeIndex], 'Preparing dossier...');
   updateProgressIndicators();
 
   const dayData = await apiGetDay(currentState.snapshot_id, dayKey);
@@ -934,11 +931,11 @@ function shouldAnimateBoardEntrance(mode) {
 function runBoardRevealSequence(panel, finalStatusLabel) {
   clearRevealTimers();
 
-  const stamp = panel.querySelector('.classified-stamp');
-  const stampContainer = panel.querySelector('.classified-stamp-container');
+  const stamp = panel.querySelector('.stamp');
+  const stampContainer = panel.querySelector('.stamp-container');
   const status = panel.querySelector('.mode-status');
-  const overlays = panel.querySelectorAll('.clue-redact-overlay');
-  const choiceButtons = panel.querySelectorAll('.choice-btn.choice-staged');
+  const overlays = panel.querySelectorAll('.redact-overlay');
+  const choiceButtons = panel.querySelectorAll('.choices-area .choice-btn');
 
   if (!stamp || !overlays.length) {
     pendingEntranceAnimation = null;
@@ -946,13 +943,17 @@ function runBoardRevealSequence(panel, finalStatusLabel) {
   }
 
   if (status) {
-    status.textContent = 'Preparing Puzzle';
+    status.textContent = 'Preparing dossier...';
   }
+
+  stamp.className = 'stamp';
+  overlays.forEach(overlay => overlay.classList.remove('revealed'));
+  choiceButtons.forEach(button => button.classList.remove('visible'));
 
   scheduleRevealStep(() => {
     if (!panel.isConnected) return;
     stamp.classList.add('show');
-  }, revealSequenceTimings.stampIn);
+  }, STAMP_IN);
 
   scheduleRevealStep(() => {
     if (!panel.isConnected) return;
@@ -961,27 +962,26 @@ function runBoardRevealSequence(panel, finalStatusLabel) {
     if (status) {
       status.textContent = finalStatusLabel;
     }
-  }, revealSequenceTimings.stampIn + revealSequenceTimings.stampHold);
+  }, STAMP_IN + STAMP_HOLD);
 
   overlays.forEach((overlay, index) => {
     scheduleRevealStep(() => {
       if (!panel.isConnected) return;
       overlay.classList.add('revealed');
-    }, revealSequenceTimings.cardsStart + index * revealSequenceTimings.cardStagger);
+    }, CARD_START + index * CARD_STAGGER);
   });
 
   choiceButtons.forEach((button, index) => {
     scheduleRevealStep(() => {
       if (!panel.isConnected) return;
-      button.classList.remove('choice-staged');
-      button.classList.add('choice-visible');
-    }, revealSequenceTimings.choicesStart + index * revealSequenceTimings.choiceStagger);
+      button.classList.add('visible');
+    }, CHOICE_START + index * CHOICE_STAGGER);
   });
 
   scheduleRevealStep(() => {
     if (!panel.isConnected) return;
     stampContainer?.remove();
-  }, revealSequenceTimings.cleanup);
+  }, REVEAL_CLEANUP);
 
   pendingEntranceAnimation = null;
 }
@@ -1042,8 +1042,8 @@ function renderBoard() {
       const hasLoadedPool = pool.length > 0;
       interactionHTML = `
         ${hasLoadedPool
-          ? `<div class="multiple-choice-grid">
-              ${pool.map((opt, index) => `<button class="choice-btn ${animateEntrance ? 'choice-staged' : ''}" data-key="${opt.guess_key}" data-choice-reveal-index="${index}">${opt.guess_label}</button>`).join('')}
+          ? `<div class="${animateEntrance ? 'choices-area' : 'multiple-choice-grid'}">
+              ${pool.map((opt) => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
             </div>`
           : `<div class="pool-loading">
               <div class="loading-indicator loading-indicator-compact" aria-hidden="true">
@@ -1094,7 +1094,7 @@ function renderBoard() {
     ? 'Solved'
     : mode === 'timeline'
       ? `${timelineLockedCount}/${timelineDraft.length} Locked`
-      : 'In Progress';
+      : 'In progress';
 
   panel.innerHTML = `
     <div class="mode-header">
@@ -1111,7 +1111,7 @@ function renderBoard() {
     <div class="guess-section" id="guess-section-${mode}">
       ${interactionHTML}
     </div>
-    ${animateEntrance ? `<div class="classified-stamp-container" aria-hidden="true"><div class="classified-stamp">Classified</div></div>` : ''}
+    ${animateEntrance ? `<div class="stamp-container" aria-hidden="true"><div class="stamp">Classified</div></div>` : ''}
   `;
   
   elModesContainer.appendChild(panel);
@@ -1185,6 +1185,7 @@ function renderClues(mode, clues, options = {}) {
   const container = document.getElementById(`clues-${mode}`);
   container.innerHTML = '';
   container.classList.toggle('technique-clues-grid', mode === 'technique');
+  container.classList.toggle('card-grid', animateEntrance);
   
   if (mode === 'timeline') {
     const stepCount = clues.step_count || (clues.steps || []).length;
@@ -1264,7 +1265,7 @@ function renderClues(mode, clues, options = {}) {
     }
 
     const div = document.createElement('div');
-    div.className = 'clue-item';
+    div.className = animateEntrance ? 'clue-item attr-card' : 'clue-item';
     if (key === 'capability_summary' || key === 'description' || (typeof rawTextValue === 'string' && rawTextValue.length > 100)) {
         div.classList.add('full-width');
     }
@@ -1279,11 +1280,11 @@ function renderClues(mode, clues, options = {}) {
     bindFlagFallback(div);
     if (animateEntrance) {
       const overlay = document.createElement('div');
-      overlay.className = 'clue-redact-overlay';
+      overlay.className = 'redact-overlay';
       overlay.innerHTML = `
-        <div class="clue-redact-bars">
-          <span class="clue-redact-bar"></span>
-          <span class="clue-redact-bar short"></span>
+        <div class="redact-bars">
+          <span class="redact-bar"></span>
+          <span class="redact-bar short"></span>
         </div>
       `;
       div.appendChild(overlay);

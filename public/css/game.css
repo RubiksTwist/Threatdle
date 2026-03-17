@@ -437,14 +437,14 @@ body {
 }
 
 .loading-label {
-  color: var(--text-secondary);
-  font-size: 0.78rem;
+  color: #58a6ff;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
   text-align: left;
-  opacity: 0.82;
-  margin-top: -0.25rem;
+  opacity: 1;
+  margin: -0.15rem 0 1.25rem;
 }
 
 .loading-indicator {
@@ -474,19 +474,8 @@ body {
   animation-delay: 0.32s;
 }
 
-.mode-panel-loading .clue-redact-overlay {
+.mode-panel-loading .redact-overlay {
   opacity: 1;
-}
-
-.choice-btn.choice-placeholder {
-  opacity: 0.22;
-  color: transparent;
-  pointer-events: none;
-  user-select: none;
-}
-
-.choice-btn.choice-placeholder::selection {
-  background: transparent;
 }
 
 .mode-header h3 {
@@ -511,6 +500,12 @@ body {
   gap: 0.75rem;
 }
 
+.card-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
 .clues-container.technique-clues-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -533,7 +528,45 @@ body {
   transition: transform 180ms ease, box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
 }
 
-.clue-redact-overlay {
+.attr-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-left: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 14px 16px;
+  min-height: 0;
+}
+
+.attr-card .clue-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b949e;
+  margin-bottom: 6px;
+}
+
+.attr-card .clue-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e6edf3;
+  min-height: 0;
+}
+
+.attr-card .redacted-intel {
+  background: rgba(31, 111, 235, 0.13);
+  border: 1px dashed #58a6ff;
+  color: #58a6ff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  min-height: 0;
+  letter-spacing: 0.08em;
+}
+
+.redact-overlay {
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -546,27 +579,28 @@ body {
   pointer-events: none;
 }
 
-.clue-redact-overlay.revealed {
+.redact-overlay.revealed {
   opacity: 0;
+  pointer-events: none;
 }
 
-.clue-redact-bars {
-  width: 68%;
+.redact-bars {
+  width: 70%;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 6px;
 }
 
-.clue-redact-bar {
+.redact-bar {
   display: block;
   width: 100%;
-  height: 0.55rem;
+  height: 8px;
   background: #21262d;
   border-radius: 2px;
 }
 
-.clue-redact-bar.short {
-  width: 56%;
+.redact-bar.short {
+  width: 55%;
 }
 
 .clue-value {
@@ -914,13 +948,31 @@ body {
   min-width: 250px;
 }
 
-.choice-btn.choice-staged {
+.choices-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choices-area .choice-btn {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #e6edf3;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
   opacity: 0;
   transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.15s ease;
+  flex: none;
+  min-width: 0;
   pointer-events: none;
 }
 
-.choice-btn.choice-visible {
+.choices-area .choice-btn.visible {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
@@ -957,7 +1009,7 @@ body {
   padding: 0.5rem 0;
 }
 
-.classified-stamp-container {
+.stamp-container {
   position: absolute;
   inset: 0;
   z-index: 6;
@@ -967,26 +1019,24 @@ body {
   pointer-events: none;
 }
 
-.classified-stamp {
+.stamp {
   border: 3px solid #da3633;
   color: #da3633;
-  font-size: clamp(1.3rem, 3vw, 1.8rem);
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  padding: 0.5rem 1.4rem;
+  padding: 8px 24px;
   transform: rotate(-12deg) scale(0);
   opacity: 0;
-  background: rgba(13, 17, 23, 0.14);
-  text-shadow: 0 0 8px rgba(218, 54, 51, 0.15);
 }
 
-.classified-stamp.show {
-  animation: stampIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.stamp.show {
+  animation: stamp-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.classified-stamp.hide {
-  animation: stampOut 0.28s ease forwards;
+.stamp.hide {
+  animation: stamp-out 0.35s ease forwards;
 }
 
 .primary-btn {
@@ -1272,6 +1322,7 @@ body {
 }
 
 @media (max-width: 720px) {
+  .card-grid,
   .clues-container.technique-clues-grid {
     grid-template-columns: 1fr;
   }
@@ -1537,7 +1588,7 @@ body {
   }
 }
 
-@keyframes stampIn {
+@keyframes stamp-in {
   0% {
     transform: rotate(-12deg) scale(2.5);
     opacity: 0;
@@ -1552,13 +1603,13 @@ body {
   }
 }
 
-@keyframes stampOut {
+@keyframes stamp-out {
   0% {
     transform: rotate(-12deg) scale(1);
     opacity: 1;
   }
   100% {
-    transform: rotate(-12deg) scale(1.08);
+    transform: rotate(-12deg) scale(1.1);
     opacity: 0;
   }
 }
