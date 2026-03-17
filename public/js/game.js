@@ -713,7 +713,10 @@ async function loadDay(dayKey) {
   if (loadToken !== activeDayLoadToken) return;
 
   const activeMode = modeOrder[currentModeIndex];
-  const canAnimateEntrance = activeMode && !currentState.solved[activeMode] && activeMode !== 'timeline';
+  const canAnimateEntrance = activeMode &&
+    !currentState.solved[activeMode] &&
+    activeMode !== 'timeline' &&
+    (currentState.guesses[activeMode] || []).length === 0;
   pendingEntranceAnimation = canAnimateEntrance
     ? { dayKey: currentState.day_key, mode: activeMode }
     : null;
@@ -882,6 +885,7 @@ function shouldAnimateBoardEntrance(mode) {
     pendingEntranceAnimation &&
     pendingEntranceAnimation.dayKey === currentState.day_key &&
     pendingEntranceAnimation.mode === mode &&
+    (currentState.guesses[mode] || []).length === 0 &&
     !currentState.solved[mode] &&
     mode !== 'timeline'
   );
@@ -893,7 +897,7 @@ function runBoardRevealSequence(panel, finalStatusLabel) {
 
   const stamp = panel.querySelector('.stamp');
   const stampContainer = panel.querySelector('.stamp-container');
-  const status = panel.querySelector('.mode-status');
+  const status = panel.querySelector('.mode-status, .phase-status');
   const overlays = panel.querySelectorAll('.redact-overlay');
   const choiceButtons = panel.querySelectorAll('.choices-area .choice-btn');
 
@@ -959,7 +963,38 @@ function renderBoard() {
   const animateEntrance = shouldAnimateBoardEntrance(mode);
   
   const panel = document.createElement('div');
-  panel.className = `mode-panel active-panel${animateEntrance ? ' mode-panel-reveal' : ''}`;
+  panel.className = `mode-panel active-panel${animateEntrance ? ' mode-panel-reveal classified-transition-panel' : ''}`;
+
+  if (animateEntrance && !currentState.solved[mode] && mode !== 'timeline') {
+    const pool = pools[mode] || [];
+    const statusLabel = 'In progress';
+
+    panel.innerHTML = `
+      <div class="phase-title">Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</div>
+      <div class="phase-status">${statusLabel}</div>
+      <div class="card-grid" id="clues-${mode}"></div>
+      <div class="guess-section" id="guess-section-${mode}">
+        <div class="choices-area">
+          ${pool.map((opt) => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
+        </div>
+      </div>
+      <div class="stamp-container" aria-hidden="true"><div class="stamp">Classified</div></div>
+    `;
+
+    elModesContainer.appendChild(panel);
+    renderClues(mode, modeData.payload.clues, { animateEntrance: true });
+
+    const btns = panel.querySelectorAll('.choice-btn');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.disabled = true);
+        submitGuess(mode, btn.dataset.key, btn.textContent);
+      });
+    });
+
+    runBoardRevealSequence(panel, statusLabel);
+    return;
+  }
   
   let interactionHTML = '';
   if (!currentState.solved[mode]) {
@@ -1225,18 +1260,27 @@ function renderClues(mode, clues, options = {}) {
     }
 
     const div = document.createElement('div');
-    div.className = animateEntrance ? 'clue-item attr-card' : 'clue-item';
+    div.className = animateEntrance ? 'attr-card' : 'clue-item';
     if (key === 'capability_summary' || key === 'description' || (typeof rawTextValue === 'string' && rawTextValue.length > 100)) {
         div.classList.add('full-width');
     }
     if (justUnlocked) {
         div.classList.add('intel-unsealed', 'intel-unsealed-now');
     }
-    
-    div.innerHTML = `
-      <span class="clue-label">${getClueLabel(mode, key)}</span>
-      <span class="clue-value">${displayVal}</span>
-    `;
+
+    if (animateEntrance) {
+      const entranceValueClass = isLocked ? 'attr-value classified' : 'attr-value';
+      const entranceValueMarkup = isLocked ? 'Classified' : displayVal;
+      div.innerHTML = `
+        <div class="attr-label">${getClueLabel(mode, key)}</div>
+        <div class="${entranceValueClass}">${entranceValueMarkup}</div>
+      `;
+    } else {
+      div.innerHTML = `
+        <span class="clue-label">${getClueLabel(mode, key)}</span>
+        <span class="clue-value">${displayVal}</span>
+      `;
+    }
     bindFlagFallback(div);
     if (animateEntrance) {
       const overlay = document.createElement('div');

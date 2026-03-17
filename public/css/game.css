@@ -431,6 +431,34 @@ body {
   overflow: hidden;
 }
 
+.classified-transition-panel {
+  max-width: 640px;
+  background: #0d1117;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+}
+
+.classified-transition-panel .phase-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e6edf3;
+  margin-bottom: 4px;
+}
+
+.classified-transition-panel .phase-status {
+  font-size: 13px;
+  color: #58a6ff;
+  margin-bottom: 20px;
+}
+
+.classified-transition-panel .guess-section {
+  margin-top: 0;
+}
+
+.classified-transition-panel .stamp-container {
+  z-index: 10;
+}
+
 .board-bridge-loading {
   min-height: 5rem;
   display: flex;
@@ -525,12 +553,13 @@ body {
 .attr-card {
   background: #161b22;
   border: 1px solid #30363d;
-  border-left: 1px solid #30363d;
   border-radius: 8px;
   padding: 14px 16px;
-  min-height: 0;
+  position: relative;
+  overflow: hidden;
 }
 
+.attr-label,
 .attr-card .clue-label {
   font-size: 11px;
   font-weight: 600;
@@ -540,13 +569,14 @@ body {
   margin-bottom: 6px;
 }
 
+.attr-value,
 .attr-card .clue-value {
   font-size: 15px;
   font-weight: 600;
   color: #e6edf3;
-  min-height: 0;
 }
 
+.attr-value.classified,
 .attr-card .redacted-intel {
   background: rgba(31, 111, 235, 0.13);
   border: 1px dashed #58a6ff;
@@ -556,7 +586,6 @@ body {
   padding: 2px 8px;
   border-radius: 4px;
   display: inline-block;
-  min-height: 0;
   letter-spacing: 0.08em;
 }
 
@@ -569,7 +598,7 @@ body {
   align-items: center;
   justify-content: center;
   opacity: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s ease;
   pointer-events: none;
 }
 
