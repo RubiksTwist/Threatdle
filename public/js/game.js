@@ -107,49 +107,6 @@ function scheduleRevealStep(callback, delay) {
 }
 
 
-function getLoadingCardLabels(mode) {
-  const labelsByMode = {
-    actor: ['Country', 'First Seen', 'Known Malware', 'Motivation', 'Target Categories', 'Known Techniques'],
-    malware: ['Capability Summary', 'Platforms', 'Threat Actors', 'Aliases'],
-    technique: ['Tactics', 'Parent Technique', 'Platforms', 'Technique Scope'],
-  };
-  return labelsByMode[mode] || ['Classified', 'Classified', 'Classified', 'Classified'];
-}
-
-
-function buildLoadingBoardMarkup(mode) {
-  const cardLabels = getLoadingCardLabels(mode);
-  const cardsMarkup = cardLabels.map((label, index) => `
-    <div class="clue-item attr-card ${index === 0 && mode === 'malware' ? 'full-width' : ''}">
-      <span class="clue-label">${escapeHtml(label)}</span>
-      <span class="clue-value"><span class="redacted-intel">Classified</span></span>
-      <div class="redact-overlay">
-        <div class="redact-bars">
-          <span class="redact-bar"></span>
-          <span class="redact-bar short"></span>
-        </div>
-      </div>
-    </div>
-  `).join('');
-
-  const choiceCount = 5;
-  const choicesMarkup = Array.from({ length: choiceCount }, () => `
-    <button class="choice-btn" type="button" tabindex="-1" aria-hidden="true">Classified</button>
-  `).join('');
-
-  return `
-    <div class="clues-container card-grid ${mode === 'technique' ? 'technique-clues-grid' : ''}">
-      ${cardsMarkup}
-    </div>
-    <div class="guess-section">
-      <div class="choices-area">
-        ${choicesMarkup}
-      </div>
-    </div>
-  `;
-}
-
-
 function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Loading today\'s intelligence...') {
   elModesContainer.innerHTML = `
     <div class="mode-panel mode-panel-loading">
@@ -157,7 +114,13 @@ function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], 
         <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
         <span class="mode-status">${escapeHtml(message)}</span>
       </div>
-      ${buildLoadingBoardMarkup(mode)}
+      <div class="loading-shell" aria-hidden="true">
+        <div class="loading-indicator">
+          <span class="loading-indicator-dot"></span>
+          <span class="loading-indicator-dot"></span>
+          <span class="loading-indicator-dot"></span>
+        </div>
+      </div>
     </div>
   `;
 }

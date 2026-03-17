@@ -436,15 +436,11 @@ body {
   justify-content: flex-start;
 }
 
-.loading-label {
-  color: #58a6ff;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  text-align: left;
-  opacity: 1;
-  margin: -0.15rem 0 1.25rem;
+.loading-shell {
+  min-height: 22rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .loading-indicator {
@@ -472,10 +468,6 @@ body {
 
 .loading-indicator-dot:nth-child(3) {
   animation-delay: 0.32s;
-}
-
-.mode-panel-loading .redact-overlay {
-  opacity: 1;
 }
 
 .mode-header h3 {
