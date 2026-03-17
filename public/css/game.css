@@ -431,13 +431,30 @@ body {
   overflow: hidden;
 }
 
-.mode-panel-loading {
-  min-height: 28rem;
-  justify-content: flex-start;
+.board-bridge-loading {
+  min-height: 8.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.board-bridge-copy {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.board-bridge-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .loading-shell {
-  min-height: 22rem;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;

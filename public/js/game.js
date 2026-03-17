@@ -109,11 +109,8 @@ function scheduleRevealStep(callback, delay) {
 
 function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Loading today\'s intelligence...') {
   elModesContainer.innerHTML = `
-    <div class="mode-panel mode-panel-loading">
-      <div class="mode-header">
-        <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
-        <span class="mode-status">${escapeHtml(message)}</span>
-      </div>
+    <div class="board-bridge-loading" role="status" aria-live="polite" aria-label="${escapeHtml(message)}">
+      <div class="board-bridge-copy">Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</div>
       <div class="loading-shell" aria-hidden="true">
         <div class="loading-indicator">
           <span class="loading-indicator-dot"></span>
@@ -121,6 +118,7 @@ function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], 
           <span class="loading-indicator-dot"></span>
         </div>
       </div>
+      <div class="board-bridge-label">${escapeHtml(message)}</div>
     </div>
   `;
 }
