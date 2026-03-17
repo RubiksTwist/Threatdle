@@ -16,6 +16,18 @@ const modeOrder = ['actor', 'malware', 'technique'];
 let currentModeIndex = 0;
 let todayKey = null;
 let activeDayLoadToken = 0;
+let pendingEntranceAnimation = null;
+let activeRevealTimers = [];
+
+const revealSequenceTimings = {
+  stampIn: 100,
+  stampHold: 280,
+  cardsStart: 360,
+  cardStagger: 70,
+  choicesStart: 680,
+  choiceStagger: 55,
+  cleanup: 1100,
+};
 
 // Game State
 let currentState = {
@@ -79,6 +91,21 @@ function escapeHtml(value) {
 function deepCopy(value) {
   if (value === null || value === undefined) return value;
   return JSON.parse(JSON.stringify(value));
+}
+
+
+function clearRevealTimers() {
+  activeRevealTimers.forEach(timerId => clearTimeout(timerId));
+  activeRevealTimers = [];
+}
+
+
+function scheduleRevealStep(callback, delay) {
+  const timerId = window.setTimeout(() => {
+    activeRevealTimers = activeRevealTimers.filter(id => id !== timerId);
+    callback();
+  }, delay);
+  activeRevealTimers.push(timerId);
 }
 
 
@@ -667,6 +694,8 @@ async function initGame() {
 
 async function loadDay(dayKey) {
   const loadToken = ++activeDayLoadToken;
+  clearRevealTimers();
+  pendingEntranceAnimation = null;
   if (!availableDays.includes(dayKey)) {
     dayKey = latestDay;
   }
@@ -694,12 +723,15 @@ async function loadDay(dayKey) {
   currentState.modes = dayData.modes;
   currentModeIndex = modeOrder.findIndex(m => !currentState.solved[m]);
   if (currentModeIndex === -1) currentModeIndex = modeOrder.length - 1;
-  renderBoard();
-  updateProgressIndicators();
 
   await Promise.all(modeOrder.map(mode => fetchPool(mode)));
   if (loadToken !== activeDayLoadToken) return;
 
+  const activeMode = modeOrder[currentModeIndex];
+  const canAnimateEntrance = activeMode && !currentState.solved[activeMode] && activeMode !== 'timeline';
+  pendingEntranceAnimation = canAnimateEntrance
+    ? { dayKey: currentState.day_key, mode: activeMode }
+    : null;
   renderBoard();
   updateProgressIndicators();
 }
@@ -860,7 +892,74 @@ function updateProgressIndicators() {
   });
 }
 
+function shouldAnimateBoardEntrance(mode) {
+  return Boolean(
+    pendingEntranceAnimation &&
+    pendingEntranceAnimation.dayKey === currentState.day_key &&
+    pendingEntranceAnimation.mode === mode &&
+    !currentState.solved[mode] &&
+    mode !== 'timeline'
+  );
+}
+
+
+function runBoardRevealSequence(panel, finalStatusLabel) {
+  clearRevealTimers();
+
+  const stamp = panel.querySelector('.classified-stamp');
+  const stampContainer = panel.querySelector('.classified-stamp-container');
+  const status = panel.querySelector('.mode-status');
+  const overlays = panel.querySelectorAll('.clue-redact-overlay');
+  const choiceButtons = panel.querySelectorAll('.choice-btn.choice-staged');
+
+  if (!stamp || !overlays.length) {
+    pendingEntranceAnimation = null;
+    return;
+  }
+
+  if (status) {
+    status.textContent = 'Preparing Puzzle';
+  }
+
+  scheduleRevealStep(() => {
+    if (!panel.isConnected) return;
+    stamp.classList.add('show');
+  }, revealSequenceTimings.stampIn);
+
+  scheduleRevealStep(() => {
+    if (!panel.isConnected) return;
+    stamp.classList.remove('show');
+    stamp.classList.add('hide');
+    if (status) {
+      status.textContent = finalStatusLabel;
+    }
+  }, revealSequenceTimings.stampIn + revealSequenceTimings.stampHold);
+
+  overlays.forEach((overlay, index) => {
+    scheduleRevealStep(() => {
+      if (!panel.isConnected) return;
+      overlay.classList.add('revealed');
+    }, revealSequenceTimings.cardsStart + index * revealSequenceTimings.cardStagger);
+  });
+
+  choiceButtons.forEach((button, index) => {
+    scheduleRevealStep(() => {
+      if (!panel.isConnected) return;
+      button.classList.remove('choice-staged');
+      button.classList.add('choice-visible');
+    }, revealSequenceTimings.choicesStart + index * revealSequenceTimings.choiceStagger);
+  });
+
+  scheduleRevealStep(() => {
+    if (!panel.isConnected) return;
+    stampContainer?.remove();
+  }, revealSequenceTimings.cleanup);
+
+  pendingEntranceAnimation = null;
+}
+
 function renderBoard() {
+  clearRevealTimers();
   elModesContainer.innerHTML = '';
   
   const mode = modeOrder[currentModeIndex];
@@ -869,9 +968,10 @@ function renderBoard() {
   const timelineDraft = mode === 'timeline' ? ensureTimelineDraft(modeData) : [];
   const timelineLockedStates = mode === 'timeline' ? getTimelineLockedStates(modeData, timelineDraft) : [];
   const timelineLockedCount = mode === 'timeline' ? timelineLockedStates.filter(Boolean).length : 0;
+  const animateEntrance = shouldAnimateBoardEntrance(mode);
   
   const panel = document.createElement('div');
-  panel.className = 'mode-panel active-panel';
+  panel.className = `mode-panel active-panel${animateEntrance ? ' mode-panel-reveal' : ''}`;
   
   let interactionHTML = '';
   if (!currentState.solved[mode]) {
@@ -915,7 +1015,7 @@ function renderBoard() {
       interactionHTML = `
         ${hasLoadedPool
           ? `<div class="multiple-choice-grid">
-              ${pool.map(opt => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
+              ${pool.map((opt, index) => `<button class="choice-btn ${animateEntrance ? 'choice-staged' : ''}" data-key="${opt.guess_key}" data-choice-reveal-index="${index}">${opt.guess_label}</button>`).join('')}
             </div>`
           : `<div class="pool-loading">
               <div class="loading-indicator loading-indicator-compact" aria-hidden="true">
@@ -962,11 +1062,17 @@ function renderBoard() {
     }
   }
 
+  const statusLabel = currentState.solved[mode]
+    ? 'Solved'
+    : mode === 'timeline'
+      ? `${timelineLockedCount}/${timelineDraft.length} Locked`
+      : 'In Progress';
+
   panel.innerHTML = `
     <div class="mode-header">
       <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
       <span class="mode-status ${currentState.solved[mode] ? 'solved' : ''}">
-        ${currentState.solved[mode] ? 'Solved' : mode === 'timeline' ? `${timelineLockedCount}/${timelineDraft.length} Locked` : 'In Progress'}
+        ${statusLabel}
       </span>
     </div>
     
@@ -977,11 +1083,12 @@ function renderBoard() {
     <div class="guess-section" id="guess-section-${mode}">
       ${interactionHTML}
     </div>
+    ${animateEntrance ? `<div class="classified-stamp-container" aria-hidden="true"><div class="classified-stamp">Classified</div></div>` : ''}
   `;
   
   elModesContainer.appendChild(panel);
   
-  renderClues(mode, modeData.payload.clues);
+  renderClues(mode, modeData.payload.clues, { animateEntrance });
   if (mode !== 'timeline') {
     renderGridHistory(mode);
   }
@@ -1019,6 +1126,10 @@ function renderBoard() {
       });
     }
   }
+
+  if (animateEntrance) {
+    runBoardRevealSequence(panel, statusLabel);
+  }
 }
 
 
@@ -1041,7 +1152,8 @@ function attachTimelineInteraction(panel, modeData) {
   }
 }
 
-function renderClues(mode, clues) {
+function renderClues(mode, clues, options = {}) {
+  const { animateEntrance = false } = options;
   const container = document.getElementById(`clues-${mode}`);
   container.innerHTML = '';
   container.classList.toggle('technique-clues-grid', mode === 'technique');
@@ -1137,6 +1249,17 @@ function renderClues(mode, clues) {
       <span class="clue-value">${displayVal}</span>
     `;
     bindFlagFallback(div);
+    if (animateEntrance) {
+      const overlay = document.createElement('div');
+      overlay.className = 'clue-redact-overlay';
+      overlay.innerHTML = `
+        <div class="clue-redact-bars">
+          <span class="clue-redact-bar"></span>
+          <span class="clue-redact-bar short"></span>
+        </div>
+      `;
+      div.appendChild(overlay);
+    }
     container.appendChild(div);
   });
   previousWrongGuessCounts[mode] = wrongGuesses;

@@ -426,6 +426,11 @@ body {
   animation: fadeIn 0.18s ease-out;
 }
 
+.mode-panel-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
 .mode-panel-loading {
   min-height: 28rem;
   justify-content: flex-start;
@@ -520,6 +525,42 @@ body {
   position: relative;
   overflow: hidden;
   transition: transform 180ms ease, box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.clue-redact-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #0d1117;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.clue-redact-overlay.revealed {
+  opacity: 0;
+}
+
+.clue-redact-bars {
+  width: 68%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.clue-redact-bar {
+  display: block;
+  width: 100%;
+  height: 0.55rem;
+  background: #21262d;
+  border-radius: 2px;
+}
+
+.clue-redact-bar.short {
+  width: 56%;
 }
 
 .clue-value {
@@ -867,6 +908,18 @@ body {
   min-width: 250px;
 }
 
+.choice-btn.choice-staged {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.choice-btn.choice-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
 .choice-btn:hover:not(:disabled) {
   border-color: var(--accent-blue);
   background-color: var(--bg-tertiary);
@@ -896,6 +949,38 @@ body {
   align-items: center;
   justify-content: center;
   padding: 0.5rem 0;
+}
+
+.classified-stamp-container {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.classified-stamp {
+  border: 3px solid #da3633;
+  color: #da3633;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.4rem;
+  transform: rotate(-12deg) scale(0);
+  opacity: 0;
+  background: rgba(13, 17, 23, 0.14);
+  text-shadow: 0 0 8px rgba(218, 54, 51, 0.15);
+}
+
+.classified-stamp.show {
+  animation: stampIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.classified-stamp.hide {
+  animation: stampOut 0.28s ease forwards;
 }
 
 .primary-btn {
@@ -1443,5 +1528,31 @@ body {
     opacity: 0.42;
     transform: scale(0.9);
     box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+@keyframes stampIn {
+  0% {
+    transform: rotate(-12deg) scale(2.5);
+    opacity: 0;
+  }
+  60% {
+    transform: rotate(-12deg) scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-12deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes stampOut {
+  0% {
+    transform: rotate(-12deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-12deg) scale(1.08);
+    opacity: 0;
   }
 }
