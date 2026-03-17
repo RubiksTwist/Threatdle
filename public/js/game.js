@@ -708,11 +708,12 @@ async function loadDay(dayKey) {
   currentState.modes = dayData.modes;
   currentModeIndex = modeOrder.findIndex(m => !currentState.solved[m]);
   if (currentModeIndex === -1) currentModeIndex = modeOrder.length - 1;
-
-  await Promise.all(modeOrder.map(mode => fetchPool(mode)));
-  if (loadToken !== activeDayLoadToken) return;
-
   const activeMode = modeOrder[currentModeIndex];
+  if (activeMode) {
+    await fetchPool(activeMode);
+    if (loadToken !== activeDayLoadToken) return;
+  }
+
   const canAnimateEntrance = activeMode &&
     !currentState.solved[activeMode] &&
     activeMode !== 'timeline' &&
@@ -722,6 +723,18 @@ async function loadDay(dayKey) {
     : null;
   renderBoard();
   updateProgressIndicators();
+
+  modeOrder
+    .filter(mode => mode !== activeMode)
+    .forEach(mode => {
+      fetchPool(mode).then(() => {
+        if (loadToken !== activeDayLoadToken) return;
+        if (mode === modeOrder[currentModeIndex] && !currentState.solved[mode]) {
+          renderBoard();
+          updateProgressIndicators();
+        }
+      });
+    });
 }
 
 async function fetchAvailableDays() {
@@ -821,9 +834,15 @@ async function switchDay(dayKey) {
 
 async function fetchPool(mode) {
   try {
-    pools[mode] = await apiGetPool(currentState.snapshot_id, currentState.day_key, mode);
+    pools[mode] = await Promise.race([
+      apiGetPool(currentState.snapshot_id, currentState.day_key, mode),
+      new Promise((_, reject) => {
+        window.setTimeout(() => reject(new Error(`Pool request timed out for ${mode}`)), 8000);
+      })
+    ]);
   } catch (e) {
     console.error(`Failed to fetch pool for ${mode}`, e);
+    pools[mode] = [];
   }
 }
 
