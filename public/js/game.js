@@ -83,32 +83,32 @@ function deepCopy(value) {
 
 
 function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Loading today\'s intelligence...') {
-  const skeletonClues = Array.from({ length: 6 }, (_, index) => `
-    <div class="clue-item clue-item-skeleton ${index === 0 ? 'full-width' : ''}">
-      <span class="clue-label skeleton-bar skeleton-bar-short"></span>
-      <span class="clue-value skeleton-bar ${index === 0 ? 'skeleton-bar-wide' : ''}"></span>
-    </div>
-  `).join('');
-
-  const skeletonChoices = Array.from({ length: 4 }, () => `
-    <div class="choice-skeleton">
-      <span class="skeleton-bar skeleton-bar-wide"></span>
-    </div>
-  `).join('');
-
   elModesContainer.innerHTML = `
     <div class="mode-panel mode-panel-loading">
       <div class="mode-header">
         <h3>Phase ${currentModeIndex + 1}: ${getModeTitle(mode)}</h3>
         <span class="mode-status">Preparing Puzzle</span>
       </div>
-      <p class="loading-copy">${escapeHtml(message)}</p>
-      <div class="clues-container loading-clues-grid">
-        ${skeletonClues}
+      <div class="loading-briefing">
+        <span class="loading-kicker">Decrypting Today's Dossier</span>
+        <div class="loading-indicator" aria-hidden="true">
+          <span class="loading-indicator-dot"></span>
+          <span class="loading-indicator-dot"></span>
+          <span class="loading-indicator-dot"></span>
+        </div>
+        <p class="loading-copy">${escapeHtml(message)}</p>
+        <div class="loading-track" aria-hidden="true">
+          <span class="loading-track-bar"></span>
+        </div>
       </div>
       <div class="guess-section">
-        <div class="multiple-choice-grid loading-choice-grid">
-          ${skeletonChoices}
+        <div class="pool-loading">
+          <div class="loading-indicator loading-indicator-compact" aria-hidden="true">
+            <span class="loading-indicator-dot"></span>
+            <span class="loading-indicator-dot"></span>
+            <span class="loading-indicator-dot"></span>
+          </div>
+          <p class="loading-copy">Staging response options...</p>
         </div>
       </div>
     </div>
@@ -923,14 +923,12 @@ function renderBoard() {
               ${pool.map(opt => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
             </div>`
           : `<div class="pool-loading">
-              <p class="loading-copy">Loading response options...</p>
-              <div class="multiple-choice-grid loading-choice-grid">
-                ${Array.from({ length: 4 }, () => `
-                  <div class="choice-skeleton">
-                    <span class="skeleton-bar skeleton-bar-wide"></span>
-                  </div>
-                `).join('')}
+              <div class="loading-indicator loading-indicator-compact" aria-hidden="true">
+                <span class="loading-indicator-dot"></span>
+                <span class="loading-indicator-dot"></span>
+                <span class="loading-indicator-dot"></span>
               </div>
+              <p class="loading-copy">Loading response options...</p>
             </div>`}
       `;
     }
