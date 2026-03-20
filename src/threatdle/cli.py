@@ -177,7 +177,7 @@ def build_parser() -> argparse.ArgumentParser:
     build_live_runtime_parser.add_argument(
         "--days",
         type=int,
-        default=365,
+        default=30,
         help="Number of days to bake into the runtime bundle",
     )
     build_live_runtime_parser.add_argument(
