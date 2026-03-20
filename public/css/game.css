@@ -82,6 +82,56 @@ body {
   font-size: 0.875rem;
   color: var(--text-secondary);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.streak-pill {
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 99px;
+  padding: 0.2rem 0.6rem;
+  cursor: default;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.streak-pill.hidden {
+  display: none;
+}
+
+.streak-tier-1 {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.streak-tier-2 {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.streak-tier-3 {
+  color: #fb923c;
+  background: rgba(249, 115, 22, 0.12);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.streak-tier-4 {
+  color: #f97316;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.25);
+}
+
+.streak-tier-5 {
+  color: #fde68a;
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(249, 115, 22, 0.15));
+  border: 1px solid rgba(234, 179, 8, 0.5);
+  box-shadow: 0 0 10px rgba(234, 179, 8, 0.3), 0 0 20px rgba(249, 115, 22, 0.15);
+  text-shadow: 0 0 8px rgba(253, 230, 138, 0.5);
 }
 
 /* Main Container */
@@ -1256,6 +1306,17 @@ body {
   font-style: italic;
   color: var(--text-muted);
   margin-top: 1rem;
+}
+
+.streak-msg {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fb923c;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
 }
 
 /* Modal Styling */

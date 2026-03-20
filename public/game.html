@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Threatdle</title>
-  <link rel="icon" type="image/png" href="/images/logo.png?v=20260317c">
-  <link rel="stylesheet" href="/css/game.css?v=20260317c">
+  <link rel="icon" type="image/png" href="/images/logo.png?v=20260319b">
+  <link rel="stylesheet" href="/css/game.css?v=20260319b">
 </head>
 <body>
 
@@ -17,6 +17,7 @@
           <h1>Threatdle</h1>
         </div>
         <div class="header-controls">
+          <span id="streak-pill" class="streak-pill hidden" title="Your current streak"></span>
           <span id="current-date">Loading...</span>
           <button id="archive-btn" class="archive-btn" title="Case Files Archive">📁 ARCHIVES</button>
         </div>
@@ -38,13 +39,30 @@
 
       <!-- Game Board Container -->
       <div id="game-modes-container" class="modes-grid">
-        <div class="board-bridge-loading" role="status" aria-live="polite" aria-label="Preparing dossier...">
-          <div class="loading-shell" aria-hidden="true">
-            <div class="loading-classified">
-              <span class="loading-classified-text">Preparing dossier...</span>
+        <div class="mode-panel active-panel mode-panel-reveal" data-mode="actor">
+          <div class="mode-header">
+            <h3>Phase 1: Advanced Persistent Threat Identification</h3>
+            <span class="mode-status">Preparing dossier...</span>
+          </div>
+          <div class="clues-container">
+            <div class="clue-item"><span class="clue-label">&nbsp;</span><span class="clue-value">&nbsp;</span><div class="redact-overlay"><div class="redact-bars"><span class="redact-bar"></span><span class="redact-bar short"></span></div></div></div>
+            <div class="clue-item"><span class="clue-label">&nbsp;</span><span class="clue-value">&nbsp;</span><div class="redact-overlay"><div class="redact-bars"><span class="redact-bar"></span><span class="redact-bar short"></span></div></div></div>
+            <div class="clue-item"><span class="clue-label">&nbsp;</span><span class="clue-value">&nbsp;</span><div class="redact-overlay"><div class="redact-bars"><span class="redact-bar"></span><span class="redact-bar short"></span></div></div></div>
+            <div class="clue-item"><span class="clue-label">&nbsp;</span><span class="clue-value">&nbsp;</span><div class="redact-overlay"><div class="redact-bars"><span class="redact-bar"></span><span class="redact-bar short"></span></div></div></div>
+            <div class="clue-item"><span class="clue-label">&nbsp;</span><span class="clue-value">&nbsp;</span><div class="redact-overlay"><div class="redact-bars"><span class="redact-bar"></span><span class="redact-bar short"></span></div></div></div>
+            <div class="clue-item"><span class="clue-label">&nbsp;</span><span class="clue-value">&nbsp;</span><div class="redact-overlay"><div class="redact-bars"><span class="redact-bar"></span><span class="redact-bar short"></span></div></div></div>
+          </div>
+          <div class="deduction-grid"></div>
+          <div class="guess-section">
+            <div class="multiple-choice-grid">
+              <button class="choice-btn entering" disabled><span class="choice-btn-text">&nbsp;</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
+              <button class="choice-btn entering" disabled><span class="choice-btn-text">&nbsp;</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
+              <button class="choice-btn entering" disabled><span class="choice-btn-text">&nbsp;</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
+              <button class="choice-btn entering" disabled><span class="choice-btn-text">&nbsp;</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
+              <button class="choice-btn entering" disabled><span class="choice-btn-text">&nbsp;</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
             </div>
           </div>
-          <span class="visually-hidden">Preparing dossier...</span>
+          <div class="stamp-container" aria-hidden="true"><div class="stamp">Declassified</div></div>
         </div>
       </div>
 
@@ -112,6 +130,6 @@
     </div>
   </div>
 
-  <script src="/js/game.js?v=20260317c" type="module"></script>
+  <script src="/js/game.js?v=20260319b" type="module"></script>
 </body>
 </html>

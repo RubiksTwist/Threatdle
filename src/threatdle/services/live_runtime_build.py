@@ -6,7 +6,7 @@ artifacts are created fresh as part of the build instead of being committed.
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 import sqlite3
 from typing import Any
@@ -29,8 +29,13 @@ def default_live_start_day(
     timezone_name: str = DEFAULT_GAME_TIMEZONE,
     *,
     now: datetime | None = None,
+    days: int = 365,
 ) -> str:
-    return _day_key_in_timezone(timezone_name, now=now)
+    if days <= 0:
+        raise ValueError("days must be positive")
+    current_day = datetime.fromisoformat(_day_key_in_timezone(timezone_name, now=now)).date()
+    start_day = current_day - timedelta(days=days - 1)
+    return start_day.isoformat()
 
 
 def default_live_snapshot_id(
@@ -62,7 +67,7 @@ def build_live_runtime_from_sources(
     if days <= 0:
         raise ValueError("--days must be positive")
 
-    resolved_start_day = start_day or default_live_start_day(timezone_name)
+    resolved_start_day = start_day or default_live_start_day(timezone_name, days=days)
     fetch_result = fetch_sources(connection, snapshot_id, root_dir=root_dir)
 
     try:

@@ -14,7 +14,12 @@ from threatdle.services.live_runtime_build import (
 
 def test_default_live_start_day_uses_timezone():
     now = datetime(2026, 3, 16, 3, 30, tzinfo=UTC)
-    assert default_live_start_day("America/New_York", now=now) == "2026-03-15"
+    assert default_live_start_day("America/New_York", now=now) == "2025-03-16"
+
+
+def test_default_live_start_day_can_size_the_archive_window():
+    now = datetime(2026, 3, 16, 3, 30, tzinfo=UTC)
+    assert default_live_start_day("America/New_York", now=now, days=30) == "2026-02-14"
 
 
 def test_default_live_snapshot_id_uses_day_and_commit():

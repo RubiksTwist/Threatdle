@@ -86,6 +86,28 @@ function escapeHtml(value) {
 }
 
 
+function sanitizeUrl(value) {
+  if (typeof value !== 'string' || !value.trim()) return null;
+  try {
+    const url = new URL(value, window.location.origin);
+    if (url.protocol === 'http:' || url.protocol === 'https:') {
+      return url.href;
+    }
+  } catch {
+    // Drop malformed URLs instead of injecting them into href.
+  }
+  return null;
+}
+
+
+function formatClueValueHtml(value) {
+  if (value === null || value === undefined) return '';
+  return escapeHtml(value)
+    .replace(/\[THIS MALWARE\]/g, '<span class="redacted-intel">Classified</span>')
+    .replace(/\[CLASSIFIED\]/g, '<span class="redacted-intel">Classified</span>');
+}
+
+
 function deepCopy(value) {
   if (value === null || value === undefined) return value;
   return JSON.parse(JSON.stringify(value));
@@ -174,15 +196,34 @@ function hydrateEntranceChoices(panel, mode, pool) {
 }
 
 
-function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Loading today\'s intelligence...') {
+function renderLoadingBoard(mode = modeOrder[currentModeIndex] || modeOrder[0], message = 'Preparing dossier...') {
+  const modeTitle = getModeTitle(mode);
+  const modeIndex = modeOrder.indexOf(mode);
+  const skeletonClues = Array.from({ length: 6 }, () =>
+    `<div class="clue-item">
+      <span class="clue-label">&nbsp;</span>
+      <span class="clue-value">&nbsp;</span>
+      <div class="redact-overlay"><div class="redact-bars"><span class="redact-bar"></span><span class="redact-bar short"></span></div></div>
+    </div>`
+  ).join('');
+  const skeletonButtons = Array.from({ length: 5 }, () =>
+    `<button class="choice-btn entering" disabled>
+      <span class="choice-btn-text">&nbsp;</span>
+      <span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span>
+    </button>`
+  ).join('');
   elModesContainer.innerHTML = `
-    <div class="board-bridge-loading" role="status" aria-live="polite" aria-label="${escapeHtml(message)}">
-      <div class="loading-shell" aria-hidden="true">
-        <div class="loading-classified">
-          <span class="loading-classified-text">${escapeHtml(message)}</span>
-        </div>
+    <div class="mode-panel active-panel mode-panel-reveal" data-mode="${mode}">
+      <div class="mode-header">
+        <h3>Phase ${(modeIndex >= 0 ? modeIndex : 0) + 1}: ${modeTitle}</h3>
+        <span class="mode-status">${escapeHtml(message)}</span>
       </div>
-      <span class="visually-hidden">${escapeHtml(message)}</span>
+      <div class="clues-container">${skeletonClues}</div>
+      <div class="deduction-grid"></div>
+      <div class="guess-section">
+        <div class="multiple-choice-grid">${skeletonButtons}</div>
+      </div>
+      <div class="stamp-container" aria-hidden="true"><div class="stamp">Declassified</div></div>
     </div>
   `;
 }
@@ -686,6 +727,98 @@ function nudgeTimelineStep(index, direction, modeData = currentState.modes.timel
 }
 
 
+// --- Streak ---
+
+const STREAK_KEY = 'threatdle_streak';
+
+function readJsonFromStorage(key) {
+  const saved = localStorage.getItem(key);
+  if (!saved) return null;
+  try {
+    return JSON.parse(saved);
+  } catch {
+    return null;
+  }
+}
+
+
+function computeStreak() {
+  const orderedDays = [...availableDays].sort();
+  let streak = 0;
+  let foundLatestSolvedDay = false;
+
+  for (let i = orderedDays.length - 1; i >= 0; i--) {
+    const dayKey = orderedDays[i];
+    if (dayKey > todayKey) continue;
+
+    const parsed = readJsonFromStorage(getStorageKey(dayKey, currentState.snapshot_id));
+    const allSolved = modeOrder.every(mode => Boolean(parsed?.solved?.[mode]));
+    if (!foundLatestSolvedDay) {
+      if (!allSolved) continue;
+      foundLatestSolvedDay = true;
+      streak = 1;
+      continue;
+    }
+    if (!allSolved) break;
+
+    streak++;
+  }
+
+  return streak;
+}
+
+
+function saveStreak(streak, completedDayKey = currentState.day_key) {
+  const previous = readJsonFromStorage(STREAK_KEY) || {};
+  localStorage.setItem(STREAK_KEY, JSON.stringify({
+    current: streak,
+    longest: Math.max(streak, previous.longest || 0),
+    lastCompletedDayKey: completedDayKey
+  }));
+}
+
+
+function getStreakTier(streak) {
+  const total = availableDays.length || 1;
+  return Math.min(5, Math.ceil((streak / total) * 5));
+}
+
+
+function renderStreakPill() {
+  const el = document.getElementById('streak-pill');
+  if (!el) return;
+
+  const saved = readJsonFromStorage(STREAK_KEY) || {};
+  const streak = Math.max(saved.current || 0, computeStreak());
+  if (streak === 0) {
+    el.className = 'streak-pill hidden';
+    el.textContent = '';
+    el.title = 'Your current streak';
+    return;
+  }
+
+  const tier = getStreakTier(streak);
+  el.className = `streak-pill streak-tier-${tier}`;
+  el.textContent = `\uD83D\uDD25 ${streak}`;
+  el.title = `${streak}-day streak - longest: ${Math.max(streak, saved.longest || 0)}`;
+}
+
+
+function getStreakSummaryHTML() {
+  const streak = computeStreak();
+  if (streak === 0) return '';
+
+  saveStreak(streak, currentState.day_key);
+  renderStreakPill();
+
+  const message = streak === 1
+    ? '\uD83D\uDD25 Streak started.'
+    : `\uD83D\uDD25 ${streak}-day streak. Keep it going.`;
+
+  return `<p class="streak-msg">${escapeHtml(message)}</p>`;
+}
+
+
 // --- Initialization ---
 
 async function initGame() {
@@ -711,6 +844,7 @@ async function initGame() {
     syncDayUrl(currentState.day_key);
 
     await loadDay(currentState.day_key);
+    renderStreakPill();
 
     // Enable dot navigation
     elProgressDots.forEach((dot, index) => {
@@ -892,10 +1026,10 @@ function buildCaseCards() {
     card.innerHTML = `
       <div class="case-info">
         <span class="case-number">Case #${String(caseNum).padStart(3, '0')}</span>
-        <span class="case-date">${dayKey}</span>
+        <span class="case-date">${escapeHtml(dayKey)}</span>
         ${scoreHTML}
       </div>
-      <span class="case-status ${statusClass}">${statusLabel}</span>
+      <span class="case-status ${statusClass}">${escapeHtml(statusLabel)}</span>
     `;
 
     card.addEventListener('click', () => {
@@ -1093,10 +1227,10 @@ function renderBoard() {
           ${entranceButtons.map((opt) => `
             <button
               class="choice-btn${opt.placeholder ? ' choice-btn-placeholder' : ''} entering"
-              ${opt.guess_key ? `data-key="${opt.guess_key}"` : ''}
+              ${opt.guess_key ? `data-key="${escapeHtml(opt.guess_key)}"` : ''}
               data-placeholder="${opt.placeholder ? 'true' : 'false'}"
               ${opt.placeholder ? 'disabled' : ''}
-            ><span class="choice-btn-text">${opt.guess_label}</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
+            ><span class="choice-btn-text">${escapeHtml(opt.guess_label)}</span><span class="redact-overlay choice-redact" style="display:flex"><span class="redact-bars"><span class="redact-bar"></span><span class="redact-bar"></span></span></span></button>
           `).join('')}
         </div>
       </div>
@@ -1125,15 +1259,15 @@ function renderBoard() {
               const controlsHTML = isLocked
                 ? `<div class="timeline-card-controls timeline-card-controls-locked"><span class="timeline-card-controls-note">Position fixed</span></div>`
                 : `<div class="timeline-card-controls">
-                    <button class="timeline-move-btn" data-direction="up" data-index="${index}" aria-label="Move ${step.technique_name} up" ${moveUpTarget === -1 ? 'disabled' : ''}>&#8593;</button>
-                    <button class="timeline-move-btn" data-direction="down" data-index="${index}" aria-label="Move ${step.technique_name} down" ${moveDownTarget === -1 ? 'disabled' : ''}>&#8595;</button>
+                    <button class="timeline-move-btn" data-direction="up" data-index="${index}" aria-label="Move ${escapeHtml(step.technique_name)} up" ${moveUpTarget === -1 ? 'disabled' : ''}>&#8593;</button>
+                    <button class="timeline-move-btn" data-direction="down" data-index="${index}" aria-label="Move ${escapeHtml(step.technique_name)} down" ${moveDownTarget === -1 ? 'disabled' : ''}>&#8595;</button>
                   </div>`;
               return `
-                <div class="timeline-card ${isLocked ? 'locked' : ''}" data-attack-id="${step.attack_id}">
+                <div class="timeline-card ${isLocked ? 'locked' : ''}" data-attack-id="${escapeHtml(step.attack_id)}">
                   <div class="timeline-card-order">${index + 1}</div>
                   <div class="timeline-card-body">
-                    <span class="timeline-card-id">${step.attack_id}</span>
-                    <span class="timeline-card-name">${step.technique_name}</span>
+                    <span class="timeline-card-id">${escapeHtml(step.attack_id)}</span>
+                    <span class="timeline-card-name">${escapeHtml(step.technique_name)}</span>
                     <span class="timeline-card-state">${isLocked ? 'Locked' : 'Reorder'}</span>
                   </div>
                   ${controlsHTML}
@@ -1153,7 +1287,7 @@ function renderBoard() {
       interactionHTML = `
         ${hasLoadedPool
           ? `<div class="multiple-choice-grid">
-              ${pool.map((opt) => `<button class="choice-btn" data-key="${opt.guess_key}">${opt.guess_label}</button>`).join('')}
+              ${pool.map((opt) => `<button class="choice-btn" data-key="${escapeHtml(opt.guess_key)}">${escapeHtml(opt.guess_label)}</button>`).join('')}
             </div>`
           : `<div class="pool-loading">
               <div class="loading-classified" aria-hidden="true">
@@ -1170,11 +1304,11 @@ function renderBoard() {
           <p class="timeline-builder-copy">Incident timeline reconstructed in source-reported order.</p>
           <div class="timeline-builder" id="timeline-builder">
             ${timelineDraft.map((step, index) => `
-              <div class="timeline-card locked" data-attack-id="${step.attack_id}">
+              <div class="timeline-card locked" data-attack-id="${escapeHtml(step.attack_id)}">
                 <div class="timeline-card-order">${index + 1}</div>
                 <div class="timeline-card-body">
-                  <span class="timeline-card-id">${step.attack_id}</span>
-                  <span class="timeline-card-name">${step.technique_name}</span>
+                  <span class="timeline-card-id">${escapeHtml(step.attack_id)}</span>
+                  <span class="timeline-card-name">${escapeHtml(step.technique_name)}</span>
                   <span class="timeline-card-state">Locked</span>
                 </div>
               </div>
@@ -1302,8 +1436,8 @@ function renderClues(mode, clues, options = {}) {
       const div = document.createElement('div');
       div.className = 'clue-item';
       div.innerHTML = `
-        <span class="clue-label">${item.label}</span>
-        <span class="clue-value">${item.value}</span>
+        <span class="clue-label">${escapeHtml(item.label)}</span>
+        <span class="clue-value">${escapeHtml(item.value)}</span>
       `;
       container.appendChild(div);
     });
@@ -1348,16 +1482,9 @@ function renderClues(mode, clues, options = {}) {
     const unlockThreshold = unlockThresholds[mode]?.[key];
     const isLocked = unlockThreshold !== undefined && wrongGuesses < unlockThreshold;
     const justUnlocked = unlockThreshold !== undefined && previousWrongGuessCounts[mode] < unlockThreshold && wrongGuesses >= unlockThreshold;
-    
-    if (isLocked) {
-      displayVal = '<span class="redacted-intel">Classified</span>';
-    }
-    
-    // Summary Text Redactions
-    if (typeof displayVal === 'string') {
-        displayVal = displayVal.replace(/\[THIS MALWARE\]/g, '<span class="redacted-intel">Classified</span>');
-        displayVal = displayVal.replace(/\[CLASSIFIED\]/g, '<span class="redacted-intel">Classified</span>');
-    }
+    let displayValHtml = isLocked
+      ? '<span class="redacted-intel">Classified</span>'
+      : formatClueValueHtml(displayVal);
 
     if (
       mode === 'actor' &&
@@ -1366,7 +1493,7 @@ function renderClues(mode, clues, options = {}) {
       typeof value === 'string' &&
       value.length === 2
     ) {
-      displayVal = renderCountryFlagChip(value);
+      displayValHtml = renderCountryFlagChip(value);
     }
 
     const div = document.createElement('div');
@@ -1379,8 +1506,8 @@ function renderClues(mode, clues, options = {}) {
     }
 
     div.innerHTML = `
-      <span class="clue-label">${getClueLabel(mode, key)}</span>
-      <span class="clue-value">${displayVal}</span>
+      <span class="clue-label">${escapeHtml(getClueLabel(mode, key))}</span>
+      <span class="clue-value">${displayValHtml}</span>
     `;
     bindFlagFallback(div);
     if (animateEntrance) {
@@ -1443,18 +1570,16 @@ function renderGridHistory(mode) {
            
            if (attr === 'country' && typeof val === 'string' && val.length === 2 && val !== 'None') {
                cell.innerHTML = `
-                  <div class="cell-label">${attr.replace(/_/g, ' ')}</div>
+                   <div class="cell-label">${escapeHtml(attr.replace(/_/g, ' '))}</div>
                   <div class="cell-value">${renderCountryFlagChip(val, 'country-flag-chip-grid')}</div>
                `;
                bindFlagFallback(cell);
            } else {
-               let prefix = '';
-               if (status === 'higher') prefix = '↑ ';
-               if (status === 'lower') prefix = '↓ ';
-               cell.innerHTML = `
-                  <div class="cell-label">${attr.replace(/_/g, ' ')}</div>
-                  <div class="cell-value">${prefix}${val}</div>
-               `;
+                const displayPrefix = status === 'higher' ? '&uarr; ' : status === 'lower' ? '&darr; ' : '';
+                cell.innerHTML = `
+                   <div class="cell-label">${escapeHtml(attr.replace(/_/g, ' '))}</div>
+                   <div class="cell-value">${displayPrefix}${escapeHtml(val)}</div>
+                `;
            }
            
            cell.style.animationDelay = `${delayIndex * 0.15}s`;
@@ -1541,14 +1666,20 @@ async function showSummaryModal() {
       const summaryData = await apiGetSummary(currentState.snapshot_id, currentState.day_key);
       if (summaryData.incident_source && summaryData.incident_source.url) {
           const source = summaryData.incident_source;
-          summaryHTML += `<div class="event-summary">
-            <p><strong>Incident Source:</strong> <a href="${source.url}" target="_blank">${source.title || 'Incident source'}</a></p>
-          </div>`;
+          const sourceUrl = sanitizeUrl(source.url);
+          if (sourceUrl) {
+            summaryHTML += `<div class="event-summary">
+              <p><strong>Incident Source:</strong> <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.title || 'Incident source')}</a></p>
+            </div>`;
+          }
       } else if (summaryData.timeline_provenance && summaryData.timeline_provenance.source_url) {
           const prov = summaryData.timeline_provenance;
-          summaryHTML += `<div class="event-summary">
-            <p><strong>Incident Source:</strong> <a href="${prov.source_url}" target="_blank">${prov.flow_name || 'Campaign Report'}</a></p>
-          </div>`;
+          const provenanceUrl = sanitizeUrl(prov.source_url);
+          if (provenanceUrl) {
+            summaryHTML += `<div class="event-summary">
+              <p><strong>Incident Source:</strong> <a href="${escapeHtml(provenanceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(prov.flow_name || 'Campaign Report')}</a></p>
+            </div>`;
+          }
       }
   } catch(e) {
       console.error("Failed to fetch game summary", e);
@@ -1575,6 +1706,7 @@ async function showSummaryModal() {
     </ul>
     
     ${summaryHTML}
+    ${getStreakSummaryHTML()}
     
     <p class="return-msg">Return tomorrow for a new investigation or look in the archive for unsolved cases.</p>
   `;
