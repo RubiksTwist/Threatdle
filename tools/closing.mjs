@@ -1,12 +1,13 @@
 // Closes SOC Analyst cases without stating the answer: the last clue is a vendor naming-family hint
 // ("CrowdStrike's name for this group ends in Spider"), quoting an OPTIC article that uses that name.
-// It first removes any closing clue that names the group. Target: 1 Most Wanted group left; 2 is accepted when no hint gets to 1.
-// Safe to rerun: a case that already ends at 1 without naming the group is left alone.
+// It first removes any closing clue that names the group, and any family hint that rules out no group where it stands
+// (after the country clue every group shares a family). Target: 1 Most Wanted group left; 2 is accepted when no hint gets to 1.
+// Safe to rerun: a case that passes check-cases is left alone.
 // Usage: node tools/closing.mjs <bodies.jsonl.gz>
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { buildPool } from './export.mjs';
-import { ladder, CLOSE_MAX, ANALYST_MAX_CLUES } from './check-cases.mjs';
+import { ladder, checkCase, CLOSE_MAX, ANALYST_MAX_CLUES } from './check-cases.mjs';
 
 import { FAMILIES } from '../public/js/rules.mjs';
 const { CrowdStrike: CS, Microsoft: MS } = FAMILIES;
@@ -49,10 +50,12 @@ function cite(name, own) {
 
 let kept = 0, toOne = 0, toTwo = 0, stuck = [];
 for (const { j } of files) for (const c of j.cases) {
-  if (c.mode !== 'analyst') continue;
+  if (c.mode !== 'analyst' || !checkCase(c, byId).length) continue;
   const a = byId[c.culprit];
   const before = c.clues.length;
   c.clues = c.clues.filter(k => !k.facts?.name && !names(a).some(n => says(k.text, n)));
+  const idle = (k, i) => { const l = ladder(c, byId); return Object.keys(k.facts || {}).join() === 'family' && i > 0 && l[i] === l[i - 1]; };
+  for (let i; (i = c.clues.findIndex(idle)) >= 0;) c.clues.splice(i, 1);
   if (c.clues.length === before && ladder(c, byId).at(-1) === 1) { kept++; continue; }
   let best = null;
   for (const family of [...new Set(names(a).map(n => [...CS, ...MS].find(f => n.endsWith(' ' + f))).filter(Boolean))]) {

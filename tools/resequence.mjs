@@ -1,28 +1,24 @@
-// Reorders SOC Analyst clues so the first clue leaves 6-14 of the Most Wanted, keeping the ladder (5 or fewer by clue 4)
-// and the closing clue last. Two clues quoting the same passage (one quote inside the other) may merge into one.
+// Reorders SOC Analyst clues so the first clue leaves 6-14 of the Most Wanted, keeping the ladder (5 or fewer by clue 4),
+// 2 or fewer at the end, and a last clue that narrows the field or says something new. Two clues quoting the same passage (one quote inside the other) may merge into one.
 // A clue that leans on the one before it ("That government...", "Also...") never moves ahead of it.
 // Among passing orders it prefers a slow descent (many suspects left after clues 2 and 3, clue 1 near 10), so the
-// tracker has work to do, then the fewest moved clues. Safe to rerun: the best order of an optimised case is itself.
+// tracker has work to do, then the fewest moved clues. Safe to rerun: a case that passes check-cases is left alone.
 // Usage: node tools/resequence.mjs [--dry]
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { buildPool } from './export.mjs';
 import { COUNTRY } from '../public/js/rules.mjs';
-import { ladder, FIRST_MIN, FIRST_MAX, LADDER_AT, LADDER_MAX, CLOSE_MAX } from './check-cases.mjs';
+import { ladder, deadCloser, checkCase, FIRST_MIN, FIRST_MAX, LADDER_AT, LADDER_MAX, CLOSE_MAX } from './check-cases.mjs';
 
 const dry = process.argv.includes('--dry');
 const byId = Object.fromEntries(buildPool().actors.map(a => [a.id, a]));
 const dir = new URL('../data/drafts/', import.meta.url);
 const files = readdirSync(dir).filter(f => f.endsWith('.json')).map(f => ({ f, j: JSON.parse(readFileSync(new URL(f, dir), 'utf8')) }));
 const LEANS = /^(that|those|this|these|its|their|also|it also|they also|the same|then|later|both|another|again|once inside|after that)\b/i;
-const passes = c => { const l = ladder(c, byId); return l[0] >= FIRST_MIN && l[0] <= FIRST_MAX && l[Math.min(LADDER_AT, l.length) - 1] <= LADDER_MAX && l.at(-1) <= CLOSE_MAX; };
+const passes = c => { const l = ladder(c, byId); return l[0] >= FIRST_MIN && l[0] <= FIRST_MAX && l[Math.min(LADDER_AT, l.length) - 1] <= LADDER_MAX && l.at(-1) <= CLOSE_MAX && !deadCloser(c, byId); };
 
 const perms = a => (a.length <= 1 ? [a] : a.flatMap((x, i) => perms([...a.slice(0, i), ...a.slice(i + 1)]).map(p => [x, ...p])));
 // Index lists the clue order may take: each clue that leans on its predecessor stays after it.
-function orders(clues) {
-  const body = clues.map((_, i) => i).slice(0, -1);
-  return perms(body).filter(p => p.every((ci, pos) => !LEANS.test(clues[ci].text.trim()) || ci === 0 || p.indexOf(ci - 1) < pos))
-    .map(p => [...p, clues.length - 1]);
-}
+const orders = clues => perms(clues.map((_, i) => i)).filter(p => p.every((ci, pos) => !LEANS.test(clues[ci].text.trim()) || ci === 0 || p.indexOf(ci - 1) < pos));
 const sameQuote = (a, b) => a.includes(b) || b.includes(a);
 const moved = p => p.reduce((s, ci, pos) => s + Math.abs(ci - pos), 0);
 function merge(clues, i, j) {
@@ -46,9 +42,9 @@ function standalone(k) {
 let fixedOrder = 0, fixedMerge = 0, fixedAlone = 0;
 const stuck = [];
 for (const { j } of files) for (const c of j.cases) {
-  if (c.mode !== 'analyst') continue;
+  if (c.mode !== 'analyst' || !checkCase(c, byId).length) continue;
   const tries = [{ clues: c.clues, merged: false }];
-  for (let i = 0; i < c.clues.length - 1; i++) for (let k = i + 1; k < c.clues.length - 1; k++)
+  for (let i = 0; i < c.clues.length; i++) for (let k = i + 1; k < c.clues.length; k++)
     if (sameQuote(c.clues[i].source.quote, c.clues[k].source.quote) && Object.keys(c.clues[i].facts).length && Object.keys(c.clues[k].facts).length) {
       const m = merge(c.clues, i, k);
       if (m[i].text.length <= 170) tries.push({ clues: m, merged: true });

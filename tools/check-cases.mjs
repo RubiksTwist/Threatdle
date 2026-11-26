@@ -13,6 +13,24 @@ export function ladder(c, byId) {
   return c.clues.map((_, i) => 1 + roster.filter(a => c.clues.slice(0, i + 1).every(k => fits(a, k.facts))).length);
 }
 
+// Groups that fit the first n clues: the Most Wanted in SOC Analyst, every group in Threat Hunter. The culprit counts.
+export function fitAfter(c, byId, n) {
+  const pool = Object.values(byId).filter(a => (c.mode === 'hunter' || a.roster) && a.id !== c.culprit);
+  return 1 + pool.filter(a => c.clues.slice(0, n).every(k => fits(a, k.facts))).length;
+}
+// Does the clue say something no earlier clue said? A clue with no facts is a tradecraft detail, which is new by itself.
+// A family hint is never new on its own: it only counts if it narrows.
+function newFact(f = {}, earlier) {
+  if (!Object.keys(f).length) return true;
+  return Object.entries(f).some(([key, v]) => key !== 'family'
+    && [].concat(v).some(x => !earlier.some(k => [].concat(k.facts?.[key] ?? []).includes(x))));
+}
+// The last clue is the player's last help: it must narrow the field or say something no earlier clue said.
+export function deadCloser(c, byId) {
+  const n = c.clues.length;
+  return n > 1 && fitAfter(c, byId, n) >= fitAfter(c, byId, n - 1) && !newFact(c.clues[n - 1].facts, c.clues.slice(0, -1));
+}
+
 const words = s => s.toLowerCase().replace(/[^a-z0-9$ ]+/g, ' ').split(/\s+/).filter(Boolean);
 function sharedRun(a, b) {
   const x = words(a), y = words(b);
@@ -72,6 +90,7 @@ export function checkCase(c, byId, all = [c]) {
     const last = ladder(c, byId).at(-1);
     if (last > CLOSE_MAX) bad.push(`closing: ${last} Most Wanted groups still fit after the last clue (max ${CLOSE_MAX})`);
   }
+  if (n > 1 && deadCloser(c, byId)) bad.push(`closing: the last clue rules out no group (${fitAfter(c, byId, n)} fit) and states no new fact`);
   const sentences = (c.story || '').replace(/\b(?:[A-Z]\.){2,}/g, 'X').split(/(?<=[.!?])\s+(?=[A-Z0-9"'])/).filter(Boolean).length;
   if (sentences < 2 || sentences > 3 || c.story.length > 480) bad.push(`story has ${sentences} sentences or is too long`);
   const r = c.report || {};
