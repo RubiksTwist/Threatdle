@@ -1,84 +1,81 @@
-// Simulated players on the real case set: the SOC Analyst guess spread and the Threat Hunter win rate and spread.
-// Usage: node tools/simulate.mjs [--approved] [N]   (default: every draft, N=200 games per case per random strategy)
-// A player model sees only what the page shows: the clues so far, the rows so far, and each group's public card.
-import { MODES, fits, fold, compare, play } from '../public/js/rules.mjs';
+// Simulated players on the real case set, played through the same rules the server and page use.
+// Usage: node tools/simulate.mjs [N] [--approved] [--data <dir with cases.json and pool.json>]
+//   N = games per case for each random player (default 200). --data replays an older case set.
+// Players:
+//   random   taps any Most Wanted group it has not tried (Hunter: any group).
+//   newcomer knows no group facts. Without the tracker it reads the clues against the Browse cards (home, profile, targets)
+//            and the Home and Type cells of its rows, then guesses any group that still looks possible.
+//   tracker  the same newcomer with the suspect tracker: it guesses any group the tracker still lists.
+//   ideal    knows every public card and picks the guess that splits the suspects best.
+import { readFileSync } from 'node:fs';
+import { MODES, fits, fitsAll, fold, compare, play, possible } from '../public/js/rules.mjs';
 import { buildPool, buildCases } from './export.mjs';
 
 const args = process.argv.slice(2), N = +(args.find(a => /^\d+$/.test(a)) || 200);
-const pool = buildPool().actors, byId = Object.fromEntries(pool.map(a => [a.id, a]));
-const cases = buildCases().filter(c => !args.includes('--approved') || c.reviewed);
-const ROSTER = pool.filter(a => a.roster);
+const dataDir = args.includes('--data') ? args[args.indexOf('--data') + 1] : null;
+const read = f => JSON.parse(readFileSync(`${dataDir}/${f}`, 'utf8'));
+const pool = dataDir ? read('pool.json').actors : buildPool().actors;
+const serverById = Object.fromEntries(pool.map(a => [a.id, a]));
+const byId = Object.fromEntries(pool.map(({ tools, tricks, ...a }) => [a.id, a]));  // what the page has
+const cases = (dataDir ? read('cases.json').cases : buildCases()).filter(c => !args.includes('--approved') || c.reviewed);
 
 function rng(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-const key = (mode, f) => [f.correct, ...MODES[mode].cols.map(k => f[k])].join('|');
-// An expert also knows which tools each group uses.
-const expertFits = (a, f) => fits(a, f) && (!f.tools || f.tools.some(t => a.tools.includes(t)));
+const ROSTER = Object.values(byId).filter(a => a.roster), ALL = Object.values(byId);
 
-// Could x be the culprit, given the clues shown and the rows so far? (cols limits which row cells the player reads.)
-function consistent(mode, kase, x, guesses, shown, fitFn, cols = MODES[mode].cols) {
-  if (!kase.clues.slice(0, shown).every(c => fitFn(x, c.facts))) return false;
-  const truth = byId[kase.culprit];
-  return guesses.every((g, i) => {
-    if (g === x.id) return false;
-    const at = kase.clues.slice(0, Math.min(kase.clues.length, i + 1));
-    const seen = compare(byId[g], fold(truth, at)), mine = compare(byId[g], fold(x, at));
-    return cols.every(k => seen[k] === mine[k]);
+// The newcomer without the tracker: clue facts it can check on a card, plus the Home and Type cells.
+function looksPossible(mode, x, g) {
+  if (!fitsAll(x, g.clues)) return false;
+  return g.rows.every((r, i) => {
+    if (r.id === x.id) return false;
+    const f = compare(byId[r.id], fold(x, g.clues.slice(0, i + 1)));
+    return ['home', 'type'].every(k => r.cells.find(c => c.k === k).tone === { match: 'hit', near: 'near', partial: 'near', miss: 'miss', unknown: 'unk' }[f[k]]);
   });
 }
-function bestSplit(mode, kase, cands, options, shown) {
+const key = (mode, f) => [f.correct, ...MODES[mode].cols.filter(k => k !== 'tools' && k !== 'tricks').map(k => f[k])].join('|');
+function bestSplit(mode, cands, options, clues) {
   if (cands.length === 1) return cands[0];
-  const at = kase.clues.slice(0, shown);
   let best = null, score = Infinity;
   for (const g of options) {
     const parts = new Map();
-    for (const c of cands) { const k = c === g ? 'win' : key(mode, compare(g, fold(c, at))); parts.set(k, (parts.get(k) || 0) + 1); }
+    for (const c of cands) { const k = c === g ? 'win' : key(mode, compare(g, fold(c, clues))); parts.set(k, (parts.get(k) || 0) + 1); }
     const s = [...parts.values()].reduce((x, n) => x + n * n, 0) - (cands.includes(g) ? 0.5 : 0);
     if (s < score) { score = s; best = g; }
   }
   return best;
 }
 
-// One game. Returns guesses to solve, or 'X' when a hunter goes cold.
-function game(mode, kase, strat, R) {
-  const options = mode === 'analyst' ? ROSTER : pool, max = MODES[mode].max || Infinity, n = kase.clues.length;
-  const fitFn = mode === 'hunter' && strat === 'ideal' ? expertFits : fits;
-  const guesses = [];
-  while (guesses.length < max) {
-    const shown = Math.min(n, guesses.length + 1), left = options.filter(a => !guesses.includes(a.id));
-    let g;
-    if (strat === 'random') g = left[Math.floor(R() * left.length)];
-    else {
-      const cols = strat === 'casual' ? ['home', 'type'] : undefined;
-      const C = left.filter(x => consistent(mode, kase, x, guesses, shown, fitFn, cols));
-      const p = C.length ? C : left;
-      g = strat === 'ideal' ? bestSplit(mode, kase, p, left, shown) : p[Math.floor(R() * p.length)];
-    }
-    guesses.push(g.id);
-    if (g.id === kase.culprit) return guesses.length;
+// One game through the real rules. Returns guesses to solve, or 'X' when a hunter goes cold.
+function game(mode, kase, who, R) {
+  const options = mode === 'analyst' ? ROSTER : ALL, guesses = [];
+  for (;;) {
+    const g = play(mode, kase, guesses, serverById);
+    if (g.status === 'solved') return guesses.length;
+    if (g.status === 'cold') return 'X';
+    const left = options.filter(a => !guesses.includes(a.id));
+    const pickFrom = who === 'random' ? left
+      : who === 'newcomer' ? left.filter(x => looksPossible(mode, x, g))
+        : possible(mode, left, g.clues, g.rows, byId);
+    const p = pickFrom.length ? pickFrom : left;
+    guesses.push((who === 'ideal' ? bestSplit(mode, p, left, g.clues) : p[Math.floor(R() * p.length)]).id);
   }
-  return 'X';
 }
 
 const mean = xs => xs.reduce((a, b) => a + b, 0) / xs.length;
-const sd = xs => { const m = mean(xs); return Math.sqrt(mean(xs.map(x => (x - m) ** 2))); };
-const pct = (xs, p) => { const s = [...xs].sort((a, b) => a - b); return s[Math.min(s.length - 1, Math.floor(p * s.length))]; };
-const hist = (xs, bins) => bins.map(([lo, hi, label]) => `${label}:${((100 * xs.filter(x => (x === 'X' ? lo === 'X' : x >= lo && x <= hi)).length) / xs.length).toFixed(0)}%`).join(' ');
-
-// Sanity: replaying the culprit through the real rules solves every case on the spot.
-for (const c of cases) if (play(c.mode, c, [c.culprit], byId).status !== 'solved') throw new Error(`${c.id} does not solve`);
-
+const q = (xs, p) => { const s = [...xs].sort((a, b) => a - b); return s[Math.min(s.length - 1, Math.floor(p * s.length))]; };
+const share = (xs, f) => `${((100 * xs.filter(f).length) / xs.length).toFixed(0)}%`;
 const A = cases.filter(c => c.mode === 'analyst'), H = cases.filter(c => c.mode === 'hunter');
-console.log(`cases: analyst ${A.length}, hunter ${H.length}; N=${N} games per case per random strategy`);
-const ABINS = [[1, 1, '1'], [2, 2, '2'], [3, 3, '3'], [4, 4, '4'], [5, 5, '5'], [6, 9, '6-9'], [10, 19, '10-19'], [20, 99, '20+']];
-for (const strat of ['random', 'casual', 'consistent', 'ideal']) {
-  const R = rng(7), all = [];
-  for (const c of A) for (let i = 0; i < (strat === 'ideal' ? 1 : N); i++) all.push(game('analyst', c, strat, R));
-  console.log(`SOC Analyst ${strat.padEnd(10)} mean ${mean(all).toFixed(2)} sd ${sd(all).toFixed(2)} P10-P90 ${pct(all, 0.1)}-${pct(all, 0.9)} | ${hist(all, ABINS)}`);
+console.log(`cases: analyst ${A.length}, hunter ${H.length}; N=${N} games per case for each random player${dataDir ? `; data ${dataDir}` : ''}`);
+console.log('SOC Analyst   player    | mean  median P90 | 1    2    3    4    5    6-9  10+');
+for (const who of ['random', 'newcomer', 'tracker', 'ideal']) {
+  const R = rng(7), xs = [];
+  for (const c of A) for (let i = 0; i < (who === 'ideal' ? 1 : N); i++) xs.push(game('analyst', c, who, R));
+  const b = [1, 2, 3, 4, 5].map(n => share(xs, x => x === n).padEnd(4));
+  console.log(`SOC Analyst   ${who.padEnd(9)} | ${mean(xs).toFixed(2).padEnd(5)} ${String(q(xs, 0.5)).padEnd(6)} ${String(q(xs, 0.9)).padEnd(3)} | ${b.join(' ')} ${share(xs, x => x >= 6 && x <= 9).padEnd(4)} ${share(xs, x => x >= 10)}`);
 }
-const HBINS = [[1, 1, '1'], [2, 2, '2'], [3, 3, '3'], [4, 4, '4'], [5, 5, '5'], [6, 6, '6'], ['X', 'X', 'X']];
-for (const strat of ['random', 'casual', 'consistent', 'ideal']) {
-  const R = rng(11), all = [];
-  for (const c of H) for (let i = 0; i < (strat === 'ideal' ? 1 : N); i++) all.push(game('hunter', c, strat, R));
-  const wins = all.filter(x => x !== 'X');
-  console.log(`Threat Hunter ${strat.padEnd(10)} win ${((100 * wins.length) / all.length).toFixed(1)}% | mean guesses when solved ${wins.length ? mean(wins).toFixed(2) : '-'} | ${hist(all, HBINS)}`);
+console.log('Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold');
+for (const who of ['random', 'newcomer', 'tracker', 'ideal']) {
+  const R = rng(11), xs = [];
+  for (const c of H) for (let i = 0; i < (who === 'ideal' ? 1 : N); i++) xs.push(game('hunter', c, who, R));
+  const wins = xs.filter(x => x !== 'X');
+  console.log(`Threat Hunter ${who.padEnd(9)} | ${share(xs, x => x !== 'X').padEnd(6)} ${String(wins.length ? q(wins, 0.5) : '-').padEnd(19)} | ${[1, 2, 3, 4, 5, 6].map(n => share(xs, x => x === n).padEnd(4)).join(' ')} ${share(xs, x => x === 'X')}`);
 }

@@ -1,0 +1,26 @@
+# node tools/simulate.mjs 200, 2026-11-26
+## Before the closing and opening rules (case set at 86a0220)
+cases: analyst 80, hunter 73; N=200 games per case for each random player
+SOC Analyst   player    | mean  median P90 | 1    2    3    4    5    6-9  10+
+SOC Analyst   random    | 26.45 27     47  | 2%   2%   2%   2%   2%   8%   83%
+SOC Analyst   newcomer  | 3.31  3      5   | 5%   21%  34%  23%  12%  5%   0%
+SOC Analyst   tracker   | 2.59  2      4   | 5%   45%  38%  10%  2%   0%   0%
+SOC Analyst   ideal     | 2.33  2      3   | 0%   68%  33%  0%   0%   0%   0%
+Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold
+Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   1%   97%
+Threat Hunter newcomer  | 56%    6                   | 1%   3%   5%   7%   10%  29%  44%
+Threat Hunter tracker   | 98%    4                   | 1%   14%  32%  28%  17%  6%   2%
+Threat Hunter ideal     | 100%   3                   | 0%   16%  55%  27%  1%   0%   0%
+
+## After (this commit)
+cases: analyst 74, hunter 73; N=200 games per case for each random player
+SOC Analyst   player    | mean  median P90 | 1    2    3    4    5    6-9  10+
+SOC Analyst   random    | 26.59 27     47  | 2%   2%   2%   2%   2%   8%   83%
+SOC Analyst   newcomer  | 2.64  3      4   | 19%  31%  27%  15%  7%   1%   0%
+SOC Analyst   tracker   | 2.08  2      3   | 19%  57%  20%  3%   0%   0%   0%
+SOC Analyst   ideal     | 1.93  2      2   | 8%   91%  1%   0%   0%   0%   0%
+Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold
+Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   1%   97%
+Threat Hunter newcomer  | 56%    6                   | 1%   3%   5%   7%   10%  29%  44%
+Threat Hunter tracker   | 98%    4                   | 0%   14%  32%  29%  17%  6%   2%
+Threat Hunter ideal     | 100%   3                   | 0%   15%  62%  23%  0%   0%   0%
