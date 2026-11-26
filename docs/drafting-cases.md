@@ -36,7 +36,7 @@ One JSON file per batch in `data/drafts/`, shaped `{ "cases": [Case, ...] }`:
 1. **Plain English.** Write for a smart 14-year-old. Say "a booby-trapped shortcut file", not "a malicious LNK"; "fake login page", not "credential phishing portal". At most 170 characters, one or two short sentences.
 2. **Your own words.** Never reuse 6 or more words in a row from the quote. `tools/check-cases.mjs` rejects it.
 3. **No new facts.** The clue says only what its quote says. If the quote names a sector, the clue may name it; it may not add a country the quote does not give.
-4. **Never name the culprit** or any alias in the packet's alias list before a name clue. Avoid vendor-specific names that are aliases (Secret Blizzard is Turla).
+4. **Never name the culprit** or any alias in the packet's alias list, in any clue. Avoid vendor-specific names that are aliases (Secret Blizzard is Turla).
 5. **`source.quote`** is the original sentence or phrase from the article body, copied exactly (no `[ACTOR]` redactions), at least 20 characters. Add `"note"` to `source` when the fact needs a reason the quote does not show.
 6. **`facts`** record what the clue asserts, in the vocabulary below. Only facts the quote supports. A clue with no checkable fact (a tradecraft detail) has `"facts": {}`.
 7. **`kind`**: `victim`, `breakin`, `tool`, `took` (what they stole or wanted), `hid` (how they stayed hidden), `tipoff` (attribution, motive, origin, a name).
@@ -49,8 +49,8 @@ One JSON file per batch in `data/drafts/`, shaped `{ "cases": [Case, ...] }`:
 | `motive` | `Espionage`, `Financial Gain`, `Sabotage`, `Hacktivism` | The quote says spying, stealing money, destroying or disrupting, a cause. |
 | `home` | `COUNTRY` codes | The quote ties the attackers to a country ("Russian state actor", "North Korean hackers"). |
 | `tools` | ATT&CK `S` ids | A tool or malware clue whose software has an ATT&CK id. |
-| `name` | an alias from the packet | Threat Hunter only, last clue only. A SOC Analyst clue never names the group. |
-| `family` | a vendor naming word: `Bear`, `Panda`, `Typhoon`, `Tempest`... | The report's name for the group ends in it. |
+| `name` | not used | No clue in either mode names the group, its nickname or any alias. |
+| `family` | a vendor naming word: `Bear`, `Panda`, `Typhoon`, `Tempest`... | A naming-family hint. Text exactly `CrowdStrike's name for this group ends in "Spider".` (CrowdStrike animals) or `Microsoft files this group under "Sleet".` (Microsoft weather words). The quote is a sentence that uses that name; add `"note": "<name> is the culprit's CrowdStrike name."`. |
 
 ## SOC Analyst cases (easy)
 - Culprit must be on the Most Wanted (`Most Wanted: yes` in the packet).
@@ -62,7 +62,7 @@ One JSON file per batch in `data/drafts/`, shaped `{ "cases": [Case, ...] }`:
 
 ## Threat Hunter cases (hard)
 - Any group may be the culprit. Prefer groups that are not on the Most Wanted.
-- Exactly **6 clues**, harder first: break-in, how they hid, what they took, tools, then victim and motive, then country and tip-offs. A clue that names the group (`facts.name`) can only be clue 6.
+- Exactly **6 clues**, harder first: break-in, how they hid, what they took, tools, then victim and motive, then country and tip-offs. No clue names the group: a name as clue 6 hands the player a free last guess. Clue 6 is a naming-family hint or a fact that sets the group apart.
 - Expert tells are welcome early (a malware family only this group uses is fine at clue 3-4, not clue 1).
 
 ## Story (both modes)

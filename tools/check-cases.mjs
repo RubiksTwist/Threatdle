@@ -57,12 +57,11 @@ export function checkCase(c, byId, all = [c]) {
     if (f.home && a.home && f.home !== a.home) bad.push(`${at}: says home ${f.home}, the culprit is ${a.home}`);
     if (f.type && a.type && f.type !== a.type) bad.push(`${at}: says ${f.type}, the culprit is ${a.type}`);
     if (f.name && !names(a).concat(a.name).some(x => x.toLowerCase() === f.name.toLowerCase())) bad.push(`${at}: name ${f.name} is not the culprit's`);
-    if (f.name && i !== n - 1) bad.push(`${at}: a clue that names the group must come last`);
-    if (f.name && c.mode === 'analyst') bad.push(`${at}: a SOC Analyst clue never names the group`);
+    if (f.name) bad.push(`${at}: a clue never names the group`);
     if (!fits(a, f)) bad.push(`${at}: the culprit's public card contradicts this clue`);
     const leak = names(a).find(x => mentions(k.text || '', x));
-    // A SOC Analyst clue never states the answer. Threat Hunter keeps its contract: a name clue may close the case as clue 6.
-    if (leak && !(c.mode === 'hunter' && f.name && i === n - 1)) bad.push(`${at}: names the culprit (${leak})`);
+    // No clue in either mode states the answer: a name as clue 6 hands a Threat Hunter a free last guess.
+    if (leak) bad.push(`${at}: names the culprit (${leak})`);
     if (k.source && sharedRun(k.text || '', k.source.quote || '') >= 6) bad.push(`${at}: copies 6+ words of the vendor quote`);
   });
   if (c.mode === 'analyst' && n >= LADDER_AT) {
