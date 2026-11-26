@@ -104,7 +104,7 @@ function review(cases, byId, problems) {
       if (fit) out.push(`Most Wanted groups that still fit after each clue: ${fit.join(' → ')}`, '');
       if (bad.length) out.push(`**Check failures:** ${bad.join('; ')}`, '');
       out.push('| # | Kind | Player sees | Facts | Source quote |', '| --- | --- | --- | --- | --- |');
-      c.clues.forEach((k, i) => out.push(`| ${i + 1} | ${k.kind} | ${cell(k.text)} | ${cell(FACT(k.facts))} | ${cell(k.source.quote)} |`));
+      c.clues.forEach((k, i) => out.push(`| ${i + 1} | ${k.kind} | ${cell(k.text)} | ${cell(FACT(k.facts))} | ${cell(k.source.quote)}${k.source.note ? ` **Note:** ${cell(k.source.note)}` : ""} |`));
       out.push('', `What happened: ${c.story}`, '');
     }
   }
