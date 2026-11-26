@@ -175,6 +175,15 @@ test('fits: victim clues never rule out unknown targets; home, type and motive d
   assert.ok(R.fits(bear, { name: 'fancy bear' }));
 });
 
+test('fits: a naming-family hint rules out only a known name from that vendor in another family', () => {
+  const kitten = A('k', { name: 'APT33', aliases: ['Peach Sandstorm', 'REFINED KITTEN'] });
+  assert.ok(R.fits(kitten, { family: 'Kitten' }), 'a filled name counts, whatever its case');
+  assert.ok(!R.fits(bear, { family: 'Kitten' }), 'a known CrowdStrike name in another family rules the group out');
+  assert.ok(R.fits(A('u', { aliases: ['Ruby Sleet'] }), { family: 'Chollima' }), 'no CrowdStrike name known: still possible');
+  assert.ok(R.fits(bear, { family: 'Sleet' }), 'a CrowdStrike name says nothing about the Microsoft family');
+  assert.ok(!R.fits(kitten, { family: 'Blizzard' }));
+});
+
 test('sectionOf files groups by nickname home, then by country', () => {
   assert.equal(R.sectionOf(bear), 'RU');
   assert.equal(R.sectionOf(spider), 'crime');

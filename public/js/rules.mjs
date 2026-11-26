@@ -32,6 +32,17 @@ export const KINDS = { victim: 'Victim', breakin: 'Break-in', tool: 'Tool', took
 
 export const displayName = a => a.nickname || a.name;
 
+// Vendor naming families: the last word of a CrowdStrike or Microsoft name tells a newcomer where a group is from.
+export const FAMILIES = {
+  CrowdStrike: ['Bear', 'Panda', 'Kitten', 'Chollima', 'Spider', 'Tiger', 'Leopard', 'Buffalo', 'Jackal', 'Crane', 'Wolf', 'Ocelot', 'Hawk', 'Lynx', 'Saiga'],
+  Microsoft: ['Blizzard', 'Typhoon', 'Sandstorm', 'Sleet', 'Tempest', 'Hail', 'Dust', 'Cyclone', 'Rain', 'Flood', 'Tsunami'],
+};
+export const vendorOf = family => Object.keys(FAMILIES).find(v => FAMILIES[v].includes(family)) || null;
+const lastWord = n => (/\s([A-Za-z]+)$/.exec(n || '') || [])[1]?.toLowerCase();
+// The family words of a group's known names from one vendor ("Refined Kitten" gives kitten). Empty when that vendor's name is unknown.
+export const familiesOf = (a, vendor) => [...new Set([a.name, a.nickname, ...(a.aliases || [])].map(lastWord)
+  .filter(w => w && FAMILIES[vendor].some(f => f.toLowerCase() === w)))];
+
 // ---------- calendar: one case per mode per day, rolling over at midnight in New York ----------
 export const ZONE = 'America/New_York';
 const fmt = new Intl.DateTimeFormat('en-CA', { timeZone: ZONE, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
@@ -62,14 +73,15 @@ const sectorNear = (t, x) => t === x || (t === 'Private sector' && COMPANY.has(x
   || (t === 'Critical infrastructure' && x === 'Energy') || (x === 'Critical infrastructure' && t === 'Energy');
 
 // Does an actor fit what one clue says, on facts a player can see (tools need expert knowledge and never count)?
-// Unknown targets never rule a group out; an unknown home, type or motive does.
+// Unknown targets never rule a group out; an unknown home, type or motive does. A naming-family hint rules a group out only
+// when its name from that vendor is known and in another family: an unknown name stays possible, like unknown targets.
 export function fits(a, f = {}) {
   if (f.home && a.home !== f.home) return false;
   if (f.type && a.type !== f.type) return false;
   if (f.motive && !(a.motive || []).includes(f.motive)) return false;
   if (f.targets && a.targets && a.targets.length && !f.targets.some(x => a.targets.some(t => sectorNear(t, x)))) return false;
   if (f.name && ![a.name, a.nickname, ...(a.aliases || [])].some(n => n && n.toLowerCase() === f.name.toLowerCase())) return false;
-  if (f.family && ![a.name, a.nickname, ...(a.aliases || [])].some(n => n && n.endsWith(' ' + f.family))) return false;
+  if (f.family) { const known = familiesOf(a, vendorOf(f.family)); if (known.length && !known.includes(f.family.toLowerCase())) return false; }
   return true;
 }
 export const fitsAll = (a, clues) => clues.every(c => fits(a, c.facts));

@@ -8,8 +8,8 @@ import { gunzipSync } from 'node:zlib';
 import { buildPool } from './export.mjs';
 import { ladder, CLOSE_MAX, ANALYST_MAX_CLUES } from './check-cases.mjs';
 
-const CS = ['Bear', 'Panda', 'Kitten', 'Chollima', 'Spider', 'Tiger', 'Leopard', 'Buffalo', 'Jackal', 'Crane', 'Wolf', 'Ocelot', 'Hawk', 'Lynx', 'Saiga'];
-const MS = ['Blizzard', 'Typhoon', 'Sandstorm', 'Sleet', 'Tempest', 'Hail', 'Dust', 'Cyclone', 'Rain', 'Flood', 'Tsunami'];
+import { FAMILIES } from '../public/js/rules.mjs';
+const { CrowdStrike: CS, Microsoft: MS } = FAMILIES;
 const hint = f => (CS.includes(f) ? `CrowdStrike's name for this group ends in "${f}".` : `Microsoft files this group under "${f}".`);
 const bodiesFile = process.argv[2];
 if (!bodiesFile) { console.error('usage: node tools/closing.mjs <bodies.jsonl.gz>'); process.exit(1); }

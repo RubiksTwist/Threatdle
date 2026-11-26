@@ -2,23 +2,23 @@
 //   data/source/attack-actors.json  every ATT&CK 20.1 group with country, year, motive, targets, tools and tricks
 //                                   (extracted from ATT&CK, Threatdle/MISP and OPTIC by the 2026-11-26 audit scripts)
 //   data/source/roster.json         Most Wanted ids;  data/source/overrides.json  hand-filled facts
+//   data/source/aliases.json        names ATT&CK lacks, from the MISP galaxy (tools/fill-aliases.mjs)
 //   data/drafts/*.json              drafted cases, one file per batch;  data/approved.json  case id -> hash of the approved case
 // Writes data/pool.json (server), public/pool.json (client, no tools or tricks), data/cases.json and data/review.md.
 // Usage: node tools/export.mjs
 import { readFileSync, writeFileSync, readdirSync, renameSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { checkCase, ladder } from './check-cases.mjs';
+import { FAMILIES } from '../public/js/rules.mjs';
 
 const read = p => JSON.parse(readFileSync(new URL('../' + p, import.meta.url), 'utf8'));
 const write = (p, s) => { const f = new URL('../' + p, import.meta.url), t = new URL(f.href + '.tmp'); writeFileSync(t, s); renameSync(t, f); };
 const json = o => JSON.stringify(o, null, 1) + '\n';
 
 // ---------- pool ----------
-// Vendor nickname systems: a CrowdStrike animal or a Microsoft weather name tells a newcomer where a group is from.
-const CS = ['Bear', 'Panda', 'Kitten', 'Chollima', 'Spider', 'Tiger', 'Leopard', 'Buffalo', 'Jackal', 'Crane', 'Wolf', 'Ocelot', 'Hawk', 'Lynx', 'Saiga'];
-const MS = ['Blizzard', 'Typhoon', 'Sandstorm', 'Sleet', 'Tempest', 'Hail', 'Dust', 'Cyclone', 'Rain', 'Flood', 'Tsunami'];
+// The nickname is the group's CrowdStrike name, else its Microsoft name, from ATT&CK's names first and the filled ones after.
 const suffix = n => (/^[A-Z][A-Za-z]+ ([A-Z][a-z]+)$/.exec(n || '') || [])[1];
-const nickname = a => { const names = [a.name, ...a.aliases]; for (const sys of [CS, MS]) { const hit = names.find(n => sys.includes(suffix(n))); if (hit) return hit; } return null; };
+const nickname = names => { for (const sys of Object.values(FAMILIES)) { const hit = names.find(n => sys.includes(suffix(n))); if (hit) return hit; } return null; };
 const typeOf = m => (m.includes('Espionage') || m.includes('Sabotage') ? 'state' : m.includes('Financial Gain') ? 'crime' : m.includes('Hacktivism') ? 'activist' : null);
 
 // Hand-written profiles for groups a casual player may have read about. Each stays true to the group's home and motive.
@@ -46,12 +46,13 @@ function profile(a) {
 // Otherwise a player who checks the Browse card against a clue would rule out the real culprit.
 export function buildPool() {
   const src = read('data/source/attack-actors.json'), roster = new Set(read('data/source/roster.json').ids), over = read('data/source/overrides.json').actors;
+  const filled = read('data/source/aliases.json').actors;
   const facts = {};
   for (const c of readDrafts()) for (const k of c.clues) (facts[c.culprit] ||= []).push(k.facts || {});
   const actors = src.map(r => {
     const o = over[r.attack_id] || {};
     const a = {
-      id: r.attack_id, name: r.name, nickname: null, aliases: [...new Set(r.aliases)].filter(x => x !== r.name),
+      id: r.attack_id, name: r.name, nickname: null, aliases: [...new Set([...r.aliases, ...(filled[r.attack_id]?.add || [])])].filter(x => x !== r.name),
       home: o.home ?? (r.country && r.country !== 'UN' ? r.country : null), type: null, motive: o.motive ?? r.motivation ?? [],
       since: o.since ?? r.first_seen_year ?? null, targets: o.targets ?? r.targets ?? [], profile: '', roster: roster.has(r.attack_id),
       tools: r.malware_ids, tricks: r.technique_ids,
@@ -65,7 +66,7 @@ export function buildPool() {
       a.type ??= f.type ?? null;
     }
     a.type ??= typeOf(a.motive);
-    a.nickname = nickname(a);
+    a.nickname = nickname([r.name, ...r.aliases]) || nickname(a.aliases);
     a.profile = profile(a);
     return a;
   });

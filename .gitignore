@@ -31,4 +31,5 @@ data/drafts/
 data/review.md
 data/schedule.json
 data/schedule.drafts.json
+data/review-baseline.json
 tests/screenshots/

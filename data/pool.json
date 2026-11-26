@@ -1,5 +1,5 @@
 {
- "version": "e3d2ab9631",
+ "version": "59e2b96378",
  "actors": [
   {
    "id": "G0001",
@@ -76,7 +76,11 @@
    "nickname": null,
    "aliases": [
     "TG-2889",
-    "Threat Group 2889"
+    "Threat Group 2889",
+    "Operation Cleaver",
+    "Op Cleaver",
+    "Tarh Andishan",
+    "Alibaba"
    ],
    "home": "IR",
    "type": null,
@@ -111,7 +115,15 @@
     "Nylon Typhoon",
     "Playful Dragon",
     "RoyalAPT",
-    "Vixen Panda"
+    "Vixen Panda",
+    "Metushy",
+    "Lurid",
+    "Social Network Team",
+    "Royal APT",
+    "BRONZE PALACE",
+    "BRONZE DAVENPORT",
+    "BRONZE IDLEWOOD",
+    "Red Vulture"
    ],
    "home": "CN",
    "type": "state",
@@ -196,7 +208,14 @@
     "DNSCALC",
     "DynCalc",
     "IXESHE",
-    "Numbered Panda"
+    "Numbered Panda",
+    "TG-2754",
+    "BeeBus",
+    "Group 22",
+    "Calc Team",
+    "Crimson Iron",
+    "BRONZE GLOBE",
+    "Hexagon Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -230,7 +249,14 @@
    "aliases": [
     "Comment Crew",
     "Comment Group",
-    "Comment Panda"
+    "Comment Panda",
+    "PLA Unit 61398",
+    "Byzantine Candor",
+    "Group 3",
+    "TG-8223",
+    "Brown Fox",
+    "GIF89a",
+    "ShadyRAT"
    ],
    "home": "CN",
    "type": "state",
@@ -308,7 +334,18 @@
     "Swallowtail",
     "TG-4127",
     "Threat Group-4127",
-    "Tsar Team"
+    "Tsar Team",
+    "SIG40",
+    "ATK5",
+    "Fighting Ursa",
+    "ITG05",
+    "Blue Athena",
+    "TA422",
+    "T-APT-12",
+    "APT-C-20",
+    "UAC-0028",
+    "UAC-0001",
+    "BlueDelta"
    ],
    "home": "RU",
    "type": "state",
@@ -361,8 +398,7 @@
     "S0645",
     "S1187",
     "S1205",
-    "S9035",
-    "S1010"
+    "S9035"
    ],
    "tricks": [
     "T1001.001",
@@ -566,7 +602,24 @@
     "Snake",
     "Venomous Bear",
     "Waterbug",
-    "WhiteBear"
+    "WhiteBear",
+    "WRAITH",
+    "Uroburos",
+    "Pfinet",
+    "TAG_0530",
+    "Hippo Team",
+    "Pacifier APT",
+    "Popeye",
+    "SIG23",
+    "MAKERSMARK",
+    "ATK13",
+    "ITG12",
+    "Blue Python",
+    "SUMMIT",
+    "UNC4210",
+    "UAC-0144",
+    "UAC-0024",
+    "UAC-0003"
    ],
    "home": "RU",
    "type": "state",
@@ -688,7 +741,11 @@
    "id": "G0011",
    "name": "PittyTiger",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "APT24",
+    "PITTY PANDA",
+    "Temp.Pittytiger"
+   ],
    "home": "CN",
    "type": null,
    "motive": [],
@@ -714,7 +771,20 @@
    "nickname": "Zigzag Hail",
    "aliases": [
     "DUBNIUM",
-    "Zigzag Hail"
+    "Zigzag Hail",
+    "Fallout Team",
+    "Karba",
+    "Luder",
+    "Nemim",
+    "Nemin",
+    "Tapaoux",
+    "Pioneer",
+    "Shadow Crane",
+    "APT-C-06",
+    "SIG25",
+    "TUNGSTEN BRIDGE",
+    "T-APT-02",
+    "ATK52"
    ],
    "home": "KR",
    "type": "state",
@@ -801,7 +871,19 @@
     "The Dukes",
     "UNC2452",
     "UNC3524",
-    "YTTRIUM"
+    "YTTRIUM",
+    "Group 100",
+    "Minidionis",
+    "SeaDuke",
+    "ATK7",
+    "Cloaked Ursa",
+    "TA421",
+    "ITG11",
+    "BlueBravo",
+    "UAC-0029",
+    "DarkHalo",
+    "StellarParticle",
+    "Solar Phoenix"
    ],
    "home": "RU",
    "type": "state",
@@ -997,7 +1079,10 @@
    "id": "G0017",
    "name": "DragonOK",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "BRONZE OVERBROOK",
+    "Shallow Taurus"
+   ],
    "home": null,
    "type": null,
    "motive": [],
@@ -1015,7 +1100,12 @@
    "id": "G0018",
    "name": "admin@338",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "TEMPER PANDA",
+    "Admin338",
+    "Team338",
+    "MAGNESIUM"
+   ],
    "home": "CN",
    "type": "state",
    "motive": [
@@ -1057,7 +1147,13 @@
    "id": "G0019",
    "name": "Naikon",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "PLA Unit 78020",
+    "OVERRIDE PANDA",
+    "Camerashy",
+    "BRONZE GENEVA",
+    "BRONZE STERLING"
+   ],
    "home": "CN",
    "type": "state",
    "motive": [
@@ -1112,7 +1208,11 @@
    "id": "G0020",
    "name": "Equation",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Equation Group",
+    "Tilded Team",
+    "EQGRP"
+   ],
    "home": "US",
    "type": "state",
    "motive": [
@@ -1136,10 +1236,15 @@
   {
    "id": "G0021",
    "name": "Molerats",
-   "nickname": null,
+   "nickname": "Extreme Jackal",
    "aliases": [
     "Gaza Cybergang",
-    "Operation Molerats"
+    "Operation Molerats",
+    "Gaza Hackers Team",
+    "Extreme Jackal",
+    "Moonlight",
+    "ALUMINUM SARATOGA",
+    "BLACKSTEM"
    ],
    "home": "PS",
    "type": "state",
@@ -1201,7 +1306,14 @@
     "Pirpi",
     "TG-0110",
     "Threat Group-0110",
-    "UPS Team"
+    "UPS Team",
+    "Group 6",
+    "UPS",
+    "Boyusec",
+    "BORON",
+    "BRONZE MAYFAIR",
+    "Red Sylvan",
+    "Brocade Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -1277,7 +1389,9 @@
    "id": "G0023",
    "name": "APT16",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "SVCMONDR"
+   ],
    "home": "CN",
    "type": "state",
    "motive": [
@@ -1302,7 +1416,12 @@
    "nickname": "Putter Panda",
    "aliases": [
     "APT2",
-    "MSUpdater"
+    "MSUpdater",
+    "PLA Unit 61486",
+    "4HCrew",
+    "SULPHUR",
+    "SearchFire",
+    "TG-6952"
    ],
    "home": "CN",
    "type": "state",
@@ -1332,9 +1451,17 @@
   {
    "id": "G0025",
    "name": "APT17",
-   "nickname": null,
+   "nickname": "Hidden Lynx",
    "aliases": [
-    "Deputy Dog"
+    "Deputy Dog",
+    "Group 8",
+    "AURORA PANDA",
+    "Hidden Lynx",
+    "Tailgater Team",
+    "Dogfish",
+    "BRONZE KEYSTONE",
+    "HELIUM",
+    "Heart Typhoon"
    ],
    "home": "CN",
    "type": null,
@@ -1358,7 +1485,11 @@
    "aliases": [
     "Dynamite Panda",
     "TG-0416",
-    "Threat Group-0416"
+    "Threat Group-0416",
+    "SCANDIUM",
+    "PLA Navy",
+    "Wekby",
+    "Satin Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -1407,7 +1538,16 @@
     "Iron Tiger",
     "Linen Typhoon",
     "LuckyMouse",
-    "TG-3390"
+    "TG-3390",
+    "GreedyTaotie",
+    "TEMP.Hippo",
+    "Red Phoenix",
+    "Budworm",
+    "Group 35",
+    "ZipToken",
+    "Lucky Mouse",
+    "Iron Taurus",
+    "Circle Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -1540,7 +1680,9 @@
    "id": "G0029",
    "name": "Scarlet Mimic",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Golfing Taurus"
+   ],
    "home": "CN",
    "type": null,
    "motive": [],
@@ -1568,7 +1710,13 @@
     "RADIUM",
     "Raspberry Typhoon",
     "Spring Dragon",
-    "Thrip"
+    "Thrip",
+    "LOTUS PANDA",
+    "ST Group",
+    "BRONZE ELGIN",
+    "ATK1",
+    "Red Salamander",
+    "Billbug"
    ],
    "home": "CN",
    "type": "state",
@@ -1630,7 +1778,29 @@
     "HIDDEN COBRA",
     "Labyrinth Chollima",
     "NICKEL ACADEMY",
-    "ZINC"
+    "ZINC",
+    "Operation DarkSeoul",
+    "Dark Seoul",
+    "Hastati Group",
+    "Unit 121",
+    "Bureau 121",
+    "NewRomanic Cyber Army Team",
+    "Subgroup: Bluenoroff",
+    "Group 77",
+    "Operation Troy",
+    "Operation GhostSecret",
+    "Operation AppleJeus",
+    "APT 38",
+    "Whois Hacking Team",
+    "Appleworm",
+    "APT-C-26",
+    "COVELLITE",
+    "ATK3",
+    "ATK117",
+    "DEV-0139",
+    "DEV-1222",
+    "TA404",
+    "Black Artemis"
    ],
    "home": "KP",
    "type": "state",
@@ -1647,8 +1817,6 @@
     "Media",
     "Technology",
     "Energy",
-    "Food and agriculture",
-    "Manufacturing",
     "Telecommunications",
     "Healthcare"
    ],
@@ -1844,7 +2012,12 @@
     "Quedagh",
     "Seashell Blizzard",
     "Telebots",
-    "Voodoo Bear"
+    "Voodoo Bear",
+    "Sandworm",
+    "TEMP.Noble",
+    "Blue Echidna",
+    "UAC-0113",
+    "UAC-0082"
    ],
    "home": "RU",
    "type": "state",
@@ -2007,7 +2180,15 @@
     "Ghost Blizzard",
     "IRON LIBERTY",
     "TEMP.Isotope",
-    "TG-4192"
+    "TG-4192",
+    "ALLANITE",
+    "CASTLE",
+    "Group 24",
+    "Havex",
+    "Koala Team",
+    "ATK6",
+    "ITG15",
+    "Blue Kraken"
    ],
    "home": "RU",
    "type": "state",
@@ -2123,7 +2304,12 @@
     "ITG08",
     "Magecart Group 6",
     "Skeleton Spider",
-    "TAAL"
+    "TAAL",
+    "White Giant",
+    "GOLD FRANKLIN",
+    "ATK88",
+    "TA4557",
+    "Storm-0538"
    ],
    "home": null,
    "type": "crime",
@@ -2195,7 +2381,9 @@
    "id": "G0038",
    "name": "Stealth Falcon",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "FruityArmor"
+   ],
    "home": "AE",
    "type": "state",
    "motive": [
@@ -2231,7 +2419,11 @@
    "id": "G0039",
    "name": "Suckfly",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "APT22",
+    "BRONZE OLIVE",
+    "Group 46"
+   ],
    "home": "CN",
    "type": null,
    "motive": [],
@@ -2259,7 +2451,14 @@
     "Dropping Elephant",
     "Hangover Group",
     "MONSOON",
-    "Operation Hangover"
+    "Operation Hangover",
+    "QUILTED TIGER",
+    "Sarit",
+    "APT-C-09",
+    "ZINC EMERSON",
+    "ATK11",
+    "Orange Athos",
+    "Thirsty Gemini"
    ],
    "home": "IN",
    "type": null,
@@ -2327,7 +2526,9 @@
    "name": "Strider",
    "nickname": null,
    "aliases": [
-    "ProjectSauron"
+    "ProjectSauron",
+    "Sauron",
+    "Project Sauron"
    ],
    "home": "US",
    "type": "state",
@@ -2418,7 +2619,14 @@
     "HOGFISH",
     "POTASSIUM",
     "Red Apollo",
-    "Stone Panda"
+    "Stone Panda",
+    "Menupass Team",
+    "happyyongzi",
+    "Cloud Hopper",
+    "ATK41",
+    "Granite Taurus",
+    "TA429",
+    "Purple Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -2518,7 +2726,11 @@
     "ELBRUS",
     "GOLD NIAGARA",
     "ITG14",
-    "Sangria Tempest"
+    "Sangria Tempest",
+    "Calcium",
+    "ATK32",
+    "Coreid",
+    "JokerStash"
    ],
    "home": "RU",
    "type": "crime",
@@ -2640,7 +2852,12 @@
     "IRON TILDEN",
     "NastyShrew",
     "Primitive Bear",
-    "Shuckworm"
+    "Shuckworm",
+    "Blue Otso",
+    "BlueAlpha",
+    "Trident Ursa",
+    "UAC-0010",
+    "Winterflounder"
    ],
    "home": "RU",
    "type": "state",
@@ -2776,7 +2993,10 @@
     "Helix Kitten",
     "IRN2",
     "ITG13",
-    "TA452"
+    "TA452",
+    "Twisted Kitten",
+    "APT 34",
+    "ATK40"
    ],
    "home": "IR",
    "type": "state",
@@ -2920,7 +3140,16 @@
     "BISMUTH",
     "Canvas Cyclone",
     "OceanLotus",
-    "SeaLotus"
+    "SeaLotus",
+    "OceanLotus Group",
+    "Ocean Lotus",
+    "Cobalt Kitty",
+    "Sea Lotus",
+    "APT-32",
+    "Ocean Buffalo",
+    "POND LOACH",
+    "TIN WOODLAWN",
+    "ATK17"
    ],
    "home": "VN",
    "type": "state",
@@ -3067,8 +3296,10 @@
   {
    "id": "G0052",
    "name": "CopyKittens",
-   "nickname": null,
-   "aliases": [],
+   "nickname": "Slayer Kitten",
+   "aliases": [
+    "Slayer Kitten"
+   ],
    "home": "IR",
    "type": "state",
    "motive": [
@@ -3236,7 +3467,16 @@
     "Mint Sandstorm",
     "Newscaster",
     "Phosphorus",
-    "TA453"
+    "TA453",
+    "Parastoo",
+    "iKittens",
+    "Group 83",
+    "NewsBeef",
+    "CharmingCypress",
+    "Newscaster Team",
+    "TunnelVision",
+    "COBALT MIRAGE",
+    "Agent Serpens"
    ],
    "home": "IR",
    "type": "state",
@@ -3357,10 +3597,15 @@
   {
    "id": "G0060",
    "name": "BRONZE BUTLER",
-   "nickname": null,
+   "nickname": "Swirl Typhoon",
    "aliases": [
     "REDBALDKNIGHT",
-    "Tick"
+    "Tick",
+    "Nian",
+    "STALKER PANDA",
+    "Stalker Taurus",
+    "PLA Unit 61419",
+    "Swirl Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -3440,7 +3685,8 @@
    "name": "FIN8",
    "nickname": null,
    "aliases": [
-    "Syssphinx"
+    "Syssphinx",
+    "ATK113"
    ],
    "home": null,
    "type": "crime",
@@ -3557,7 +3803,13 @@
    "aliases": [
     "Elfin",
     "HOLMIUM",
-    "Peach Sandstorm"
+    "Peach Sandstorm",
+    "APT 33",
+    "MAGNALLIUM",
+    "Refined Kitten",
+    "COBALT TRINITY",
+    "ATK35",
+    "TA451"
    ],
    "home": "IR",
    "type": "state",
@@ -3570,8 +3822,8 @@
     "Education",
     "Pharmaceuticals",
     "Defense",
-    "Energy",
-    "Individuals"
+    "Individuals",
+    "Energy"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -3639,7 +3891,12 @@
     "Kryptonite Panda",
     "MUDCARP",
     "TEMP.Jumper",
-    "TEMP.Periscope"
+    "TEMP.Periscope",
+    "ATK29",
+    "TA423",
+    "Red Ladon",
+    "ITG09",
+    "ISLANDDREAMS"
    ],
    "home": "CN",
    "type": "state",
@@ -3756,7 +4013,8 @@
    "aliases": [
     "Beijing Group",
     "Elderwood Gang",
-    "Sneaky Panda"
+    "Sneaky Panda",
+    "SIG22"
    ],
    "home": "CN",
    "type": "state",
@@ -3803,7 +4061,17 @@
     "Reaper",
     "Ricochet Chollima",
     "ScarCruft",
-    "TEMP.Reaper"
+    "TEMP.Reaper",
+    "APT 37",
+    "Group 123",
+    "Operation Daybreak",
+    "Operation Erebus",
+    "Reaper Group",
+    "Red Eyes",
+    "Venus 121",
+    "ATK4",
+    "Moldy Pisces",
+    "APT-C-28"
    ],
    "home": "KP",
    "type": "state",
@@ -3869,7 +4137,10 @@
    "id": "G0068",
    "name": "PLATINUM",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "TwoForOne",
+    "ATK33"
+   ],
    "home": "CN",
    "type": "state",
    "motive": [
@@ -3910,7 +4181,10 @@
     "Seedworm",
     "Static Kitten",
     "TA450",
-    "TEMP.Zagros"
+    "TEMP.Zagros",
+    "COBALT ULSTER",
+    "ATK51",
+    "Boggy Serpens"
    ],
    "home": "IR",
    "type": "state",
@@ -4089,12 +4363,17 @@
   {
    "id": "G0073",
    "name": "APT19",
-   "nickname": null,
+   "nickname": "Checkered Typhoon",
    "aliases": [
     "C0d0so0",
     "Codoso",
     "Codoso Team",
-    "Sunshop Group"
+    "Sunshop Group",
+    "TEMP.Avengers",
+    "Group 13",
+    "BRONZE FIRESTONE",
+    "Pupa",
+    "Checkered Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -4138,7 +4417,10 @@
    "id": "G0075",
    "name": "Rancor",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Rancor group",
+    "Rancor Taurus"
+   ],
    "home": "CN",
    "type": "state",
    "motive": [
@@ -4237,7 +4519,12 @@
    "id": "G0078",
    "name": "Gorgon Group",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "The Gorgon Group",
+    "Subaat",
+    "ATK92",
+    "Pasty Gemini"
+   ],
    "home": null,
    "type": null,
    "motive": [],
@@ -4274,7 +4561,10 @@
    "id": "G0079",
    "name": "DarkHydrus",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "LazyMeerkat",
+    "Obscure Serpens"
+   ],
    "home": null,
    "type": null,
    "motive": [],
@@ -4304,7 +4594,9 @@
    "aliases": [
     "Cobalt Gang",
     "Cobalt Spider",
-    "GOLD KINGSWOOD"
+    "GOLD KINGSWOOD",
+    "Cobalt",
+    "Mule Libra"
    ],
    "home": null,
    "type": "crime",
@@ -4368,7 +4660,11 @@
    "nickname": "Pirate Panda",
    "aliases": [
     "KeyBoy",
-    "Pirate Panda"
+    "Pirate Panda",
+    "APT23",
+    "BRONZE HOBART",
+    "Red Orthrus",
+    "Earth Centaur"
    ],
    "home": "CN",
    "type": "state",
@@ -4648,7 +4944,9 @@
    "id": "G0085",
    "name": "FIN4",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "WOLF SPIDER"
+   ],
    "home": "RO",
    "type": null,
    "motive": [],
@@ -4679,7 +4977,11 @@
    "aliases": [
     "Chafer",
     "ITG07",
-    "Remix Kitten"
+    "Remix Kitten",
+    "COBALT HICKMAN",
+    "Radio Serpens",
+    "TA454",
+    "Burgundy Sandstorm"
    ],
    "home": "IR",
    "type": "state",
@@ -4769,7 +5071,8 @@
    "name": "TEMP.Veles",
    "nickname": null,
    "aliases": [
-    "XENOTIME"
+    "XENOTIME",
+    "ATK91"
    ],
    "home": "RU",
    "type": null,
@@ -4954,7 +5257,13 @@
    "aliases": [
     "CHIMBORAZO",
     "Hive0065",
-    "Spandex Tempest"
+    "Spandex Tempest",
+    "SectorJ04",
+    "SectorJ04 Group",
+    "GRACEFUL SPIDER",
+    "GOLD TAHOE",
+    "Dudear",
+    "ATK103"
    ],
    "home": "RU",
    "type": "crime",
@@ -5031,7 +5340,10 @@
    "name": "GALLIUM",
    "nickname": "Granite Typhoon",
    "aliases": [
-    "Granite Typhoon"
+    "Granite Typhoon",
+    "Red Dev 4",
+    "Alloy Taurus",
+    "PHANTOM PANDA"
    ],
    "home": "CN",
    "type": "state",
@@ -5112,7 +5424,9 @@
     "Springtail",
     "TA427",
     "THALLIUM",
-    "Velvet Chollima"
+    "Velvet Chollima",
+    "Operation Stolen Pencil",
+    "Sparkling Pisces"
    ],
    "home": "KP",
    "type": "state",
@@ -5291,7 +5605,8 @@
    "nickname": null,
    "aliases": [
     "APT-C-43",
-    "El Machete"
+    "El Machete",
+    "machete-apt"
    ],
    "home": "BR",
    "type": "state",
@@ -5329,7 +5644,21 @@
    "aliases": [
     "BARIUM",
     "Brass Typhoon",
-    "Wicked Panda"
+    "Wicked Panda",
+    "TA415",
+    "Grayfly",
+    "LEAD",
+    "WICKED SPIDER",
+    "BRONZE ATLAS",
+    "BRONZE EXPORT",
+    "Red Kelpie",
+    "Earth Baku",
+    "Amoeba",
+    "HOODOO",
+    "Winnti",
+    "Double Dragon",
+    "TG-2633",
+    "Leopard Typhoon"
    ],
    "home": "CN",
    "type": "state",
@@ -5496,9 +5825,18 @@
   {
    "id": "G0098",
    "name": "BlackTech",
-   "nickname": null,
+   "nickname": "Canary Typhoon",
    "aliases": [
-    "Palmerworm"
+    "Palmerworm",
+    "CIRCUIT PANDA",
+    "Temp.Overboard",
+    "HUAPI",
+    "T-APT-03",
+    "Manga Taurus",
+    "Red Djinn",
+    "Earth Hundun",
+    "Canary Typhoon",
+    "Mobwork"
    ],
    "home": "CN",
    "type": "state",
@@ -5621,7 +5959,11 @@
    "nickname": null,
    "aliases": [
     "Cloud Atlas",
-    "Inception Framework"
+    "Inception Framework",
+    "Clean Ursa",
+    "OXYGEN",
+    "ATK116",
+    "Blue Odin"
    ],
    "home": "RU",
    "type": "state",
@@ -5679,7 +6021,12 @@
     "Periwinkle Tempest",
     "Pistachio Tempest",
     "TEMP.MixMaster",
-    "UNC1878"
+    "UNC1878",
+    "GOLD ULRICK",
+    "Storm-0193",
+    "Trickbot LLC",
+    "UNC2053",
+    "Storm-0230"
    ],
    "home": "RU",
    "type": "crime",
@@ -5791,7 +6138,10 @@
    "id": "G0103",
    "name": "Mofang",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Superman",
+    "BRONZE WALKER"
+   ],
    "home": "CN",
    "type": "state",
    "motive": [
@@ -5850,7 +6200,9 @@
    "id": "G0106",
    "name": "Rocke",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Aged Libra"
+   ],
    "home": "CN",
    "type": "crime",
    "motive": [
@@ -5977,7 +6329,8 @@
    "name": "Windshift",
    "nickname": null,
    "aliases": [
-    "Bahamut"
+    "Bahamut",
+    "Windy Phoenix"
    ],
    "home": null,
    "type": null,
@@ -6216,7 +6569,8 @@
     "DEV-0243",
     "Evil Corp",
     "Manatee Tempest",
-    "UNC2165"
+    "UNC2165",
+    "GOLD DRAKE"
    ],
    "home": "RU",
    "type": "crime",
@@ -6282,7 +6636,12 @@
    "id": "G0120",
    "name": "Evilnum",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "DeathStalker",
+    "TA4563",
+    "Jointworm",
+    "KNOCKOUT SPIDER"
+   ],
    "home": null,
    "type": null,
    "motive": [],
@@ -6370,7 +6729,10 @@
    "nickname": null,
    "aliases": [
     "COBALT DICKENS",
-    "TA407"
+    "TA407",
+    "Mabna Institute",
+    "TA4900",
+    "Yellow Nabu"
    ],
    "home": "IR",
    "type": null,
@@ -6401,7 +6763,8 @@
    "name": "Volatile Cedar",
    "nickname": null,
    "aliases": [
-    "Lebanese Cedar"
+    "Lebanese Cedar",
+    "DeftTorero"
    ],
    "home": "LB",
    "type": "activist",
@@ -6457,7 +6820,10 @@
    "nickname": "Silk Typhoon",
    "aliases": [
     "Operation Exchange Marauder",
-    "Silk Typhoon"
+    "Silk Typhoon",
+    "ATK233",
+    "Red Dev 13",
+    "MURKY PANDA"
    ],
    "home": "CN",
    "type": "state",
@@ -6588,7 +6954,10 @@
    "nickname": null,
    "aliases": [
     "GOLD CABIN",
-    "Shathak"
+    "Shathak",
+    "Shakthak",
+    "ATK236",
+    "Monster Libra"
    ],
    "home": null,
    "type": "crime",
@@ -6629,7 +6998,11 @@
    "nickname": "Violet Typhoon",
    "aliases": [
     "APT31",
-    "Violet Typhoon"
+    "Violet Typhoon",
+    "JUDGMENT PANDA",
+    "BRONZE VINEWOOD",
+    "Red keres",
+    "TA412"
    ],
    "home": "CN",
    "type": null,
@@ -6690,7 +7063,10 @@
     "TANTALUM",
     "TEMP.Hex",
     "TWILL TYPHOON",
-    "UNC6384"
+    "UNC6384",
+    "HoneyMyte",
+    "BASIN",
+    "Polaris"
    ],
    "home": "CN",
    "type": "state",
@@ -6834,7 +7210,15 @@
     "Flying Kitten",
     "Operation Saffron Rose",
     "Operation Woolen-Goldfish",
-    "Rocket Kitten"
+    "Rocket Kitten",
+    "SaffronRose",
+    "Saffron Rose",
+    "AjaxSecurityTeam",
+    "Group 26",
+    "Sayad",
+    "TEMP.Beanie",
+    "Thamar Reservoir",
+    "Timberworm"
    ],
    "home": "IR",
    "type": "state",
@@ -6870,7 +7254,11 @@
     "BRONZE HUNTLEY",
     "CactusPete",
     "Earth Akhlut",
-    "Karma Panda"
+    "Karma Panda",
+    "COPPER",
+    "Red Beifang",
+    "PLA Unit 65017",
+    "TAG-74"
    ],
    "home": "CN",
    "type": "state",
@@ -6996,7 +7384,11 @@
    "id": "G0135",
    "name": "BackdoorDiplomacy",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "BackDip",
+    "CloudComputating",
+    "Quarian"
+   ],
    "home": null,
    "type": null,
    "motive": [],
@@ -7099,7 +7491,12 @@
    "aliases": [
     "Onyx Sleet",
     "PLUTONIUM",
-    "Silent Chollima"
+    "Silent Chollima",
+    "OperationTroy",
+    "Guardian of Peace",
+    "GOP",
+    "WHOis Team",
+    "Subgroup: Andariel"
    ],
    "home": "KP",
    "type": "state",
@@ -7142,7 +7539,9 @@
    "id": "G0139",
    "name": "TeamTNT",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Adept Libra"
+   ],
    "home": null,
    "type": "crime",
    "motive": [
@@ -7369,11 +7768,16 @@
   {
    "id": "G1001",
    "name": "HEXANE",
-   "nickname": null,
+   "nickname": "Chrono Kitten",
    "aliases": [
     "Lyceum",
     "Siamesekitten",
-    "Spirlin"
+    "Spirlin",
+    "COBALT LYCEUM",
+    "UNC1530",
+    "MYSTICDOME",
+    "Chrono Kitten",
+    "Storm-0133"
    ],
    "home": "IR",
    "type": "state",
@@ -7497,7 +7901,13 @@
     "DEV-0586",
     "Frozenvista",
     "UAC-0056",
-    "UNC2589"
+    "UNC2589",
+    "SaintBear",
+    "Nascent Ursa",
+    "Nodaria",
+    "DEV-0587",
+    "Lorec Bear",
+    "Ruinous Ursa"
    ],
    "home": "RU",
    "type": "state",
@@ -7651,7 +8061,10 @@
    "name": "POLONIUM",
    "nickname": "Plaid Rain",
    "aliases": [
-    "Plaid Rain"
+    "Plaid Rain",
+    "UNC4453",
+    "GREATRIFT",
+    "INCENDIARY JACKAL"
    ],
    "home": "LB",
    "type": "state",
@@ -7697,7 +8110,13 @@
     "CHROMIUM",
     "Charcoal Typhoon",
     "ControlX",
-    "TAG-22"
+    "TAG-22",
+    "FISHMONGER",
+    "BRONZE UNIVERSITY",
+    "Red Dev 10",
+    "RedHotel",
+    "BountyGlad",
+    "Red Scylla"
    ],
    "home": "CN",
    "type": "state",
@@ -7777,7 +8196,9 @@
    "id": "G1007",
    "name": "Aoqin Dragon",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "UNC94"
+   ],
    "home": "CN",
    "type": "state",
    "motive": [
@@ -7898,7 +8319,9 @@
    "id": "G1011",
    "name": "EXOTIC LILY",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "DEV-0413"
+   ],
    "home": null,
    "type": "crime",
    "motive": [
@@ -8079,7 +8502,15 @@
     "Octo Tempest",
     "Roasted 0ktapus",
     "Storm-0875",
-    "UNC3944"
+    "UNC3944",
+    "Muddled Libra",
+    "Oktapus",
+    "Scattered Swine",
+    "Scatter Swine",
+    "0ktapus",
+    "Storm-0971",
+    "DEV-0971",
+    "Starfraud"
    ],
    "home": null,
    "type": "crime",
@@ -8198,7 +8629,8 @@
    "name": "FIN13",
    "nickname": null,
    "aliases": [
-    "Elephant Beetle"
+    "Elephant Beetle",
+    "TG2003"
    ],
    "home": "RU",
    "type": "crime",
@@ -8286,7 +8718,8 @@
     "Insidious Taurus",
     "UNC3236",
     "Vanguard Panda",
-    "Voltzite"
+    "Voltzite",
+    "Storm-0391"
    ],
    "home": "CN",
    "type": "state",
@@ -8518,7 +8951,8 @@
     "DEV-0206",
     "GOLD PRELUDE",
     "TA569",
-    "UNC1543"
+    "UNC1543",
+    "Purple Vallhund"
    ],
    "home": null,
    "type": null,
@@ -8553,7 +8987,8 @@
    "aliases": [
     "BRONZE STARLIGHT",
     "DEV-0401",
-    "Emperor Dragonfly"
+    "Emperor Dragonfly",
+    "SLIME34"
    ],
    "home": "CN",
    "type": "state",
@@ -8603,7 +9038,9 @@
    "id": "G1022",
    "name": "ToddyCat",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Websiic"
+   ],
    "home": null,
    "type": null,
    "motive": [],
@@ -8662,7 +9099,9 @@
     "Keyhole Panda",
     "MANGANESE",
     "Mulberry Typhoon",
-    "UNC2630"
+    "UNC2630",
+    "TEMP.Bottle",
+    "Poisoned Flight"
    ],
    "home": "CN",
    "type": "state",
@@ -8863,7 +9302,11 @@
     "AMERICIUM",
     "Agonizing Serpens",
     "BlackShadow",
-    "Pink Sandstorm"
+    "Pink Sandstorm",
+    "DEV-0022",
+    "UNC2428",
+    "Black Shadow",
+    "SPECTRAL KITTEN"
    ],
    "home": "IR",
    "type": "state",
@@ -9124,7 +9567,9 @@
    "nickname": null,
    "aliases": [
     "TA473",
-    "UAC-0114"
+    "UAC-0114",
+    "TAG-70",
+    "TA-473"
    ],
    "home": "RU",
    "type": null,
@@ -9225,7 +9670,9 @@
    "id": "G1037",
    "name": "TA577",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "Hive0118"
+   ],
    "home": "RU",
    "type": null,
    "motive": [],
@@ -9388,7 +9835,8 @@
     "Cosmic Wolf",
     "Marbled Dust",
     "SILICON",
-    "Teal Kurma"
+    "Teal Kurma",
+    "UNC1326"
    ],
    "home": "TR",
    "type": "state",
@@ -9548,7 +9996,10 @@
    "id": "G1044",
    "name": "APT42",
    "nickname": null,
-   "aliases": [],
+   "aliases": [
+    "UNC788",
+    "CALANQUE"
+   ],
    "home": "IR",
    "type": "state",
    "motive": [
@@ -10319,7 +10770,9 @@
     "Homeland Justice",
     "Karma",
     "Karmabelow80",
-    "Red Sandstorm"
+    "Red Sandstorm",
+    "DUNE",
+    "Storm-0842"
    ],
    "home": "IR",
    "type": "state",
