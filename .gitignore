@@ -20,3 +20,6 @@ Thumbs.db
 .netlify/
 .netlify-dev.*.log
 deno.lock
+
+node_modules/
+test-results/

@@ -3,6 +3,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test \"tests/*.test.mjs\""
+    "test": "node --test \"tests/*.test.mjs\"",
+    "export": "node tools/export.mjs",
+    "check": "node tools/check-cases.mjs",
+    "schedule": "node tools/schedule.mjs",
+    "schedule:drafts": "node tools/schedule.mjs --drafts --start 2026-11-20",
+    "build": "node tools/schedule.mjs --check"
+  },
+  "dependencies": {
+    "@netlify/blobs": "11.1.9"
+  },
+  "devDependencies": {
+    "axe-core": "4.11.0",
+    "playwright": "1.65.1"
   }
 }
