@@ -65,7 +65,7 @@ export function checkCase(c, byId, all = [c]) {
     const fit = ladder(c, byId)[LADDER_AT - 1];
     if (fit > LADDER_MAX) bad.push(`ladder: ${fit} Most Wanted groups still fit after clue ${LADDER_AT} (max ${LADDER_MAX})`);
   }
-  const sentences = (c.story || '').split(/(?<=[.!?])\s+/).filter(Boolean).length;
+  const sentences = (c.story || '').replace(/\b(?:[A-Z]\.){2,}/g, 'X').split(/(?<=[.!?])\s+(?=[A-Z0-9"'])/).filter(Boolean).length;
   if (sentences < 2 || sentences > 3 || c.story.length > 480) bad.push(`story has ${sentences} sentences or is too long`);
   const r = c.report || {};
   if (!r.vendor || !r.title || !/^https:\/\//.test(r.url || '') || !isDay(r.date)) bad.push('report needs vendor, title, https url and date');
