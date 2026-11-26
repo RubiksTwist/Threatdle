@@ -18,7 +18,9 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 
 ## Data (build-time, written by `tools/export.mjs` from OPTIC; the client never sees answers)
 
-`data/pool.json` is public: everything a guess can resolve to, with no answers.
+`tools/export.mjs` reads the OPTIC/ATT&CK extraction vendored in `data/source/` (actor facts, the Most Wanted ids, a few hand-filled facts) and the drafted cases in `data/drafts/*.json` (recipe: `docs/drafting-cases.md`). It writes `data/pool.json` for the server and the trimmed `public/pool.json` for the client.
+
+`data/pool.json`: everything a guess can resolve to, with no answers.
 ```json
 { "version": "2026-11-26",
   "actors": [{ "id": "G0007", "name": "APT28", "nickname": "Fancy Bear", "aliases": ["Forest Blizzard"],
@@ -29,16 +31,17 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 
 `data/cases.json` is private and server-only.
 ```json
-{ "cases": [{ "id": "c-0001", "mode": "analyst", "culprit": "G0000", "reviewed": false,
+{ "cases": [{ "id": "c-1a2b3c4d", "mode": "analyst", "culprit": "G0000", "article": "1a2b3c4d-...", "reviewed": false,
     "clues": [{ "kind": "victim", "text": "Locked up the computers of hospitals and clinics in several countries.",
-                "source": { "quote": "encrypted systems at hospitals and medical clinics ...", "articleId": 123 } }],
-    "fold": { "targets": ["Healthcare"] },
+                "facts": { "targets": ["Healthcare"] },
+                "source": { "quote": "encrypted systems at hospitals and medical clinics ..." } }],
     "story": "A ransomware crew broke into hospitals with a stolen password ...",
     "report": { "vendor": "Example Security", "title": "...", "url": "https://...", "date": "2026-01-01" } }] }
 ```
 - **Analyst clue order** is the elimination ladder: victim, then state or crime and motive, then region, then a tradecraft or tool detail, then tip-offs. Target: 5 or fewer roster groups fit by clue 4, checked by `tools/check-cases.mjs` against roster facts.
 - **Hunter clue order** is harder first. A clue that names the group always comes last.
-- `fold` holds the clue facts that are added to the culprit's profile when its rows and end card are computed. A row only folds the facts of clues shown so far.
+- Each clue's `facts` say what it asserts (`targets`, `home`, `type`, `motive`, `tools`, `name`). They drive the ladder check and the fold: a row folds the facts of the clues shown when it was made into the culprit's profile. (Changed from a case-level `fold`, which could not tell which facts were shown yet.)
+- `reviewed` is derived: `data/approved.json` maps a case id to a hash of the exact case a human approved (`node tools/approve.mjs <id>`). Editing an approved case un-approves it.
 
 `data/schedule.json` is private and maps a day to a case per mode. `tools/schedule.mjs` generates it from **reviewed** cases only: no culprit repeats within 14 days per mode, and it runs at least 365 days ahead. Build fails when the runway is under 60 days.
 
