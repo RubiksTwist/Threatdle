@@ -90,18 +90,21 @@ export function buildCases() {
 // ---------- review sheet ----------
 const FACT = f => Object.entries(f || {}).map(([k, v]) => `${k}: ${[].concat(v).join(', ')}`).join('; ');
 const cell = s => String(s ?? '').replace(/\|/g, '\\|').replace(/\s+/g, ' ').trim();
+// A case is REVISED when it differs from the version the editors reviewed, NEW when they never saw it (data/review-baseline.json, from tools/apply-review.mjs).
 function review(cases, byId, problems) {
+  const base = existsSync(new URL('../data/review-baseline.json', import.meta.url)) ? read('data/review-baseline.json') : {};
+  const revised = c => base[c.id] !== undefined && base[c.id] !== caseHash({ ...c, batch: undefined });
   const out = ['# Threatdle case review', '',
     'Each case below shows the rewrite a player sees next to the vendor quote it came from. Check that each rewrite is true to its quote, adds no facts, and does not name the culprit early.',
     '', 'Approve cases with `node tools/approve.mjs <case id> ...`. An approval pins the exact text; editing an approved case later puts it back in this queue.',
-    `Only approved cases are scheduled. Cases: ${cases.length}, approved: ${cases.filter(c => c.reviewed).length}.`, ''];
+    `Only approved cases are scheduled. Cases: ${cases.length}, approved: ${cases.filter(c => c.reviewed).length}, revised since the last review: ${cases.filter(revised).length}.`, ''];
   for (const mode of ['analyst', 'hunter']) {
     const list = cases.filter(c => c.mode === mode);
     out.push(`## ${mode === 'analyst' ? 'SOC Analyst' : 'Threat Hunter'} (${list.length})`, '');
     for (const c of list) {
       const a = byId[c.culprit], fit = mode === 'analyst' ? ladder(c, byId) : null, bad = problems.get(c.id) || [];
-      out.push(`### ${c.id} · ${a.name}${a.nickname ? ` (${a.nickname})` : ''} · ${c.reviewed ? 'approved' : 'NOT REVIEWED'}`, '',
-        `Report: [${cell(c.report.title)}](${c.report.url}) · ${c.report.vendor} · ${c.report.date}`, '');
+      out.push(`### ${c.id} · ${a.name}${a.nickname ? ` (${a.nickname})` : ''} · ${c.reviewed ? 'approved' : 'NOT REVIEWED'}${revised(c) ? ' · REVISED' : Object.keys(base).length && base[c.id] === undefined ? ' · NEW' : ''}`, '',
+        `Report: [${cell(c.report.title)}](${c.report.url}) · ${c.report.vendor} · ${c.report.date ?? 'undated'}`, '');
       if (fit) out.push(`Most Wanted groups that still fit after each clue: ${fit.join(' → ')}`, '');
       if (bad.length) out.push(`**Check failures:** ${bad.join('; ')}`, '');
       out.push('| # | Kind | Player sees | Facts | Source quote |', '| --- | --- | --- | --- | --- |');
