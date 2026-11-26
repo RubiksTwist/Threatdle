@@ -1,5 +1,5 @@
 {
- "version": "f175294f92",
+ "version": "0548d0f804",
  "actors": [
   {
    "id": "G0001",
@@ -524,7 +524,8 @@
     "Defense",
     "Finance",
     "Telecommunications",
-    "Healthcare"
+    "Healthcare",
+    "Legal"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -1207,7 +1208,11 @@
    ],
    "since": 2010,
    "targets": [
-    "Private sector"
+    "Private sector",
+    "Defense",
+    "Technology",
+    "Telecommunications",
+    "Transportation"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -1567,7 +1572,10 @@
    "since": 2009,
    "targets": [
     "Government",
-    "Military"
+    "Military",
+    "Manufacturing",
+    "Telecommunications",
+    "Media"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -2411,7 +2419,8 @@
    "since": 2006,
    "targets": [
     "Government",
-    "Private sector"
+    "Private sector",
+    "Media"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -6441,7 +6450,9 @@
     "Government",
     "Healthcare",
     "Legal",
-    "NGOs"
+    "NGOs",
+    "Telecommunications",
+    "Technology"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -8267,7 +8278,9 @@
    "targets": [
     "Critical infrastructure",
     "Technology",
-    "Education"
+    "Education",
+    "Government",
+    "Defense"
    ],
    "profile": "Chinese hackers who pre-position in utilities",
    "roster": true,

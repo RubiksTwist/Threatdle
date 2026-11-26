@@ -1,0 +1,3 @@
+Archivo Narrow and Inter: SIL Open Font License 1.1 (https://openfontlicense.org).
+Special Elite: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).
+Latin subsets as served by Google Fonts on 2026-11-26.

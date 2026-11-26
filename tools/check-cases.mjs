@@ -57,6 +57,7 @@ export function checkCase(c, byId, all = [c]) {
     if (f.type && a.type && f.type !== a.type) bad.push(`${at}: says ${f.type}, the culprit is ${a.type}`);
     if (f.name && !names(a).concat(a.name).some(x => x.toLowerCase() === f.name.toLowerCase())) bad.push(`${at}: name ${f.name} is not the culprit's`);
     if (f.name && i !== n - 1) bad.push(`${at}: a clue that names the group must come last`);
+    if (!fits(a, f)) bad.push(`${at}: the culprit's public card contradicts this clue`);
     const leak = names(a).find(x => mentions(k.text || '', x));
     if (leak && !(f.name && i === n - 1)) bad.push(`${at}: names the culprit (${leak})`);
     if (k.source && sharedRun(k.text || '', k.source.quote || '') >= 6) bad.push(`${at}: copies 6+ words of the vendor quote`);
