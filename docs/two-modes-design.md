@@ -50,7 +50,7 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 
 ## Build steps (each ends in a check)
 1. Remove v1: the Python pipeline, the 5-button client and the old functions. Tests: none left.
-2. Shared rules core `lib/rules.mjs`: compare, buckets, fold, calendar, share text. Unit tests.
+2. Shared rules core `public/js/rules.mjs`: compare, buckets, fold, calendar, share text. Unit tests. It sits under `public/` so the browser imports the same file the functions bundle; the rules hold no answers.
 3. Export: OPTIC → pool.json and draft cases.json, plus `review.md` for a human. Check: counts, roster size, and the fit-by-clue-4 report.
 4. Functions plus Blobs solve records. API tests.
 5. Client ported from the prototype (both modes, end screen, share, stats). Playwright end-to-end at 390 and 1440, axe 0 violations.
