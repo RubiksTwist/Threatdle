@@ -1,5 +1,5 @@
 {
- "version": "d556ea3d0d",
+ "version": "bd2586e411",
  "actors": [
   {
    "id": "G0001",
@@ -2923,9 +2923,7 @@
     "Government",
     "Private sector",
     "Education",
-    "Finance",
-    "Hospitality",
-    "Media"
+    "Finance"
    ],
    "profile": "Vietnamese state spies",
    "roster": true,
@@ -6942,8 +6940,7 @@
    "targets": [
     "Civil society",
     "Government",
-    "Military",
-    "Education"
+    "Military"
    ],
    "profile": "Pakistani state spies",
    "roster": true,

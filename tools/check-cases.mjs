@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { KINDS, COUNTRY, TYPES, MOTIVES, SECTORS, isMode, isDay, fits } from '../public/js/rules.mjs';
 import { buildPool, buildCases } from './export.mjs';
 
-export const LADDER_AT = 4, LADDER_MAX = 5, ANALYST_MAX_CLUES = 7, FIRST_MAX = 12, CLOSE_MAX = 2;
+export const LADDER_AT = 4, LADDER_MAX = 5, ANALYST_MAX_CLUES = 7, FIRST_MIN = 6, FIRST_MAX = 14, CLOSE_MAX = 2;
 const SOFTWARE = new Set(JSON.parse(readFileSync(new URL('../data/source/attack-software.json', import.meta.url), 'utf8')).map(s => s.id));
 
 // Most Wanted groups that still fit after each clue, on facts a player can see. The culprit always counts.
@@ -69,7 +69,7 @@ export function checkCase(c, byId, all = [c]) {
     const fit = ladder(c, byId)[LADDER_AT - 1];
     if (fit > LADDER_MAX) bad.push(`ladder: ${fit} Most Wanted groups still fit after clue ${LADDER_AT} (max ${LADDER_MAX})`);
     const first = ladder(c, byId)[0];
-    if (first > FIRST_MAX) bad.push(`opening: ${first} Most Wanted groups fit clue 1 (max ${FIRST_MAX})`);
+    if (first < FIRST_MIN || first > FIRST_MAX) bad.push(`opening: ${first} Most Wanted groups fit clue 1 (need ${FIRST_MIN}-${FIRST_MAX})`);
     const last = ladder(c, byId).at(-1);
     if (last > CLOSE_MAX) bad.push(`closing: ${last} Most Wanted groups still fit after the last clue (max ${CLOSE_MAX})`);
   }
