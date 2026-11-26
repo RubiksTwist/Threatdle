@@ -69,6 +69,7 @@ export function fits(a, f = {}) {
   if (f.motive && !(a.motive || []).includes(f.motive)) return false;
   if (f.targets && a.targets && a.targets.length && !f.targets.some(x => a.targets.some(t => sectorNear(t, x)))) return false;
   if (f.name && ![a.name, a.nickname, ...(a.aliases || [])].some(n => n && n.toLowerCase() === f.name.toLowerCase())) return false;
+  if (f.family && ![a.name, a.nickname, ...(a.aliases || [])].some(n => n && n.endsWith(' ' + f.family))) return false;
   return true;
 }
 export const fitsAll = (a, clues) => clues.every(c => fits(a, c.facts));
