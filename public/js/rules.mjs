@@ -99,9 +99,12 @@ function setCmp(a, b) {
 }
 
 // Feedback for guess g against culprit profile p. A correct guess is all match.
+// A crime gang with no known country has the crime badge ($) for a home: two such gangs match, and against a country it is a miss.
+export const homeOf = a => a.home || (a.type === 'crime' ? '$' : null);
 export function compare(g, p) {
   if (g.id === p.id) return { correct: true, home: 'match', type: 'match', motive: 'match', since: 'match', targets: 'match', tools: 'match', tricks: 'match' };
-  const home = !g.home || !p.home ? 'unknown' : g.home === p.home ? 'match' : REGION[g.home] && REGION[g.home] === REGION[p.home] ? 'near' : 'miss';
+  const gh = homeOf(g), ph = homeOf(p);
+  const home = !gh || !ph ? 'unknown' : gh === ph ? 'match' : REGION[gh] && REGION[gh] === REGION[ph] ? 'near' : 'miss';
   const type = !g.type || !p.type ? 'unknown' : g.type === p.type ? 'match' : 'miss';
   const since = g.since == null || p.since == null ? 'unknown' : g.since === p.since ? 'match' : p.since > g.since ? 'up' : 'down';
   return {
@@ -120,7 +123,7 @@ const OVERLAP_SAY = { match: 'same', partial: 'some overlap', miss: 'no overlap'
 export function cells(mode, g, f) {
   const mot = (g.motive || []).map(m => SHORT_MOTIVE[m] || m);
   const all = {
-    home: { text: g.home || '?', say: `home ${g.home ? COUNTRY[g.home] || g.home : 'unknown'}: ${f.home === 'near' ? 'same part of the world' : f.home}` },
+    home: { text: homeOf(g) || '?', say: `home ${g.home ? COUNTRY[g.home] || g.home : homeOf(g) ? 'crime gang' : 'unknown'}: ${f.home === 'near' ? 'same part of the world' : f.home}` },
     type: { text: g.type ? cap(g.type) : '?', say: `type ${g.type || 'unknown'}: ${f.type}` },
     motive: { text: mot.length ? mot[0] + (mot.length > 1 ? '+' : '') : '?', say: `motive ${mot.join(' and ') || 'unknown'}: ${f.motive}` },
     since: { text: g.since ? String(g.since) : '?', arrow: f.since === 'up' ? '↑' : f.since === 'down' ? '↓' : '',

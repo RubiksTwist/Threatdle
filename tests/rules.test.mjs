@@ -21,7 +21,16 @@ test('compare: same country is a match, same region is near, other is a miss', (
   assert.equal(R.compare(cozy, bear).home, 'match');
   assert.equal(R.compare(A('x', { home: 'BY' }), bear).home, 'near');
   assert.equal(R.compare(panda, bear).home, 'miss');
-  assert.equal(R.compare(spider, bear).home, 'unknown');
+  assert.equal(R.compare(spider, bear).home, 'miss', 'a crime gang against a state group is a miss');
+  assert.equal(R.compare(A('n'), bear).home, 'unknown');
+});
+
+test('compare: two crime gangs with no known country share the crime badge', () => {
+  const pinchy = A('G9', { type: 'crime', motive: ['Financial Gain'] });
+  assert.equal(R.compare(pinchy, spider).home, 'match');
+  assert.equal(R.compare(A('fin', { home: 'RU', type: 'crime' }), spider).home, 'miss');
+  const cell = R.cells('analyst', pinchy, R.compare(pinchy, spider))[0];
+  assert.deepEqual([cell.text, cell.tone], ['$', 'hit']);
 });
 
 test('compare: since points at the culprit, up when the culprit is newer', () => {
