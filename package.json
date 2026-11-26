@@ -9,7 +9,7 @@
     "schedule": "node tools/schedule.mjs",
     "schedule:drafts": "node tools/schedule.mjs --drafts --start 2026-11-20",
     "publish": "node tools/publish.mjs",
-    "build": "node tools/schedule.mjs --check",
+    "build": "node tools/build.mjs",
     "e2e": "node tests/e2e.mjs"
   },
   "dependencies": {

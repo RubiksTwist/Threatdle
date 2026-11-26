@@ -1,7 +1,6 @@
 // Schedules one case per mode per day from approved cases. Safe to rerun: days up to today never change,
 // later days are kept while their cases stay approved, then the schedule is extended as far as the cases allow.
 //   node tools/schedule.mjs            write data/schedule.json from approved cases, starting today
-//   node tools/schedule.mjs --check    exit 1 when data/schedule.json covers fewer than 60 days from today (the build runs this)
 //   node tools/schedule.mjs --drafts [--start YYYY-MM-DD]   write data/schedule.drafts.json from every draft (local dev and tests only)
 // Rules: each case is used once; no culprit repeats within 14 days in a mode; the two modes never share a culprit on a day.
 import { readFileSync, writeFileSync, renameSync, existsSync } from 'node:fs';
@@ -49,11 +48,6 @@ if (import.meta.main) {
   const file = new URL(`../data/schedule${drafts ? '.drafts' : ''}.json`, import.meta.url);
   const today = dayOf();
   const current = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
-  if (args.includes('--check')) {
-    const n = current ? runway(current, today) : 0;
-    console.log(`schedule runway from ${today}: ${n} days (minimum ${MIN_RUNWAY})`);
-    process.exit(n >= MIN_RUNWAY ? 0 : 1);
-  }
   const byId = Object.fromEntries(buildPool().actors.map(a => [a.id, a]));
   const cases = buildCases().filter(c => drafts || c.reviewed);
   const startArg = args[args.indexOf('--start') + 1];
