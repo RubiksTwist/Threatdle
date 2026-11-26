@@ -55,7 +55,7 @@ if (import.meta.main) {
     process.exit(n >= MIN_RUNWAY ? 0 : 1);
   }
   const byId = Object.fromEntries(buildPool().actors.map(a => [a.id, a]));
-  const cases = buildCases(byId).filter(c => drafts || c.reviewed);
+  const cases = buildCases().filter(c => drafts || c.reviewed);
   const startArg = args[args.indexOf('--start') + 1];
   const base = drafts && args.includes('--start') && isDay(startArg) ? { start: startArg, days: [] } : current;
   const next = extend(base, cases, today);

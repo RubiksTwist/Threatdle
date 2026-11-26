@@ -76,7 +76,7 @@ export function checkCase(c, byId, all = [c]) {
 if (import.meta.main) {
   const pool = buildPool();
   const byId = Object.fromEntries(pool.actors.map(a => [a.id, a]));
-  const every = buildCases(byId);
+  const every = buildCases();
   const files = process.argv.slice(2);
   const cases = files.length ? files.flatMap(f => JSON.parse(readFileSync(f, 'utf8')).cases) : every;
   let failed = 0;

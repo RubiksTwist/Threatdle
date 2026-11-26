@@ -42,8 +42,12 @@ function profile(a) {
   return dem ? `${dem} ${s}` : s[0].toUpperCase() + s.slice(1);
 }
 
+// A group's public card carries every fact a drafted clue states about it (the spec's "fold the fact into the card").
+// Otherwise a player who checks the Browse card against a clue would rule out the real culprit.
 export function buildPool() {
   const src = read('data/source/attack-actors.json'), roster = new Set(read('data/source/roster.json').ids), over = read('data/source/overrides.json').actors;
+  const facts = {};
+  for (const c of readDrafts()) for (const k of c.clues) (facts[c.culprit] ||= []).push(k.facts || {});
   const actors = src.map(r => {
     const o = over[r.attack_id] || {};
     const a = {
@@ -52,8 +56,16 @@ export function buildPool() {
       since: o.since ?? r.first_seen_year ?? null, targets: o.targets ?? r.targets ?? [], profile: '', roster: roster.has(r.attack_id),
       tools: r.malware_ids, tricks: r.technique_ids,
     };
-    a.nickname = nickname(a);
     a.type = o.type ?? typeOf(a.motive);
+    for (const f of facts[a.id] || []) {
+      for (const t of f.targets || []) if (!a.targets.includes(t)) a.targets = [...a.targets, t];
+      if (f.motive && !a.motive.includes(f.motive)) a.motive = [...a.motive, f.motive];
+      for (const t of f.tools || []) if (!a.tools.includes(t)) a.tools = [...a.tools, t];
+      a.home ??= f.home ?? null;
+      a.type ??= f.type ?? null;
+    }
+    a.type ??= typeOf(a.motive);
+    a.nickname = nickname(a);
     a.profile = profile(a);
     return a;
   });
@@ -63,12 +75,15 @@ export function buildPool() {
 // ---------- cases ----------
 export const caseHash = c => createHash('sha256').update(JSON.stringify({ ...c, reviewed: undefined })).digest('hex').slice(0, 16);
 
-export function buildCases(byId) {
-  const approved = existsSync(new URL('../data/approved.json', import.meta.url)) ? read('data/approved.json') : {};
+function readDrafts() {
   const dir = new URL('../data/drafts/', import.meta.url);
   const files = existsSync(dir) ? readdirSync(dir).filter(f => f.endsWith('.json')).sort() : [];
-  const cases = files.flatMap(f => read('data/drafts/' + f).cases.map(c => ({ ...c, batch: f.replace(/\.json$/, '') })));
-  return cases.map(({ batch, ...c }) => ({ ...c, reviewed: approved[c.id] === caseHash(c), batch }));
+  return files.flatMap(f => read('data/drafts/' + f).cases.map(c => ({ ...c, batch: f.replace(/\.json$/, '') })));
+}
+
+export function buildCases() {
+  const approved = existsSync(new URL('../data/approved.json', import.meta.url)) ? read('data/approved.json') : {};
+  return readDrafts().map(({ batch, ...c }) => ({ ...c, reviewed: approved[c.id] === caseHash(c), batch }));
 }
 
 // ---------- review sheet ----------
@@ -99,7 +114,7 @@ function review(cases, byId, problems) {
 if (import.meta.main) {
   const pool = buildPool();
   const byId = Object.fromEntries(pool.actors.map(a => [a.id, a]));
-  const cases = buildCases(byId);
+  const cases = buildCases();
   const problems = new Map(cases.map(c => [c.id, checkCase(c, byId, cases)]));
   write('data/pool.json', json(pool));
   write('public/pool.json', JSON.stringify({ version: pool.version, actors: pool.actors.map(({ tools, tricks, ...a }) => a) }) + '\n');

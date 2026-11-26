@@ -40,6 +40,7 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 ```
 - **Analyst clue order** is the elimination ladder: victim, then state or crime and motive, then region, then a tradecraft or tool detail, then tip-offs. Target: 5 or fewer roster groups fit by clue 4, checked by `tools/check-cases.mjs` against roster facts.
 - **Hunter clue order** is harder first. A clue that names the group always comes last.
+- Export also folds every drafted clue's facts into its culprit's public card in `pool.json` (targets, motive, tools; home and type only where unknown). Without it, 50 of 144 drafts had a clue the culprit's own card contradicted, so a careful player ruled out the real culprit (simulated SOC Analyst careful player: 12.1 mean guesses with that bug, 2.6 without).
 - Each clue's `facts` say what it asserts (`targets`, `home`, `type`, `motive`, `tools`, `name`). They drive the ladder check and the fold: a row folds the facts of the clues shown when it was made into the culprit's profile. (Changed from a case-level `fold`, which could not tell which facts were shown yet.)
 - `reviewed` is derived: `data/approved.json` maps a case id to a hash of the exact case a human approved (`node tools/approve.mjs <id>`). Editing an approved case un-approves it.
 

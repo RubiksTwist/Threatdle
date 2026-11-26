@@ -6,7 +6,7 @@ import { buildPool, buildCases, caseHash } from './export.mjs';
 const file = new URL('../data/approved.json', import.meta.url);
 const approved = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
 const byId = Object.fromEntries(buildPool().actors.map(a => [a.id, a]));
-const cases = Object.fromEntries(buildCases(byId).map(({ reviewed, batch, ...c }) => [c.id, c]));
+const cases = Object.fromEntries(buildCases().map(({ reviewed, batch, ...c }) => [c.id, c]));
 const ids = process.argv.slice(2);
 const unknown = ids.filter(id => !cases[id]);
 if (!ids.length || unknown.length) { console.error(ids.length ? `unknown case ids: ${unknown.join(' ')}` : 'usage: node tools/approve.mjs <case id> ...'); process.exit(1); }

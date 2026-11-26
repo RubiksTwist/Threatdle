@@ -1,5 +1,5 @@
 {
- "version": "c65ec522a2",
+ "version": "f175294f92",
  "actors": [
   {
    "id": "G0001",
@@ -120,7 +120,8 @@
    ],
    "since": 2010,
    "targets": [
-    "Government"
+    "Government",
+    "NGOs"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -318,7 +319,13 @@
    "since": 2004,
    "targets": [
     "Government",
-    "Military"
+    "Military",
+    "Telecommunications",
+    "Energy",
+    "Transportation",
+    "Individuals",
+    "NGOs",
+    "Education"
    ],
    "profile": "Russian military intelligence hackers",
    "roster": true,
@@ -352,7 +359,8 @@
     "S0645",
     "S1187",
     "S1205",
-    "S9035"
+    "S9035",
+    "S1010"
    ],
    "tricks": [
     "T1001.001",
@@ -565,7 +573,8 @@
    "since": 2004,
    "targets": [
     "Government",
-    "Military"
+    "Military",
+    "NGOs"
    ],
    "profile": "Russian security-service spies",
    "roster": true,
@@ -599,7 +608,8 @@
     "S1075",
     "S1141",
     "S1142",
-    "S1143"
+    "S1143",
+    "S1025"
    ],
    "tricks": [
     "T1005",
@@ -797,7 +807,14 @@
     "Espionage"
    ],
    "since": 2008,
-   "targets": [],
+   "targets": [
+    "Education",
+    "Civil society",
+    "Government",
+    "NGOs",
+    "Technology",
+    "Media"
+   ],
    "profile": "Russian foreign intelligence hackers",
    "roster": true,
    "tools": [
@@ -1047,7 +1064,9 @@
    "targets": [
     "Critical infrastructure",
     "Defense",
-    "Government"
+    "Government",
+    "Telecommunications",
+    "Manufacturing"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -1066,7 +1085,8 @@
     "S0108",
     "S0456",
     "S0629",
-    "S0630"
+    "S0630",
+    "S0013"
    ],
    "tricks": [
     "T1016",
@@ -1136,7 +1156,8 @@
     "Media",
     "Military",
     "NGOs",
-    "Pharmaceuticals"
+    "Pharmaceuticals",
+    "Technology"
    ],
    "profile": "Palestinian state spies",
    "roster": false,
@@ -1610,7 +1631,12 @@
     "Finance",
     "Government",
     "Media",
-    "Technology"
+    "Technology",
+    "Energy",
+    "Food and agriculture",
+    "Manufacturing",
+    "Telecommunications",
+    "Healthcare"
    ],
    "profile": "North Korean state hackers and bank robbers",
    "roster": true,
@@ -1809,12 +1835,14 @@
    "home": "RU",
    "type": "state",
    "motive": [
-    "Espionage"
+    "Espionage",
+    "Sabotage"
    ],
    "since": 2009,
    "targets": [
     "Government",
-    "Private sector"
+    "Private sector",
+    "Energy"
    ],
    "profile": "Russian military saboteurs who black out power grids",
    "roster": true,
@@ -2487,7 +2515,8 @@
     "Media",
     "Retail",
     "Technology",
-    "Transportation"
+    "Transportation",
+    "Food and agriculture"
    ],
    "profile": "Card-stealing crime gang that hit restaurants",
    "roster": true,
@@ -2603,7 +2632,8 @@
    ],
    "since": 2013,
    "targets": [
-    "Government"
+    "Government",
+    "NGOs"
    ],
    "profile": "Russian spies who hammer Ukraine",
    "roster": true,
@@ -2737,7 +2767,11 @@
    ],
    "since": 2014,
    "targets": [
-    "Private sector"
+    "Private sector",
+    "Energy",
+    "Telecommunications",
+    "Government",
+    "Finance"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -2771,7 +2805,8 @@
     "S1170",
     "S1171",
     "S1172",
-    "S1173"
+    "S1173",
+    "S0192"
    ],
    "tricks": [
     "T1003.001",
@@ -2878,7 +2913,10 @@
    "targets": [
     "Civil society",
     "Government",
-    "Private sector"
+    "Private sector",
+    "Education",
+    "Hospitality",
+    "Media"
    ],
    "profile": "Vietnamese state spies",
    "roster": true,
@@ -3310,7 +3348,9 @@
    ],
    "since": 2008,
    "targets": [
-    "Private sector"
+    "Private sector",
+    "Manufacturing",
+    "Critical infrastructure"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -3328,7 +3368,8 @@
     "S0471",
     "S0472",
     "S0473",
-    "S0596"
+    "S0596",
+    "S1229"
    ],
    "tricks": [
     "T1003.001",
@@ -3504,7 +3545,10 @@
    ],
    "since": 2013,
    "targets": [
-    "Private sector"
+    "Private sector",
+    "Education",
+    "Defense",
+    "Energy"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -3742,7 +3786,9 @@
    "since": 2012,
    "targets": [
     "Government",
-    "Private sector"
+    "Private sector",
+    "Healthcare",
+    "Military"
    ],
    "profile": "North Korean state spies",
    "roster": true,
@@ -3847,7 +3893,10 @@
    ],
    "since": 2017,
    "targets": [
-    "Government"
+    "Government",
+    "Energy",
+    "Education",
+    "Telecommunications"
    ],
    "profile": "Iran's intelligence-ministry hackers",
    "roster": true,
@@ -4021,10 +4070,13 @@
     "Sunshop Group"
    ],
    "home": "CN",
-   "type": null,
+   "type": "state",
    "motive": [],
    "since": null,
-   "targets": [],
+   "targets": [
+    "Legal",
+    "Finance"
+   ],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -4376,7 +4428,8 @@
    ],
    "since": 2014,
    "targets": [
-    "Finance"
+    "Finance",
+    "Technology"
    ],
    "profile": "North Korean thieves and saboteurs",
    "roster": true,
@@ -4520,7 +4573,8 @@
    "targets": [
     "Education",
     "Manufacturing",
-    "Technology"
+    "Technology",
+    "Private sector"
    ],
    "profile": "Nigerian cybercrime gang",
    "roster": false,
@@ -4529,7 +4583,9 @@
     "S0331",
     "S0334",
     "S0336",
-    "S0447"
+    "S0447",
+    "S0332",
+    "S0453"
    ],
    "tricks": [
     "T1071.001",
@@ -4823,7 +4879,8 @@
    ],
    "since": 2016,
    "targets": [
-    "Finance"
+    "Finance",
+    "Education"
    ],
    "profile": "Cybercrime gang",
    "roster": true,
@@ -5039,7 +5096,8 @@
    "targets": [
     "Education",
     "Government",
-    "Individuals"
+    "Individuals",
+    "NGOs"
    ],
    "profile": "North Korean spies who phish think tanks",
    "roster": true,
@@ -5254,7 +5312,9 @@
     "Healthcare",
     "Retail",
     "Technology",
-    "Telecommunications"
+    "Telecommunications",
+    "Transportation",
+    "Government"
    ],
    "profile": "Chinese state spies who also hack for money",
    "roster": true,
@@ -5416,7 +5476,8 @@
    "since": 2013,
    "targets": [
     "Manufacturing",
-    "Media"
+    "Media",
+    "Government"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -5599,7 +5660,9 @@
     "Finance",
     "Government",
     "Healthcare",
-    "Telecommunications"
+    "Telecommunications",
+    "Hospitality",
+    "Technology"
    ],
    "profile": "Russian-speaking ransomware crew",
    "roster": true,
@@ -5764,7 +5827,9 @@
     "Financial Gain"
    ],
    "since": 2018,
-   "targets": [],
+   "targets": [
+    "Technology"
+   ],
    "profile": "Chinese cybercrime gang",
    "roster": false,
    "tools": [],
@@ -6132,7 +6197,8 @@
    "targets": [
     "Finance",
     "Healthcare",
-    "Technology"
+    "Technology",
+    "Private sector"
    ],
    "profile": "Russian cybercrime gang",
    "roster": true,
@@ -6746,7 +6812,8 @@
    "since": 2010,
    "targets": [
     "Civil society",
-    "Military"
+    "Military",
+    "Defense"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -6782,7 +6849,8 @@
    "targets": [
     "Government",
     "Military",
-    "Private sector"
+    "Private sector",
+    "Media"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -6863,7 +6931,8 @@
    "targets": [
     "Civil society",
     "Government",
-    "Military"
+    "Military",
+    "Education"
    ],
    "profile": "Pakistani state spies",
    "roster": true,
@@ -7013,13 +7082,17 @@
    "targets": [
     "Defense",
     "Finance",
-    "Government"
+    "Government",
+    "Military",
+    "Pharmaceuticals"
    ],
    "profile": "North Korean spies, thieves and saboteurs",
    "roster": true,
    "tools": [
     "S0032",
-    "S0433"
+    "S0433",
+    "S0633",
+    "S0567"
    ],
    "tricks": [
     "T1005",
@@ -7047,7 +7120,9 @@
     "Financial Gain"
    ],
    "since": 2019,
-   "targets": [],
+   "targets": [
+    "Technology"
+   ],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -7404,7 +7479,9 @@
    "targets": [
     "Critical infrastructure",
     "Government",
-    "Telecommunications"
+    "Telecommunications",
+    "Technology",
+    "NGOs"
    ],
    "profile": "Russian saboteurs",
    "roster": true,
@@ -7485,7 +7562,10 @@
     "Financial Gain"
    ],
    "since": 2021,
-   "targets": [],
+   "targets": [
+    "Government",
+    "Media"
+   ],
    "profile": "Cybercrime gang",
    "roster": true,
    "tools": [
@@ -7717,7 +7797,8 @@
    "roster": false,
    "tools": [
     "S1028",
-    "S1029"
+    "S1029",
+    "S0385"
    ],
    "tricks": [
     "T1016",
@@ -7982,7 +8063,8 @@
     "Hospitality",
     "Retail",
     "Technology",
-    "Telecommunications"
+    "Telecommunications",
+    "Transportation"
    ],
    "profile": "Young English-speaking crew that phones help desks",
    "roster": true,
@@ -8088,11 +8170,17 @@
     "Elephant Beetle"
    ],
    "home": "RU",
-   "type": null,
-   "motive": [],
+   "type": "crime",
+   "motive": [
+    "Financial Gain"
+   ],
    "since": 2016,
-   "targets": [],
-   "profile": "Russian hackers",
+   "targets": [
+    "Finance",
+    "Retail",
+    "Hospitality"
+   ],
+   "profile": "Russian cybercrime gang",
    "roster": false,
    "tools": [
     "S0002",
@@ -8178,7 +8266,8 @@
    "since": 2021,
    "targets": [
     "Critical infrastructure",
-    "Technology"
+    "Technology",
+    "Education"
    ],
    "profile": "Chinese hackers who pre-position in utilities",
    "roster": true,
@@ -8614,11 +8703,18 @@
     "PUNK SPIDER"
    ],
    "home": null,
-   "type": null,
-   "motive": [],
+   "type": "crime",
+   "motive": [
+    "Financial Gain"
+   ],
    "since": 2023,
-   "targets": [],
-   "profile": "Hackers",
+   "targets": [
+    "Transportation",
+    "Government",
+    "Manufacturing",
+    "Pharmaceuticals"
+   ],
+   "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
     "S0002",
@@ -8716,7 +8812,8 @@
     "NGOs",
     "Technology",
     "Telecommunications",
-    "Transportation"
+    "Transportation",
+    "Individuals"
    ],
    "profile": "Palestinian state spies",
    "roster": false,
@@ -9267,7 +9364,8 @@
    "targets": [
     "Government",
     "Technology",
-    "Telecommunications"
+    "Telecommunications",
+    "Military"
    ],
    "profile": "Turkish state spies",
    "roster": true,
@@ -9341,7 +9439,12 @@
    ],
    "since": 2021,
    "targets": [
-    "Critical infrastructure"
+    "Critical infrastructure",
+    "Energy",
+    "Food and agriculture",
+    "Finance",
+    "Government",
+    "Manufacturing"
    ],
    "profile": "Cybercrime gang",
    "roster": false,
@@ -9575,7 +9678,8 @@
     "S0357",
     "S0650",
     "S1070",
-    "S1209"
+    "S1209",
+    "S0591"
    ],
    "tricks": [
     "T1021.002",
@@ -9666,7 +9770,9 @@
    "targets": [
     "Defense",
     "Technology",
-    "Telecommunications"
+    "Telecommunications",
+    "Government",
+    "Energy"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -9761,7 +9867,10 @@
     "Financial Gain"
    ],
    "since": 2018,
-   "targets": [],
+   "targets": [
+    "Technology",
+    "Finance"
+   ],
    "profile": "North Korean cybercrime gang",
    "roster": true,
    "tools": [
@@ -9834,7 +9943,10 @@
    ],
    "since": 2021,
    "targets": [
-    "Critical infrastructure"
+    "Critical infrastructure",
+    "Technology",
+    "Education",
+    "Manufacturing"
    ],
    "profile": "Cybercrime gang",
    "roster": false,
@@ -9843,7 +9955,8 @@
     "S0029",
     "S0160",
     "S1040",
-    "S1244"
+    "S1244",
+    "S0591"
    ],
    "tricks": [
     "T1003.001",
@@ -10005,7 +10118,10 @@
     "Financial Gain"
    ],
    "since": 2021,
-   "targets": [],
+   "targets": [
+    "Education",
+    "Healthcare"
+   ],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -10283,7 +10399,9 @@
     "Financial Gain"
    ],
    "since": 2025,
-   "targets": [],
+   "targets": [
+    "Technology"
+   ],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -10345,7 +10463,13 @@
     "Financial Gain"
    ],
    "since": 2019,
-   "targets": [],
+   "targets": [
+    "Education",
+    "Technology",
+    "Healthcare",
+    "Food and agriculture",
+    "Government"
+   ],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -10414,7 +10538,13 @@
     "Financial Gain"
    ],
    "since": 2025,
-   "targets": [],
+   "targets": [
+    "Manufacturing",
+    "Education",
+    "Transportation",
+    "Healthcare",
+    "Finance"
+   ],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -10451,12 +10581,17 @@
     "TA455",
     "UNC1549"
    ],
-   "home": null,
-   "type": null,
-   "motive": [],
+   "home": "IR",
+   "type": "state",
+   "motive": [
+    "Espionage"
+   ],
    "since": 2021,
-   "targets": [],
-   "profile": "Hackers",
+   "targets": [
+    "Defense",
+    "Transportation"
+   ],
+   "profile": "Iranian state spies",
    "roster": false,
    "tools": [
     "S9052",
