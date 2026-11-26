@@ -1,9 +1,9 @@
 // Writes one reading packet per OPTIC case candidate, for whoever drafts the plain-English clues.
 // Inputs come from the OPTIC extraction (gameloop-work in the 2026-11-26 audit): candidate days and gzipped article bodies.
 // Usage: node tools/packets.mjs <b_days_all.json> <bodies.jsonl.gz> <out dir> [article id prefix ...]
-import { readFileSync, writeFileSync, mkdirSync, createReadStream } from 'node:fs';
-import { createGunzip } from 'node:zlib';
-import { createInterface } from 'node:readline';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { gunzipSync } from 'node:zlib';
+// Bodies split on newlines only: some hold a raw carriage return, which a line reader would break on.
 import { buildPool } from './export.mjs';
 
 const [daysFile, bodiesFile, outDir, ...want] = process.argv.slice(2);
@@ -11,7 +11,7 @@ if (!outDir) { console.error('usage: node tools/packets.mjs <b_days_all.json> <b
 const days = JSON.parse(readFileSync(daysFile, 'utf8')).filter(d => !want.length || want.some(w => d.article_id.startsWith(w)));
 const ids = new Set(days.map(d => d.article_id));
 const bodies = new Map();
-for await (const line of createInterface({ input: createReadStream(bodiesFile).pipe(createGunzip()) })) {
+for (const line of gunzipSync(readFileSync(bodiesFile)).toString('utf8').split(String.fromCharCode(10))) {
   const id = line.slice(15, 51);
   if (ids.has(id)) bodies.set(id, JSON.parse(line).body_text || '');
 }

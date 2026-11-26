@@ -6,7 +6,7 @@
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { buildPool } from './export.mjs';
-import { ladder, CLOSE_MAX } from './check-cases.mjs';
+import { ladder, CLOSE_MAX, ANALYST_MAX_CLUES } from './check-cases.mjs';
 
 const CS = ['Bear', 'Panda', 'Kitten', 'Chollima', 'Spider', 'Tiger', 'Leopard', 'Buffalo', 'Jackal', 'Crane', 'Wolf', 'Ocelot', 'Hawk', 'Lynx', 'Saiga'];
 const MS = ['Blizzard', 'Typhoon', 'Sandstorm', 'Sleet', 'Tempest', 'Hail', 'Dust', 'Cyclone', 'Rain', 'Flood', 'Tsunami'];
@@ -60,6 +60,10 @@ for (const { j } of files) for (const c of j.cases) {
     if (fit >= ladder(c, byId).at(-1) || (best && best.fit <= fit)) continue;
     const name = names(a).find(n => n.endsWith(' ' + family) && cite(n, c.article));
     if (name) best = { fit, clue: { kind: 'tipoff', text: hint(family), facts: { family }, source: { ...cite(name, c.article), note: `${name} is the culprit's ${CS.includes(family) ? 'CrowdStrike' : 'Microsoft'} name.` } } };
+  }
+  if (best && c.clues.length >= ANALYST_MAX_CLUES) {
+    const i = c.clues.findLastIndex(k => !Object.keys(k.facts || {}).length);
+    if (i >= 0) c.clues.splice(i, 1); else best = null;
   }
   if (best) c.clues.push(best.clue);
   const end = ladder(c, byId).at(-1);

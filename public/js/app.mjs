@@ -146,7 +146,7 @@ function endScreen(m) {
     ${won && res.betterThan >= 50 ? `<p class="better">Better than <b>${res.betterThan}%</b> of ${MODES[m].who} today</p>` : ''}
     ${distribution(m, res, mine)}
     <h3>What happened</h3><p class="wh">${esc(res.story)}</p>
-    <p class="src"><a href="${esc(res.report.url)}" target="_blank" rel="noopener">Read the original report<span class="vh"> (opens in a new tab)</span></a><br><span>${esc(res.report.vendor)} · ${esc(res.report.date)}</span></p>
+    <p class="src"><a href="${esc(res.report.url)}" target="_blank" rel="noopener">Read the original report<span class="vh"> (opens in a new tab)</span></a><br><span>${esc(res.report.vendor)}${res.report.date ? ' · ' + esc(res.report.date) : ''}</span></p>
     <pre class="shareE" aria-label="Your result">${esc(share)}</pre>
     <div class="endBtns">
       <button class="btn primary" id="shareBtn">Share result</button>

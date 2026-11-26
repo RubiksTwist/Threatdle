@@ -1,5 +1,5 @@
 {
- "version": "bd2586e411",
+ "version": "e3d2ab9631",
  "actors": [
   {
    "id": "G0001",
@@ -319,11 +319,14 @@
    "targets": [
     "Government",
     "Military",
+    "Individuals",
+    "Hospitality",
     "Telecommunications",
     "Energy",
     "Transportation",
     "NGOs",
-    "Individuals",
+    "Civil society",
+    "Media",
     "Education"
    ],
    "profile": "Russian military intelligence hackers",
@@ -807,11 +810,11 @@
    ],
    "since": 2008,
    "targets": [
+    "Technology",
     "Education",
     "Civil society",
     "Government",
     "NGOs",
-    "Technology",
     "Media"
    ],
    "profile": "Russian foreign intelligence hackers",
@@ -865,7 +868,8 @@
     "S0682",
     "S0684",
     "S1084",
-    "S1187"
+    "S1187",
+    "S1063"
    ],
    "tricks": [
     "T1001.002",
@@ -1413,7 +1417,10 @@
    "since": 2010,
    "targets": [
     "Government",
-    "Private sector"
+    "Private sector",
+    "Defense",
+    "Finance",
+    "Education"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -1441,7 +1448,8 @@
     "S0660",
     "S0662",
     "S0663",
-    "S0664"
+    "S0664",
+    "S0072"
    ],
    "tricks": [
     "T1003.001",
@@ -1848,7 +1856,9 @@
    "targets": [
     "Government",
     "Private sector",
-    "Energy"
+    "Energy",
+    "Food and agriculture",
+    "Media"
    ],
    "profile": "Russian military saboteurs who black out power grids",
    "roster": true,
@@ -2776,10 +2786,10 @@
    "since": 2014,
    "targets": [
     "Private sector",
-    "Energy",
-    "Telecommunications",
     "Finance",
-    "Government"
+    "Government",
+    "Energy",
+    "Telecommunications"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -3231,7 +3241,8 @@
    "home": "IR",
    "type": "state",
    "motive": [
-    "Espionage"
+    "Espionage",
+    "Financial Gain"
    ],
    "since": 2014,
    "targets": [
@@ -3241,6 +3252,8 @@
     "Healthcare",
     "Individuals",
     "Manufacturing",
+    "Transportation",
+    "Civil society",
     "Media"
    ],
    "profile": "Iranian spies who pose as journalists",
@@ -3636,7 +3649,11 @@
    "since": 2009,
    "targets": [
     "Government",
-    "Private sector"
+    "Private sector",
+    "Education",
+    "Transportation",
+    "Defense",
+    "Manufacturing"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -3797,7 +3814,6 @@
    "targets": [
     "Government",
     "Private sector",
-    "Healthcare",
     "Military"
    ],
    "profile": "North Korean state spies",
@@ -5101,14 +5117,17 @@
    "home": "KP",
    "type": "state",
    "motive": [
-    "Espionage"
+    "Espionage",
+    "Financial Gain"
    ],
    "since": 2012,
    "targets": [
     "Education",
     "Government",
     "Individuals",
-    "NGOs"
+    "Energy",
+    "NGOs",
+    "Healthcare"
    ],
    "profile": "North Korean spies who phish think tanks",
    "roster": true,
@@ -5325,7 +5344,9 @@
     "Technology",
     "Telecommunications",
     "Transportation",
-    "Government"
+    "Government",
+    "Hospitality",
+    "Education"
    ],
    "profile": "Chinese state spies who also hack for money",
    "roster": true,
@@ -6200,7 +6221,8 @@
    "home": "RU",
    "type": "crime",
    "motive": [
-    "Financial Gain"
+    "Financial Gain",
+    "Espionage"
    ],
    "since": 2014,
    "targets": [
@@ -6208,7 +6230,7 @@
     "Healthcare",
     "Technology"
    ],
-   "profile": "Russian cybercrime gang",
+   "profile": "Russian state spies who also steal money",
    "roster": true,
    "tools": [
     "S0002",
@@ -9017,9 +9039,7 @@
     "Education",
     "Government",
     "NGOs",
-    "Finance",
-    "Civil society",
-    "Media"
+    "Finance"
    ],
    "profile": "Russian state spies",
    "roster": true,

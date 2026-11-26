@@ -75,7 +75,8 @@ export function checkCase(c, byId, all = [c]) {
   const sentences = (c.story || '').replace(/\b(?:[A-Z]\.){2,}/g, 'X').split(/(?<=[.!?])\s+(?=[A-Z0-9"'])/).filter(Boolean).length;
   if (sentences < 2 || sentences > 3 || c.story.length > 480) bad.push(`story has ${sentences} sentences or is too long`);
   const r = c.report || {};
-  if (!r.vendor || !r.title || !/^https:\/\//.test(r.url || '') || !isDay(r.date)) bad.push('report needs vendor, title, https url and date');
+  // Some vendor pages (Sophos threat profiles) carry no publish date: date is null then, never a made-up day.
+  if (!r.vendor || !r.title || !/^https:\/\//.test(r.url || '') || !(r.date === null || isDay(r.date))) bad.push('report needs vendor, title, https url and a date or null');
   if (typeof c.article !== 'string' || c.article.length < 8) bad.push('missing OPTIC article id');
   return bad;
 }
