@@ -104,7 +104,9 @@ async function run(browser, vp) {
   check(`analyst ${tag} share grid`, share.split('\n').length === 4 && share.split('\n')[3] === '🟩🟩🟩🟩🟩');
   check(`analyst ${tag} streak line`, /Streak: 4 days as SOC Analyst/.test(await a.page.textContent('.streak')));
   check(`analyst ${tag} rank line`, /You're the [\d,]+(st|nd|rd|th) analyst/.test(await a.page.textContent('.crowdEnd')));
-  check(`analyst ${tag} distribution`, (await a.page.locator('.dist li.me').count()) === 1);
+  check(`analyst ${tag} distribution highlights my bar`, (await a.page.locator('.dist li.me').count()) === 1 && (await a.page.textContent('.dist li.me span')) === '3');
+  const better = (await a.page.locator('.better').count()) ? +(await a.page.textContent('.better b')).replace('%', '') : null;
+  check(`analyst ${tag} better-than only at 50% or more`, better === null || better >= 50, String(better));
   check(`analyst ${tag} story and report`, (await a.page.textContent('.wh')).length > 40 && (await a.page.getAttribute('.src a', 'href')).startsWith('https://'));
   check(`analyst ${tag} toggle says solved`, (await a.page.textContent('.mode[data-mode="analyst"] .done')) === 'Solved');
   const c1 = await a.page.textContent('#clock');
@@ -165,6 +167,8 @@ async function run(browser, vp) {
   check(`hunter ${tag} winning row all match`, await hw.page.evaluate(() => [...document.querySelectorAll('.rows > li:first-child .fc')].every(c => c.classList.contains('hit'))));
   const ws = await hw.page.textContent('.shareE');
   check(`hunter ${tag} win share`, /^Threatdle #\d+ · Threat Hunter 3\/6 · 🔥2\n/.test(ws) && ws.split('\n')[3] === '🟩'.repeat(7), ws.split('\n')[0]);
+  check(`hunter ${tag} better-than only at 50% or more`, !(await hw.page.locator('.better').count()) || +(await hw.page.textContent('.better b')).replace('%', '') >= 50);
+  check(`hunter ${tag} distribution highlights my bar`, (await hw.page.textContent('.dist li.me span')) === '3');
   check(`hunter ${tag} crowd line`, /You're the [\d,]+(st|nd|rd|th) hunter/.test(await hw.page.textContent('.crowdEnd')));
   await shot(hw.page, `hunter-win-${tag}.png`); await axe(hw.page, `hunter win ${tag}`);
   check(`hunter win ${tag} no page errors`, hw.errors.length === 0, hw.errors.join(' | '));
