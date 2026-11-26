@@ -1,5 +1,5 @@
 {
- "version": "59e2b96378",
+ "version": "36455090a6",
  "actors": [
   {
    "id": "G0001",
@@ -1816,7 +1816,6 @@
     "Government",
     "Media",
     "Technology",
-    "Energy",
     "Telecommunications",
     "Healthcare"
    ],
@@ -2317,7 +2316,10 @@
     "Financial Gain"
    ],
    "since": null,
-   "targets": [],
+   "targets": [
+    "Hospitality",
+    "Retail"
+   ],
    "profile": "Cybercrime gang",
    "roster": true,
    "tools": [
@@ -3008,8 +3010,9 @@
     "Private sector",
     "Finance",
     "Government",
-    "Energy",
-    "Telecommunications"
+    "Telecommunications",
+    "Hospitality",
+    "Energy"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -3492,6 +3495,7 @@
     "Healthcare",
     "Individuals",
     "Manufacturing",
+    "NGOs",
     "Transportation",
     "Civil society",
     "Media"
@@ -3821,9 +3825,9 @@
     "Private sector",
     "Education",
     "Pharmaceuticals",
-    "Defense",
     "Individuals",
-    "Energy"
+    "Energy",
+    "Defense"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -7228,8 +7232,7 @@
    "since": 2010,
    "targets": [
     "Civil society",
-    "Military",
-    "Defense"
+    "Military"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -7511,6 +7514,9 @@
     "Finance",
     "Government",
     "Military",
+    "Manufacturing",
+    "Food and agriculture",
+    "Healthcare",
     "Pharmaceuticals"
    ],
    "profile": "North Korean spies, thieves and saboteurs",
@@ -7998,14 +8004,15 @@
    "home": null,
    "type": "crime",
    "motive": [
-    "Financial Gain"
+    "Financial Gain",
+    "Sabotage"
    ],
    "since": 2021,
    "targets": [
     "Government",
     "Media"
    ],
-   "profile": "Cybercrime gang",
+   "profile": "Thieves and saboteurs",
    "roster": true,
    "tools": [
     "S0002"
