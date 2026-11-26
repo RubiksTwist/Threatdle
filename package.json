@@ -5,6 +5,9 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.888.0"
   },
+  "overrides": {
+    "fast-xml-parser": "5.5.6"
+  },
   "scripts": {
     "build:runtime": "node scripts/build-netlify-runtime.mjs",
     "build": "npm run build:runtime"

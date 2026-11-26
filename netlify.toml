@@ -6,6 +6,18 @@ publish = "public"
 directory = "netlify/functions"
 included_files = ["build/runtime/**"]
 
+[[headers]]
+for = "/*"
+
+  [headers.values]
+  Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://flagcdn.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Cross-Origin-Opener-Policy = "same-origin"
+  Permissions-Policy = "accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()"
+  Referrer-Policy = "strict-origin-when-cross-origin"
+  Strict-Transport-Security = "max-age=31536000"
+  X-Content-Type-Options = "nosniff"
+  X-Frame-Options = "DENY"
+
 [[redirects]]
 from = "/api/game/today"
 to = "/.netlify/functions/game-today"

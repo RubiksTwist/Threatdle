@@ -123,6 +123,15 @@ For the current implementation, Cloudflare R2 is a strong fit for this runtime b
 
 This keeps deploy times predictable and avoids rebuilding large puzzle archives during every production publish.
 
+Current implementation notes:
+
+- the Netlify build path now defaults to a 30-day runtime window unless `GAME_DAYS` or `--days` overrides it
+- the deployed functions read a single private bundle from `build/runtime/game-data.json`
+- the live request path does not read from `data/snapshots/`
+- old snapshot folders are only needed if you intend to re-run ingest or artifact verification for that exact `snapshot_id`
+
+If you want a year-long archive in production, that must be represented in the exported runtime bundle itself. The current live function path does not stitch multiple snapshot folders or multiple runtime bundles together at request time.
+
 ## Bottom line
 
 Threatdle should launch as a lightweight browser game with a thin server-side validation layer. The key architectural rule is simple: the client can render the puzzle and store local progress, but the server must own the answer and the decision about what puzzle is active today.

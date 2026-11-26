@@ -64,6 +64,18 @@ It also supports direct Cloudflare R2 downloads through:
 
 If those are not set, the build falls back to generating the runtime bundle from source inputs.
 
+The current deploy path defaults to a 30-day live runtime window unless you override it with `GAME_DAYS` or `python -m threatdle build-live-runtime --days <N>`.
+
+## Snapshot retention
+
+`data/snapshots/<snapshot-id>/` is an ingest-time artifact store, not a runtime dependency for the deployed game.
+
+- Fetch and ingest commands use those folders to read source artifacts and verify locked hashes for a specific snapshot.
+- Netlify runtime requests serve from `build/runtime/game-data.json` and do not walk `data/snapshots/` at request time.
+- `export-static-demo` and `export-live-runtime` read from the SQLite database, so they can still work after old snapshot folders are pruned.
+
+Prune a snapshot folder only if you do not need to re-run ingest, rebuild puzzle tables, or regenerate source-based reports for that same `snapshot_id`.
+
 ## License
 
 The original code in this repository is licensed under the MIT License. See [LICENSE](./LICENSE).

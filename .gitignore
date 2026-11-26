@@ -16,3 +16,7 @@ data/snapshots/
 
 Thumbs.db
 .DS_Store
+
+.netlify/
+.netlify-dev.*.log
+deno.lock
