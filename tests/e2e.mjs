@@ -63,16 +63,36 @@ async function run(browser, vp) {
   check(`analyst ${tag} case number`, /Case #\d+/.test(await a.page.textContent('.case')));
   await shot(a.page, `analyst-first-${tag}.png`); await axe(a.page, `analyst first ${tag}`);
   await a.page.click('#howOk');
-  const [w1, w2] = wrong('analyst', 2);
+  const [w1] = wrong('analyst', 1);
   await type(a.page, 'analyst', w1);
   await a.page.click('#browse');
   await a.page.waitForSelector('#roster[open]');
   if (tag === 390) await shot(a.page, 'analyst-browse-390.png');
   await axe(a.page, `analyst browse ${tag}`);
   check(`analyst ${tag} browse cards fit the sheet`, await a.page.evaluate(() => [...document.querySelectorAll('#rosterBody .rc')].every(c => c.getBoundingClientRect().right <= document.querySelector('#rosterBody').getBoundingClientRect().right + 0.5)));
-  await a.page.click(`#rosterBody .rc[data-id="${w2}"]`);
+  // Suspect tracker: the live count, ruled-out groups hidden until asked for, the culprit never ruled out.
+  const live = +(await a.page.textContent('#rosterLive b'));
+  check(`tracker ${tag} browse count matches the guess counter`, live === +(await a.page.textContent('.poss b')), String(live));
+  check(`tracker ${tag} ruled-out groups hidden by default`, (await a.page.locator('#rosterBody .rc.ruled').count()) === 0 && (await a.page.locator('#rosterBody .rc:not(.out)').count()) === live);
+  check(`tracker ${tag} culprit still possible`, (await a.page.locator(`#rosterBody .rc[data-id="${culprit.analyst}"]:not(.ruled)`).count()) === 1);
+  await a.page.click('#showRuled');
+  const ruled = await a.page.locator('#rosterBody .rc.ruled').count();
+  check(`tracker ${tag} toggle shows ruled-out groups`, ruled === 52 - live - 1, `${ruled} ruled, ${live} live`);
+  if (tag === 390) await shot(a.page, 'analyst-browse-ruled-390.png');
+  await axe(a.page, `analyst browse ruled ${tag}`);
+  await a.page.click('#showRuled');
+  let w2 = await a.page.evaluate(c => [...document.querySelectorAll('#rosterBody .rc:not(.out):not(.ruled)')].map(b => b.dataset.id).find(id => id !== c), culprit.analyst);
+  if (w2) await a.page.click(`#rosterBody .rc[data-id="${w2}"]`);
+  else {  // only the culprit is left: a ruled-out group can still be typed
+    await a.page.click('#rosterClose');
+    w2 = wrong('analyst', 2)[1];
+    await a.page.fill('#rguess', name(w2));
+    check(`tracker ${tag} autocomplete marks ruled-out groups`, (await a.page.locator('#raclist li.ruled').count()) >= 1);
+    await a.page.press('#rguess', 'Enter');
+  }
   await a.page.waitForFunction(() => document.querySelectorAll('.rows > li').length === 2);
   check(`analyst ${tag} two rows, newest first`, (await a.page.textContent('.rows > li:first-child .fn')) === name(w2));
+  check(`tracker ${tag} count never grows`, +(await a.page.textContent('.poss b')) <= live);
   check(`analyst ${tag} third clue declassified`, (await a.page.locator('.clue').count()) === 3);
   check(`analyst ${tag} rows have 5 cells`, (await a.page.locator('.rows > li:first-child .fc').count()) === 5);
   await shot(a.page, `analyst-mid-${tag}.png`); await axe(a.page, `analyst mid ${tag}`);
@@ -116,6 +136,7 @@ async function run(browser, vp) {
     if (i === 2) {
       check(`hunter ${tag} rows have 7 cells`, (await h.page.locator('.rows > li:first-child .fc').count()) === 7);
       check(`hunter ${tag} meter`, (await h.page.textContent('.meter b')) === '3 left');
+      check(`hunter ${tag} hint count`, +(await h.page.textContent('.poss b')) >= 1);
       await h.page.fill('#guess', 'bear');
       await h.page.waitForSelector('#aclist:not([hidden])');
       await shot(h.page, `hunter-autocomplete-${tag}.png`); await axe(h.page, `hunter autocomplete ${tag}`);

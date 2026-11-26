@@ -147,7 +147,24 @@ export function play(mode, kase, guesses, byId) {
   const solved = guesses.at(-1) === culprit.id;
   const status = solved ? 'solved' : max && guesses.length >= max ? 'cold' : 'playing';
   const shown = status === 'playing' ? Math.min(n, guesses.length + 1) : n;
-  return { rows, status, tries: guesses.length, clues: kase.clues.slice(0, shown).map(c => ({ kind: c.kind, text: c.text })), clueCount: n };
+  return { rows, status, tries: guesses.length, clues: kase.clues.slice(0, shown).map(shownClue), clueCount: n };
+}
+
+// What a shown clue tells the page: its words and the checkable facts they state. Tool ids stay on the server.
+export const shownClue = c => { const { tools, ...facts } = c.facts || {}; return { kind: c.kind, text: c.text, facts }; };
+
+// The suspect tracker: which candidates the player can still believe, from what the page already shows.
+// A candidate stays if it fits every shown clue and, for each row, comparing that guess with the candidate (folded with
+// the clues shown when the row was made) gives the row the player got. Tools and Tricks need server data, so they are skipped.
+// The culprit always stays: the server built each row the same way from the same public facts.
+export function possible(mode, candidates, clues, rows, byId) {
+  const cols = MODES[mode].cols.filter(k => k !== 'tools' && k !== 'tricks');
+  return candidates.filter(x => fitsAll(x, clues) && rows.every((r, i) => {
+    if (r.correct) return r.id === x.id;
+    if (r.id === x.id) return false;
+    const g = byId[r.id], got = cells(mode, g, compare(g, fold(x, clues.slice(0, i + 1))));
+    return cols.every(k => { const a = got.find(c => c.k === k), b = r.cells.find(c => c.k === k); return a.tone === b.tone && (a.arrow || '') === (b.arrow || ''); });
+  }));
 }
 
 // Reasons a guess list cannot be a real game. null = fine.

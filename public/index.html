@@ -37,7 +37,8 @@
   </div>
 </div>
 <dialog id="roster" class="rdlg" aria-labelledby="rosterH">
-  <div class="rhead"><h2 id="rosterH">Most Wanted <span id="rosterN"></span></h2><p>Tap a group to guess it.</p><button id="rosterClose" class="btn ghost sm" aria-label="Close the roster">Close</button></div>
+  <div class="rhead"><h2 id="rosterH">Most Wanted <span id="rosterN"></span></h2><p id="rosterLive" role="status"></p><button id="rosterClose" class="btn ghost sm" aria-label="Close the roster">Close</button>
+    <button id="showRuled" class="btn ghost sm tog" aria-pressed="false">Show ruled out</button></div>
   <div id="rosterBody" class="rbody"></div>
 </dialog>
 <div id="sr" class="vh" role="status" aria-live="polite"></div>

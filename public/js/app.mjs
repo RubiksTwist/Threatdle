@@ -1,6 +1,6 @@
 // Threatdle client. The server holds the answers: the page sends the guess list and draws what comes back.
 // Per mode: game = { today, guesses, view, busy }. today = GET /api/today; view = the last POST /api/guess reply (rows, clues, status, result).
-import { MODES, COUNTRY, KINDS, SECTIONS, other, sectionOf, displayName, shareText, nextStreak, currentStreak } from './rules.mjs';
+import { MODES, COUNTRY, KINDS, SECTIONS, other, sectionOf, displayName, shareText, nextStreak, currentStreak, possible } from './rules.mjs';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -25,6 +25,12 @@ async function api(path, body) {
   return { status: r.status, body: await r.json().catch(() => ({})) };
 }
 const statusOf = m => games[m]?.view?.status ?? 'playing';
+// The suspect tracker: groups the player can still believe, from the clues and rows on screen.
+function suspects(m) {
+  const g = games[m];
+  if (!g?.today) return new Set();
+  return new Set(possible(m, m === 'analyst' ? ROSTER : POOL, g.view?.clues ?? [g.today.clue1], g.view?.rows ?? [], byId).map(a => a.id));
+}
 const finished = m => statusOf(m) !== 'playing';
 
 async function loadToday(m) {
@@ -174,9 +180,11 @@ function render() {
   const v = g.view, n = g.today.clueCount, clues = v?.clues ?? [g.today.clue1], rows = v?.rows ?? [], used = g.guesses.length;
   let h = howto(mode);
   if (finished(mode)) h += endScreen(mode);
+  const left = suspects(mode).size;
+  const poss = finished(mode) ? '' : `<span class="poss"><b>${left}</b> possible</span>`;
   const head = mode === 'hunter'
-    ? `<span class="meter" role="img" aria-label="${MODES.hunter.max - used} of ${MODES.hunter.max} accusations left">${Array.from({ length: MODES.hunter.max }, (_, i) => `<i class="${i < MODES.hunter.max - used ? 'on' : ''}"></i>`).join('')}<b>${MODES.hunter.max - used} left</b></span>`
-    : `<span class="gcount"><b>${used}</b> ${used === 1 ? 'guess' : 'guesses'}</span>`;
+    ? `<span class="meter" role="img" aria-label="${MODES.hunter.max - used} of ${MODES.hunter.max} accusations left">${Array.from({ length: MODES.hunter.max }, (_, i) => `<i class="${i < MODES.hunter.max - used ? 'on' : ''}"></i>`).join('')}<b>${MODES.hunter.max - used} left</b></span>${poss}`
+    : `<span class="gcount"><b>${used}</b> ${used === 1 ? 'guess' : 'guesses'}</span>${poss}`;
   const legend = MODES[mode].cols.map(k => `<span class="fc">${LEGEND[k]}</span>`).join('');
   h += `<section class="caseE" aria-label="Case file">
       <div class="caseHead"><h2 class="case">Case #${g.today.caseNumber}</h2>${head}</div>
@@ -265,7 +273,7 @@ async function accuse(id) {
   fresh = { row: true, clue: r.body.clues.length > before ? before : -1 };
   render();
   const left = m === 'hunter' ? ` ${plural(MODES.hunter.max - guesses.length, 'accusation')} left.` : '';
-  say(`${last.name} is innocent. ${last.cells.map(c => c.say).join('; ')}.${left}${r.body.clues.length > before ? ' New clue: ' + r.body.clues.at(-1).text : ''}`);
+  say(`${last.name} is innocent. ${last.cells.map(c => c.say).join('; ')}.${left} ${plural(suspects(m).size, 'suspect')} still possible.${r.body.clues.length > before ? ' New clue: ' + r.body.clues.at(-1).text : ''}`);
   if ($('.caseE').getBoundingClientRect().top < 0) scrollTo({ top: 0, behavior: reduce() ? 'auto' : 'smooth' });
 }
 
@@ -276,12 +284,13 @@ function combobox(input, list, items, none, button) {
   const draw = () => {
     const q = input.value.trim().toLowerCase();
     if (!q) return close(false);
-    const all = items().filter(x => !games[mode]?.guesses.includes(x.id));
+    const all = items().filter(x => !games[mode]?.guesses.includes(x.id)), live = suspects(mode);
     shown = all.filter(x => x.label.toLowerCase().startsWith(q)).sort((a, b) => a.label.length - b.label.length)
-      .concat(all.filter(x => !x.label.toLowerCase().startsWith(q) && x.q.includes(q))).slice(0, 6);
+      .concat(all.filter(x => !x.label.toLowerCase().startsWith(q) && x.q.includes(q)))
+      .map(x => ({ ...x, out: !live.has(x.id) })).sort((a, b) => a.out - b.out).slice(0, 6);
     sel = Math.min(sel, Math.max(0, shown.length - 1));
     list.innerHTML = shown.length
-      ? shown.map((x, i) => `<li role="option" id="${list.id}${i}" data-i="${i}" aria-selected="${i === sel}">${x.flag}<span><b>${esc(x.label)}</b><small>${esc(x.sub)}</small></span></li>`).join('')
+      ? shown.map((x, i) => `<li role="option" id="${list.id}${i}" data-i="${i}" aria-selected="${i === sel}" class="${x.out ? 'ruled' : ''}">${x.flag}<span><b>${esc(x.label)}</b><small>${esc(x.sub)}</small></span>${x.out ? '<i>Ruled out</i>' : ''}</li>`).join('')
       : `<li class="none" role="option" aria-disabled="true" aria-selected="false">${none()}</li>`;
     list.hidden = false; input.setAttribute('aria-expanded', 'true');
     if (shown.length) input.setAttribute('aria-activedescendant', list.id + sel); else input.removeAttribute('aria-activedescendant');
@@ -307,15 +316,22 @@ const entry = a => ({ id: a.id, label: displayName(a), flag: flagImg(a, 'mini'),
   q: [displayName(a), a.name, ...a.aliases].join(' | ').toLowerCase() });
 
 // Browse: the Most Wanted, grouped by home. Tap one to guess it.
+// Browse: the Most Wanted, grouped by home. Ruled-out groups sink, greyed, and hide unless asked for. Tap one to guess it.
+let showRuled = false;
 function browseHtml() {
-  const guessed = games.analyst?.guesses ?? [];
-  return SECTIONS.map(([k, label, hint]) => [k, label, hint, ROSTER.filter(a => sectionOf(a) === k).sort((a, b) => displayName(a).localeCompare(displayName(b)))])
-    .filter(s => s[3].length).map(([k, label, hint, list]) => `<section class="rsec" aria-labelledby="rs-${k}"><h3 id="rs-${k}"><span>${esc(label)}</span><small>${esc(hint)} · ${list.length}</small></h3>
-      <div class="rgrid">${list.map(a => {
-        const out = guessed.includes(a.id);
-        return `<button class="rc ${out ? 'out' : ''}" data-id="${a.id}" ${out ? 'disabled' : ''} aria-label="${esc(displayName(a))}, ${esc(a.profile)}. ${esc(hits(a))}${out ? ', already guessed' : ''}">
-          ${flagImg(a)}<span class="rt"><b>${esc(displayName(a))}</b><small>${esc(a.profile)}</small><small>${esc(hits(a))}</small></span>${out ? '<i>Cleared</i>' : ''}</button>`;
-      }).join('')}</div></section>`).join('');
+  const guessed = games.analyst?.guesses ?? [], live = suspects('analyst');
+  const n = [...live].filter(id => !guessed.includes(id)).length;
+  $('#rosterLive').innerHTML = `<b>${n}</b> ${n === 1 ? 'suspect' : 'suspects'} still possible`;
+  $('#showRuled').setAttribute('aria-pressed', String(showRuled));
+  return SECTIONS.map(([k, label, hint]) => {
+    const list = ROSTER.filter(a => sectionOf(a) === k).map(a => ({ a, out: guessed.includes(a.id), ruled: !live.has(a.id) }))
+      .sort((x, y) => x.ruled - y.ruled || displayName(x.a).localeCompare(displayName(y.a)));
+    const visible = list.filter(x => showRuled || !x.ruled), alive = list.filter(x => !x.ruled).length;
+    if (!visible.length) return '';
+    return `<section class="rsec" aria-labelledby="rs-${k}"><h3 id="rs-${k}"><span>${esc(label)}</span><small>${esc(hint)} · ${alive} of ${list.length} possible</small></h3>
+      <div class="rgrid">${visible.map(({ a, out, ruled }) => `<button class="rc ${out ? 'out' : ruled ? 'ruled' : ''}" data-id="${a.id}" ${out ? 'disabled' : ''} aria-label="${esc(displayName(a))}, ${esc(a.profile)}. ${esc(hits(a))}${out ? ', already guessed' : ruled ? ', ruled out' : ''}">
+          ${flagImg(a)}<span class="rt"><b>${esc(displayName(a))}</b><small>${esc(a.profile)}</small><small>${esc(hits(a))}</small></span>${out ? '<i>Cleared</i>' : ruled ? '<i>Ruled out</i>' : ''}</button>`).join('')}</div></section>`;
+  }).join('');
 }
 function setupBrowse() {
   const dlg = $('#roster');
@@ -323,6 +339,7 @@ function setupBrowse() {
   $('#rosterN').textContent = ROSTER.length;
   $('#browse').onclick = () => { $('#rosterBody').innerHTML = browseHtml(); dlg.showModal(); $('#rosterBody').scrollTop = 0; };
   $('#rosterClose').onclick = () => dlg.close();
+  $('#showRuled').onclick = () => { showRuled = !showRuled; $('#rosterBody').innerHTML = browseHtml(); };
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
   $('#rosterBody').onclick = e => { const b = e.target.closest('.rc:not(:disabled)'); if (!b) return; dlg.close(); accuse(b.dataset.id); };
 }

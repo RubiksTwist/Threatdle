@@ -2,7 +2,7 @@
 // The function files only adapt HTTP and Netlify Blobs to this.
 //   store = { list(prefix) -> Promise<string[]>, set(key, value) -> Promise }
 // A finish is one key, never rewritten: `${mode}/${day}/${playerId}.${status}.${tries}.${ms}`. A player's first finish counts.
-import { MODES, isMode, isDay, dayOf, msUntilNext, addDays, daysBetween, play, guessError, fold, displayName } from '../../public/js/rules.mjs';
+import { MODES, isMode, isDay, dayOf, msUntilNext, addDays, daysBetween, play, guessError, fold, displayName, shownClue } from '../../public/js/rules.mjs';
 
 const PLAYER = /^[A-Za-z0-9_-]{8,64}$/;
 const reply = (status, body) => ({ status, body });
@@ -34,7 +34,7 @@ export function createGame({ pool, cases, schedule }) {
     const y = entry(mode, addDays(day, -1)), yc = y && byId[y.kase.culprit];
     const solved = (await finishes(store, mode, day)).filter(f => f.status === 'solved').length;
     return reply(200, {
-      day, caseNumber: e.caseNumber, mode, msUntilNext: msUntilNext(now), clue1: pick(e.kase.clues[0]), clueCount: e.kase.clues.length,
+      day, caseNumber: e.caseNumber, mode, msUntilNext: msUntilNext(now), clue1: shownClue(e.kase.clues[0]), clueCount: e.kase.clues.length,
       solvedCount: solved, yesterday: yc ? { name: yc.name, nickname: yc.nickname, home: yc.home, profile: yc.profile } : null,
     });
   }
@@ -69,7 +69,6 @@ export function createGame({ pool, cases, schedule }) {
   return { today, guess };
 }
 
-const pick = c => ({ kind: c.kind, text: c.text });
 function profile(a, kase) {
   const { tools, tricks, ...p } = fold(a, kase.clues);
   return { ...p, display: displayName(p) };

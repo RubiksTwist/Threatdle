@@ -26,7 +26,7 @@ test('today serves only the first clue, the case number and yesterday', async ()
   assert.equal(r.status, 200);
   assert.equal(r.body.day, '2026-12-02');
   assert.equal(r.body.caseNumber, 2);
-  assert.deepEqual(r.body.clue1, { kind: 'victim', text: 'clue 1' });
+  assert.deepEqual(r.body.clue1, { kind: 'victim', text: 'clue 1', facts: {} });
   assert.equal(r.body.clueCount, 5);
   assert.equal(r.body.yesterday.name, 'G2');
   assert.equal(r.body.msUntilNext, Date.parse('2026-12-03T05:00:00Z') - NOW);
