@@ -164,7 +164,7 @@ export function guessError(mode, kase, guesses, byId) {
 }
 
 // ---------- share ----------
-const EMO = { hit: '🟩', near: '🟨', miss: '⬛', unk: '⬜' };
+const EMO = { hit: '🟩', near: '🟨', miss: '⬛', unk: '⬛' };
 export const shareRow = row => row.cells.map(c => (c.arrow ? (c.arrow === '↑' ? '⬆️' : '⬇️') : EMO[c.tone])).join('');
 export const SHARE_ROWS = 8;
 export function shareText({ mode, caseNumber, status, rows, streak }) {

@@ -141,6 +141,14 @@ test('share text carries case number, mode, score, grid and streak', () => {
   assert.equal([...h.split('\n')[1]].filter(c => c !== '️').length, 7);
 });
 
+test('share grid uses only green, yellow, black and arrows', () => {
+  const unknown = A('U', { since: null, targets: [], motive: [] });
+  const rows = R.play('hunter', kase, ['G4', 'U'], { ...byId, U: unknown }).rows;
+  const grid = R.shareText({ mode: 'hunter', caseNumber: 1, status: 'playing', rows, streak: 0 }).split('\n').slice(1).join('');
+  assert.ok(rows.some(r => r.cells.some(c => c.tone === 'unk')), 'the fixture has an unknown cell');
+  assert.deepEqual([...new Set(grid.replace(/️/g, ''))].filter(c => !['🟩', '🟨', '⬛', '⬆', '⬇'].includes(c)), []);
+});
+
 test('share text keeps a long analyst game short', () => {
   const rows = Array.from({ length: 20 }, () => ({ cells: [{ tone: 'miss' }] }));
   const lines = R.shareText({ mode: 'analyst', caseNumber: 1, status: 'solved', rows, streak: 1 }).split('\n');
