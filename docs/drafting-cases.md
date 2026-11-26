@@ -49,13 +49,13 @@ One JSON file per batch in `data/drafts/`, shaped `{ "cases": [Case, ...] }`:
 | `motive` | `Espionage`, `Financial Gain`, `Sabotage`, `Hacktivism` | The quote says spying, stealing money, destroying or disrupting, a cause. |
 | `home` | `COUNTRY` codes | The quote ties the attackers to a country ("Russian state actor", "North Korean hackers"). |
 | `tools` | ATT&CK `S` ids | A tool or malware clue whose software has an ATT&CK id. |
-| `name` | an alias from the packet | Last clue only. |
+| `name` | an alias from the packet | Threat Hunter only, last clue only. A SOC Analyst clue never names the group. |
 | `family` | a vendor naming word: `Bear`, `Panda`, `Typhoon`, `Tempest`... | The report's name for the group ends in it. |
 
 ## SOC Analyst cases (easy)
 - Culprit must be on the Most Wanted (`Most Wanted: yes` in the packet).
 - 4 to 7 clues in the **elimination ladder** order: (1) victim, (2) state or crime, and motive, (3) home country, (4) a tradecraft or tool detail, (5-6) tip-offs, (last) the closing clue.
-- **Closing clue:** after the last clue exactly 1 Most Wanted group fits. Where the other clues leave more, `node tools/closing.mjs <bodies.jsonl.gz>` appends one quoting the article's own sentence that names the group: the naming family (`family`) when that alone closes it, else the name (`name`).
+- **Closing clue:** after the last clue 1 Most Wanted group fits (2 is accepted when nothing fair gets to 1). It never states the answer. `node tools/closing.mjs <bodies.jsonl.gz>` adds a naming-family hint ("CrowdStrike's name for this group ends in Spider") quoting an OPTIC article that uses that name. Where no hint gets there, add a true victim or motive fact from the article; drop the case if nothing gets it to 2.
 - **Opening target:** at most 12 of the Most Wanted fit clue 1. Lead with whatever cuts deepest: the home country, state or crime, or a rare victim sector. `node tools/resequence.mjs` reorders, merges two clues that quote the same passage, or makes a "That government is..." clue stand alone when that is all a case needs.
 - **Ladder target:** at most 5 Most Wanted groups still fit after clue 4. Run the check; it prints how many fit after each clue (`fit 30>12>6>4`). To fix a failing ladder: pick a sharper victim sector (one that groups listing only "Government" or "Private sector" lack), or put a second victim clue at position 4. Never bend a fact to pass. If it still fails, drop the case.
 - A crime gang with no known home skips the country clue; use a second victim or the motive instead.

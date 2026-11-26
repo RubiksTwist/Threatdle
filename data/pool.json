@@ -1,5 +1,5 @@
 {
- "version": "af2b89b897",
+ "version": "d556ea3d0d",
  "actors": [
   {
    "id": "G0001",
@@ -322,8 +322,8 @@
     "Telecommunications",
     "Energy",
     "Transportation",
-    "Individuals",
     "NGOs",
+    "Individuals",
     "Education"
    ],
    "profile": "Russian military intelligence hackers",
@@ -573,8 +573,7 @@
    "since": 2004,
    "targets": [
     "Government",
-    "Military",
-    "NGOs"
+    "Military"
    ],
    "profile": "Russian security-service spies",
    "roster": true,
@@ -2011,7 +2010,8 @@
     "Defense",
     "Energy",
     "Government",
-    "Transportation"
+    "Transportation",
+    "Finance"
    ],
    "profile": "Russian state spies",
    "roster": true,
@@ -2523,8 +2523,7 @@
     "Media",
     "Retail",
     "Technology",
-    "Transportation",
-    "Food and agriculture"
+    "Transportation"
    ],
    "profile": "Card-stealing crime gang that hit restaurants",
    "roster": true,
@@ -2641,7 +2640,8 @@
    "since": 2013,
    "targets": [
     "Government",
-    "NGOs"
+    "NGOs",
+    "Legal"
    ],
    "profile": "Russian spies who hammer Ukraine",
    "roster": true,
@@ -2778,8 +2778,8 @@
     "Private sector",
     "Energy",
     "Telecommunications",
-    "Government",
-    "Finance"
+    "Finance",
+    "Government"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -2923,6 +2923,7 @@
     "Government",
     "Private sector",
     "Education",
+    "Finance",
     "Hospitality",
     "Media"
    ],
@@ -3241,7 +3242,8 @@
     "Government",
     "Healthcare",
     "Individuals",
-    "Manufacturing"
+    "Manufacturing",
+    "Media"
    ],
    "profile": "Iranian spies who pose as journalists",
    "roster": true,
@@ -3555,8 +3557,10 @@
    "targets": [
     "Private sector",
     "Education",
+    "Pharmaceuticals",
     "Defense",
-    "Energy"
+    "Energy",
+    "Individuals"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -3897,7 +3901,8 @@
    "home": "IR",
    "type": "state",
    "motive": [
-    "Espionage"
+    "Espionage",
+    "Sabotage"
    ],
    "since": 2017,
    "targets": [
@@ -4437,7 +4442,8 @@
    "since": 2014,
    "targets": [
     "Finance",
-    "Technology"
+    "Technology",
+    "Individuals"
    ],
    "profile": "North Korean thieves and saboteurs",
    "roster": true,
@@ -4887,8 +4893,7 @@
    ],
    "since": 2016,
    "targets": [
-    "Finance",
-    "Education"
+    "Finance"
    ],
    "profile": "Cybercrime gang",
    "roster": true,
@@ -5668,9 +5673,7 @@
     "Finance",
     "Government",
     "Healthcare",
-    "Telecommunications",
-    "Hospitality",
-    "Technology"
+    "Telecommunications"
    ],
    "profile": "Russian-speaking ransomware crew",
    "roster": true,
@@ -6205,8 +6208,7 @@
    "targets": [
     "Finance",
     "Healthcare",
-    "Technology",
-    "Private sector"
+    "Technology"
    ],
    "profile": "Russian cybercrime gang",
    "roster": true,
@@ -7100,7 +7102,6 @@
    "tools": [
     "S0032",
     "S0433",
-    "S0633",
     "S0567"
    ],
    "tricks": [
@@ -8073,7 +8074,9 @@
     "Retail",
     "Technology",
     "Telecommunications",
-    "Transportation"
+    "Transportation",
+    "Government",
+    "Individuals"
    ],
    "profile": "Young English-speaking crew that phones help desks",
    "roster": true,
@@ -9016,7 +9019,10 @@
     "Defense",
     "Education",
     "Government",
-    "NGOs"
+    "NGOs",
+    "Finance",
+    "Civil society",
+    "Media"
    ],
    "profile": "Russian state spies",
    "roster": true,
@@ -9157,7 +9163,8 @@
    "since": 2023,
    "targets": [
     "Defense",
-    "Technology"
+    "Technology",
+    "Education"
    ],
    "profile": "North Korean state spies who also steal money",
    "roster": true,
@@ -9879,8 +9886,8 @@
    ],
    "since": 2018,
    "targets": [
-    "Technology",
-    "Finance"
+    "Finance",
+    "Individuals"
    ],
    "profile": "North Korean cybercrime gang",
    "roster": true,

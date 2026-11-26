@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { KINDS, COUNTRY, TYPES, MOTIVES, SECTORS, isMode, isDay, fits } from '../public/js/rules.mjs';
 import { buildPool, buildCases } from './export.mjs';
 
-export const LADDER_AT = 4, LADDER_MAX = 5, ANALYST_MAX_CLUES = 7, FIRST_MAX = 12;
+export const LADDER_AT = 4, LADDER_MAX = 5, ANALYST_MAX_CLUES = 7, FIRST_MAX = 12, CLOSE_MAX = 2;
 const SOFTWARE = new Set(JSON.parse(readFileSync(new URL('../data/source/attack-software.json', import.meta.url), 'utf8')).map(s => s.id));
 
 // Most Wanted groups that still fit after each clue, on facts a player can see. The culprit always counts.
@@ -58,9 +58,11 @@ export function checkCase(c, byId, all = [c]) {
     if (f.type && a.type && f.type !== a.type) bad.push(`${at}: says ${f.type}, the culprit is ${a.type}`);
     if (f.name && !names(a).concat(a.name).some(x => x.toLowerCase() === f.name.toLowerCase())) bad.push(`${at}: name ${f.name} is not the culprit's`);
     if (f.name && i !== n - 1) bad.push(`${at}: a clue that names the group must come last`);
+    if (f.name && c.mode === 'analyst') bad.push(`${at}: a SOC Analyst clue never names the group`);
     if (!fits(a, f)) bad.push(`${at}: the culprit's public card contradicts this clue`);
     const leak = names(a).find(x => mentions(k.text || '', x));
-    if (leak && !(f.name && i === n - 1)) bad.push(`${at}: names the culprit (${leak})`);
+    // A SOC Analyst clue never states the answer. Threat Hunter keeps its contract: a name clue may close the case as clue 6.
+    if (leak && !(c.mode === 'hunter' && f.name && i === n - 1)) bad.push(`${at}: names the culprit (${leak})`);
     if (k.source && sharedRun(k.text || '', k.source.quote || '') >= 6) bad.push(`${at}: copies 6+ words of the vendor quote`);
   });
   if (c.mode === 'analyst' && n >= LADDER_AT) {
@@ -69,7 +71,7 @@ export function checkCase(c, byId, all = [c]) {
     const first = ladder(c, byId)[0];
     if (first > FIRST_MAX) bad.push(`opening: ${first} Most Wanted groups fit clue 1 (max ${FIRST_MAX})`);
     const last = ladder(c, byId).at(-1);
-    if (last !== 1) bad.push(`closing: ${last} Most Wanted groups still fit after the last clue (must be 1)`);
+    if (last > CLOSE_MAX) bad.push(`closing: ${last} Most Wanted groups still fit after the last clue (max ${CLOSE_MAX})`);
   }
   const sentences = (c.story || '').replace(/\b(?:[A-Z]\.){2,}/g, 'X').split(/(?<=[.!?])\s+(?=[A-Z0-9"'])/).filter(Boolean).length;
   if (sentences < 2 || sentences > 3 || c.story.length > 480) bad.push(`story has ${sentences} sentences or is too long`);
