@@ -23,3 +23,12 @@ deno.lock
 
 node_modules/
 test-results/
+
+# Answers: every file that ties a case or a day to its culprit. They live on the editors' disks and in R2
+# (tools/publish.mjs), never in this public repo. build/ holds the bundle the Netlify build fetches.
+data/cases.json
+data/drafts/
+data/review.md
+data/schedule.json
+data/schedule.drafts.json
+tests/screenshots/

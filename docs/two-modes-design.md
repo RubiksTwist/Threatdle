@@ -29,7 +29,7 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 ```
 `roster: true` marks the SOC Analyst roster. `tools` and `tricks` (ATT&CK ids) never leave the server. The client gets a trimmed copy without them.
 
-`data/cases.json` is private and server-only.
+`data/cases.json` is private and server-only: gitignored, and published to R2 with the schedule (README, "The answers stay out of git").
 ```json
 { "cases": [{ "id": "c-1a2b3c4d", "mode": "analyst", "culprit": "G0000", "article": "1a2b3c4d-...", "reviewed": false,
     "clues": [{ "kind": "victim", "text": "Locked up the computers of hospitals and clinics in several countries.",
@@ -44,7 +44,7 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 - Each clue's `facts` say what it asserts (`targets`, `home`, `type`, `motive`, `tools`, `name`). They drive the ladder check and the fold: a row folds the facts of the clues shown when it was made into the culprit's profile. (Changed from a case-level `fold`, which could not tell which facts were shown yet.)
 - `reviewed` is derived: `data/approved.json` maps a case id to a hash of the exact case a human approved (`node tools/approve.mjs <id>`). Editing an approved case un-approves it.
 
-`data/schedule.json` is private and maps a day to a case per mode. `tools/schedule.mjs` generates it from **reviewed** cases only: no culprit repeats within 14 days per mode, and it runs at least 365 days ahead. Build fails when the runway is under 60 days.
+`data/schedule.json` is private and maps a day to a case per mode. `tools/schedule.mjs` generates it from **reviewed** cases only: no culprit repeats within 14 days per mode, and it runs at least 365 days ahead. The Netlify build fetches both from R2 and fails when the runway is under 60 days.
 
 ## API (Netlify Functions, stateless about a player's game)
 - `GET /api/today?mode=analyst|hunter` returns `{ day, caseNumber, mode, msUntilNext, clue1, solvedCount, yesterday: { name, nickname } | null }`. The client loads the pool from the static trimmed `pool.json`.
