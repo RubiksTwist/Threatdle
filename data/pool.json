@@ -1,5 +1,5 @@
 {
- "version": "0548d0f804",
+ "version": "af2b89b897",
  "actors": [
   {
    "id": "G0001",
@@ -120,8 +120,7 @@
    ],
    "since": 2010,
    "targets": [
-    "Government",
-    "NGOs"
+    "Government"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -6860,8 +6859,7 @@
    "targets": [
     "Government",
     "Military",
-    "Private sector",
-    "Media"
+    "Private sector"
    ],
    "profile": "Chinese state spies",
    "roster": true,
