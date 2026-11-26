@@ -8,10 +8,12 @@
     "check": "node tools/check-cases.mjs",
     "schedule": "node tools/schedule.mjs",
     "schedule:drafts": "node tools/schedule.mjs --drafts --start 2026-11-20",
+    "publish": "node tools/publish.mjs",
     "build": "node tools/schedule.mjs --check",
     "e2e": "node tests/e2e.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1165.0",
     "@netlify/blobs": "11.1.9"
   },
   "devDependencies": {
