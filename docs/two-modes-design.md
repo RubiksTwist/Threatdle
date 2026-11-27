@@ -5,7 +5,7 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 ## The game
 - Two modes, each with its **own** daily case. Both modes roll over at midnight America/New_York.
 - **SOC Analyst** (easy): the culprit is one of the Most Wanted roster, which holds only groups with a well-known nickname (about 52). Free-text autocomplete plus a Browse sheet grouped by home ("Russia · Bear · Blizzard"). No guess cap. Score = guesses. The case opens on two clues. Each wrong guess adds a 5-column row (Home, Type, Motive, Since, Targets) and declassifies the next clue.
-- **Threat Hunter** (hard): the culprit is any eligible ATT&CK group, and the guess pool is all of them (about 178), through the same guess box and Browse sheet as SOC Analyst (search ignores spaces and dashes, so "apt 28" finds APT28). 6 guesses. Each wrong guess adds a 7-column row (Home, Type, Motive, Since, Targets, Tools, Tricks; Tools and Tricks as none/some/many buckets) and declassifies the next clue. 6 misses = case gone cold.
+- **Threat Hunter** (hard): the culprit is any eligible ATT&CK group, and the guess pool is all of them (about 178), through the same guess box and Browse sheet as SOC Analyst (search ignores spaces and dashes, so "apt 28" finds APT28). 6 guesses. Each wrong guess adds a 6-column row (Home, Type, Motive, Since, Targets, Tools; Tools as a none/some/many bucket) and declassifies the next clue. 6 misses = case gone cold.
 - Clues are plain-English rewrites of a vendor fact. Each keeps its source quote for review. Verbatim quotes are never shown to players.
 - Reward and playability follow the 12-game -dle study:
   - share text with case number, mode, score, grid and streak
@@ -25,9 +25,9 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 { "version": "2026-11-26",
   "actors": [{ "id": "G0007", "name": "APT28", "nickname": "Fancy Bear", "aliases": ["Forest Blizzard"],
     "home": "RU", "type": "state", "motive": ["Espionage"], "since": 2004, "targets": ["Government", "Military"],
-    "profile": "Russian military intelligence hackers", "roster": true, "tools": ["S0..."], "tricks": ["T1..."] }] }
+    "profile": "Russian military intelligence hackers", "roster": true, "tools": ["S0..."] }] }
 ```
-`roster: true` marks the SOC Analyst roster. `tools` and `tricks` (ATT&CK ids) never leave the server. The client gets a trimmed copy without them.
+`roster: true` marks the SOC Analyst roster. `tools` (ATT&CK software ids) never leave the server. The client gets a trimmed copy without them.
 
 `data/cases.json` is private and server-only: gitignored, and published to R2 with the schedule (README, "The answers stay out of git").
 ```json

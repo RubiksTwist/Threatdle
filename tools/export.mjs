@@ -1,10 +1,10 @@
 // Builds the game data from the OPTIC/ATT&CK extraction and the drafted cases. Safe to rerun.
-//   data/source/attack-actors.json  every ATT&CK 20.1 group with country, year, motive, targets, tools and tricks
+//   data/source/attack-actors.json  every ATT&CK 20.1 group with country, year, motive, targets and tools
 //                                   (extracted from ATT&CK, Threatdle/MISP and OPTIC by the 2026-11-26 audit scripts)
 //   data/source/roster.json         Most Wanted ids;  data/source/overrides.json  hand-filled facts
 //   data/source/aliases.json        names ATT&CK lacks, from the MISP galaxy (tools/fill-aliases.mjs)
 //   data/drafts/*.json              drafted cases, one file per batch;  data/approved.json  case id -> hash of the approved case
-// Writes data/pool.json (server), public/pool.json (client, no tools or tricks), data/cases.json and data/review.md.
+// Writes data/pool.json (server), public/pool.json (client, no tools), data/cases.json and data/review.md.
 // Usage: node tools/export.mjs
 import { readFileSync, writeFileSync, readdirSync, renameSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -55,7 +55,7 @@ export function buildPool() {
       id: r.attack_id, name: r.name, nickname: null, aliases: [...new Set([...r.aliases, ...(filled[r.attack_id]?.add || [])])].filter(x => x !== r.name),
       home: o.home ?? (r.country && r.country !== 'UN' ? r.country : null), type: null, motive: o.motive ?? r.motivation ?? [],
       since: o.since ?? r.first_seen_year ?? null, targets: o.targets ?? r.targets ?? [], profile: '', roster: roster.has(r.attack_id),
-      tools: r.malware_ids, tricks: r.technique_ids,
+      tools: r.malware_ids,
     };
     a.type = o.type ?? typeOf(a.motive);
     for (const f of facts[a.id] || []) {
@@ -121,7 +121,7 @@ if (import.meta.main) {
   const cases = buildCases();
   const scores = loadScores(), problems = new Map(cases.map(c => [c.id, checkCase(c, byId, cases, scores)]));
   write('data/pool.json', json(pool));
-  write('public/pool.json', JSON.stringify({ version: pool.version, actors: pool.actors.map(({ tools, tricks, ...a }) => a) }) + '\n');
+  write('public/pool.json', JSON.stringify({ version: pool.version, actors: pool.actors.map(({ tools, ...a }) => a) }) + '\n');
   write('data/cases.json', json({ cases: cases.map(({ batch, ...c }) => c) }));
   write('data/review.md', review(cases, byId, problems));
   const n = m => cases.filter(c => c.mode === m).length;

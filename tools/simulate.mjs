@@ -16,7 +16,7 @@ const dataDir = args.includes('--data') ? args[args.indexOf('--data') + 1] : nul
 const read = f => JSON.parse(readFileSync(`${dataDir}/${f}`, 'utf8'));
 const pool = dataDir ? read('pool.json').actors : buildPool().actors;
 const serverById = Object.fromEntries(pool.map(a => [a.id, a]));
-const byId = Object.fromEntries(pool.map(({ tools, tricks, ...a }) => [a.id, a]));  // what the page has
+const byId = Object.fromEntries(pool.map(({ tools, ...a }) => [a.id, a]));  // what the page has
 const cases = (dataDir ? read('cases.json').cases : buildCases()).filter(c => !args.includes('--approved') || c.reviewed);
 
 function rng(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -31,7 +31,7 @@ function looksPossible(mode, x, g) {
     return ['home', 'type'].every(k => r.cells.find(c => c.k === k).tone === { match: 'hit', near: 'near', partial: 'near', miss: 'miss', unknown: 'unk' }[f[k]]);
   });
 }
-const key = (mode, f) => [f.correct, ...MODES[mode].cols.filter(k => k !== 'tools' && k !== 'tricks').map(k => f[k])].join('|');
+const key = (mode, f) => [f.correct, ...MODES[mode].cols.filter(k => k !== 'tools').map(k => f[k])].join('|');
 function bestSplit(mode, cands, options, clues) {
   if (cands.length === 1) return cands[0];
   let best = null, score = Infinity;

@@ -2,9 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import * as R from '../public/js/rules.mjs';
 
-const A = (id, o = {}) => ({ id, name: id, nickname: null, aliases: [], home: null, type: null, motive: [], since: null, targets: [], profile: '', roster: true, tools: [], tricks: [], ...o });
-const bear = A('G1', { nickname: 'Fancy Bear', home: 'RU', type: 'state', motive: ['Espionage'], since: 2004, targets: ['Government', 'Military'], tools: ['S1', 'S2', 'S3'], tricks: ['T1'] });
-const cozy = A('G2', { nickname: 'Cozy Bear', home: 'RU', type: 'state', motive: ['Espionage'], since: 2008, targets: ['Government'], tools: ['S1'], tricks: ['T1', 'T2'] });
+const A = (id, o = {}) => ({ id, name: id, nickname: null, aliases: [], home: null, type: null, motive: [], since: null, targets: [], profile: '', roster: true, tools: [], ...o });
+const bear = A('G1', { nickname: 'Fancy Bear', home: 'RU', type: 'state', motive: ['Espionage'], since: 2004, targets: ['Government', 'Military'], tools: ['S1', 'S2', 'S3'] });
+const cozy = A('G2', { nickname: 'Cozy Bear', home: 'RU', type: 'state', motive: ['Espionage'], since: 2008, targets: ['Government'], tools: ['S1'] });
 const panda = A('G3', { home: 'CN', type: 'state', motive: ['Espionage', 'Financial Gain'], since: 2012, targets: ['Technology'] });
 const spider = A('G4', { nickname: 'Carbon Spider', type: 'crime', motive: ['Financial Gain'], since: 2015, targets: ['Hospitality', 'Retail'], roster: false });
 const byId = Object.fromEntries([bear, cozy, panda, spider].map(a => [a.id, a]));
@@ -46,14 +46,11 @@ test('compare: targets and motive as same, some or none', () => {
   assert.equal(R.compare(panda, bear).motive, 'partial');
 });
 
-test('compare: tools and tricks come as none/some/many buckets', () => {
+test('compare: tools come as none/some/many buckets', () => {
   assert.equal(R.compare(cozy, bear).tools, 'some');
   assert.equal(R.compare(A('t', { tools: ['S1', 'S2', 'S3', 'S9'] }), bear).tools, 'many');
   assert.equal(R.compare(A('w', { tools: ['S9'] }), bear).tools, 'none');
   assert.equal(R.compare(panda, bear).tools, 'unknown', 'ATT&CK lists no software for panda');
-  const many = Array.from({ length: 10 }, (_, i) => 'T' + i);
-  assert.equal(R.compare(A('u', { tricks: many }), A('v', { tricks: many })).tricks, 'many');
-  assert.equal(R.compare(A('u', { tricks: many.slice(0, 9) }), A('v', { tricks: many })).tricks, 'some');
 });
 
 test('compare: the culprit against itself is all match, even with unknown facts', () => {
@@ -96,13 +93,13 @@ test('play: analyst has 5 columns and no cap; solving shows every clue', () => {
   assert.ok(g.rows[2].cells.every(c => c.tone === 'hit'));
 });
 
-test('play: hunter goes cold after 6 misses and rows have 7 columns', () => {
+test('play: hunter goes cold after 6 misses and rows have 6 columns', () => {
   const ids = Array.from({ length: 6 }, (_, i) => 'H' + i);
   const pool = { ...byId, ...Object.fromEntries(ids.map(id => [id, A(id)])) };
   const hk = { ...kase, clues: [...kase.clues, ...kase.clues] };
   const g = R.play('hunter', hk, ids, pool);
   assert.equal(g.status, 'cold');
-  assert.equal(g.rows[0].cells.length, 7);
+  assert.equal(g.rows[0].cells.length, 6);
   assert.equal(R.play('hunter', hk, ids.slice(0, 5), pool).status, 'playing');
 });
 
@@ -139,7 +136,7 @@ test('share text carries case number, mode, score, grid and streak', () => {
   assert.equal(lines[2], '🟩🟩🟩🟩🟩');
   const h = R.shareText({ mode: 'hunter', caseNumber: 3, status: 'cold', rows: R.play('hunter', kase, ['G3'], byId).rows, streak: 0 });
   assert.match(h, /^Threatdle #3 · Threat Hunter X\/6 · 🔥0\n/);
-  assert.equal([...h.split('\n')[1]].filter(c => c !== '️').length, 7);
+  assert.equal([...h.split('\n')[1]].filter(c => c !== '️').length, 6);
 });
 
 test('share grid uses only green, yellow, black and arrows', () => {
@@ -192,14 +189,12 @@ test('sectionOf files groups by nickname home, then by country', () => {
   assert.equal(R.sectionOf(A('r', { home: 'VN' })), 'other');
 });
 
-test('Tools and Tricks show how many the guess shares as a range, and ? when ATT&CK lists none for a side', () => {
-  const cul = A('C1', { tools: ['S1', 'S2', 'S3'], tricks: Array.from({ length: 12 }, (_, i) => 'T' + i) });
+test('Tools shows how many the guess shares as a range, and ? when ATT&CK lists none for a side', () => {
+  const cul = A('C1', { tools: ['S1', 'S2', 'S3'] });
   const cell = (g, k) => R.cells('hunter', g, R.compare(g, cul)).find(c => c.k === k);
-  assert.equal(cell(A('G1', { tools: ['S9'], tricks: ['T99'] }), 'tools').text, '0');
-  assert.equal(cell(A('G2', { tools: ['S1', 'S9'], tricks: ['T0'] }), 'tools').text, '1–2');
+  assert.equal(cell(A('G1', { tools: ['S9'] }), 'tools').text, '0');
+  assert.equal(cell(A('G2', { tools: ['S1', 'S9'] }), 'tools').text, '1–2');
   assert.equal(cell(A('G3', { tools: ['S1', 'S2', 'S3', 'S4'] }), 'tools').text, '3+');
-  assert.equal(cell(A('G4', { tools: [], tricks: [] }), 'tools').text, '?');
-  assert.equal(cell(A('G4', { tools: [], tricks: [] }), 'tools').tone, 'unk');
-  assert.equal(cell(A('G5', { tricks: ['T0'] }), 'tricks').text, '1–9');
-  assert.equal(cell(A('G6', { tricks: Array.from({ length: 10 }, (_, i) => 'T' + i) }), 'tricks').text, '10+');
+  assert.equal(cell(A('G4', { tools: [] }), 'tools').text, '?');
+  assert.equal(cell(A('G4', { tools: [] }), 'tools').tone, 'unk');
 });

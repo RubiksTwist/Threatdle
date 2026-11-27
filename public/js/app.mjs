@@ -94,7 +94,7 @@ function clueList(clues, total, freshIndex) {
   return `<ol class="clues">${items.join('')}</ol>`;
 }
 
-const LEGEND = { home: 'Home', type: 'Type', motive: 'Motive', since: 'Since', targets: 'Targets', tools: 'Tools', tricks: 'Tricks' };
+const LEGEND = { home: 'Home', type: 'Type', motive: 'Motive', since: 'Since', targets: 'Targets', tools: 'Tools' };
 function row(m, r, latest) {
   const g = byId[r.id] || { home: r.home, type: null };
   const r5 = m === 'analyst';
@@ -197,7 +197,7 @@ function render() {
       <h2 class="fbH" id="fbH">Your ${mode === 'hunter' ? 'accusations' : 'guesses'}</h2>
       ${rows.length ? `<div class="fbr ${mode === 'analyst' ? 'r5' : ''} head" aria-hidden="true"><span class="fn"></span>${legend}</div>
         <ol class="rows">${rows.slice().reverse().map((r, i) => row(mode, r, i === 0 && fresh.row)).join('')}</ol>
-        <p class="fkey"><i class="sw hit"></i>Same <i class="sw near"></i>Close <i class="sw miss"></i>No <span>↑ culprit is newer · ↓ older</span>${mode === 'hunter' ? '<span>Tools, Tricks: how many the culprit shares with your guess</span>' : ''}</p>`
+        <p class="fkey"><i class="sw hit"></i>Same <i class="sw near"></i>Close <i class="sw miss"></i>No <span>↑ culprit is newer · ↓ older</span>${mode === 'hunter' ? '<span>Tools: how many the culprit shares with your guess</span>' : ''}</p>`
       : `<p class="empty">Not sure? <b>Browse</b> ${mode === 'analyst' ? `the ${ROSTER.length} Most Wanted` : `all ${POOL.length} groups`}. Each ${mode === 'hunter' ? 'accusation' : 'guess'} lands here, compared with the culprit.</p>`}
     </section>
     ${finished(mode) ? '' : `<p class="crowd">${g.today.solvedCount ? `${fmt(g.today.solvedCount)} ${MODES[mode].who} closed this case today` : `Be the first ${one(mode)} to close this case today`}</p>`}`;

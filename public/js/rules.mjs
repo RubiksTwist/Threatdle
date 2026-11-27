@@ -1,7 +1,7 @@
 // Threatdle rules core. Pure functions shared by the Netlify functions, the build tools and the browser.
 //
-// Actor  = { id, name, nickname, aliases, home, type, motive, since, targets, profile, roster, tools?, tricks? }
-//          home: ISO-3166 alpha-2 or null; type: 'state' | 'crime' | 'activist' | null; tools/tricks: ATT&CK ids (server only)
+// Actor  = { id, name, nickname, aliases, home, type, motive, since, targets, profile, roster, tools? }
+//          home: ISO-3166 alpha-2 or null; type: 'state' | 'crime' | 'activist' | null; tools: ATT&CK software ids (server only)
 // Clue   = { kind, text, facts, source }   facts: { targets?, home?, type?, motive?, tools?, name? }
 // Case   = { id, mode, culprit, reviewed, clues: Clue[], story, report }
 // Row    = { id, name, home, correct, cells: Cell[] }   Cell = { k, text, tone, arrow?, say }
@@ -11,7 +11,7 @@
 // player's skill (simulated mean 2.9 guesses on the list alone, 2.7 reading Home and Type). Threat Hunter's reads both: without it a newcomer wins 37% of games.
 export const MODES = {
   analyst: { name: 'SOC Analyst', max: null, open: 2, cols: ['home', 'type', 'motive', 'since', 'targets'], who: 'analysts', trackRows: false },
-  hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools', 'tricks'], who: 'hunters', trackRows: true },
+  hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools'], who: 'hunters', trackRows: true },
 };
 export const isMode = m => Object.hasOwn(MODES, m);
 export const other = m => (m === 'hunter' ? 'analyst' : 'hunter');
@@ -107,9 +107,8 @@ export function fold(a, clues) {
 // ("0", "1-2", "3+"), so it reads as "how many the guess shares with the culprit" and never as "this group has no tools".
 // Most groups share no malware: across every hunter culprit and every guess, Tools is 0 for 73% of pairs, 1-2 for 21%, 3+ for 6%.
 export const TOOL_CUTS = [1, 3];
-export const TRICK_CUTS = [1, 10];
 export const bucket = (n, [some, many]) => (n >= many ? 'many' : n >= some ? 'some' : 'none');
-// A group ATT&CK lists no software (or techniques) for is unknown, not "shares none".
+// A group ATT&CK lists no software for is unknown, not "shares none".
 const bucketOf = (a, b, cuts) => (a?.length && b?.length ? bucket(shared(a, b), cuts) : 'unknown');
 const range = ([some, many]) => ({ none: '0', some: some === many - 1 ? String(some) : `${some}–${many - 1}`, many: `${many}+`, unknown: '?' });
 const shared = (a, b) => { const s = new Set(b || []); return (a || []).filter(x => s.has(x)).length; };
@@ -123,14 +122,14 @@ function setCmp(a, b) {
 // A crime gang with no known country has the crime badge ($) for a home: two such gangs match, and against a country it is a miss.
 export const homeOf = a => a.home || (a.type === 'crime' ? '$' : null);
 export function compare(g, p) {
-  if (g.id === p.id) return { correct: true, home: 'match', type: 'match', motive: 'match', since: 'match', targets: 'match', tools: 'match', tricks: 'match' };
+  if (g.id === p.id) return { correct: true, home: 'match', type: 'match', motive: 'match', since: 'match', targets: 'match', tools: 'match' };
   const gh = homeOf(g), ph = homeOf(p);
   const home = !gh || !ph ? 'unknown' : gh === ph ? 'match' : REGION[gh] && REGION[gh] === REGION[ph] ? 'near' : 'miss';
   const type = !g.type || !p.type ? 'unknown' : g.type === p.type ? 'match' : 'miss';
   const since = g.since == null || p.since == null ? 'unknown' : g.since === p.since ? 'match' : p.since > g.since ? 'up' : 'down';
   return {
     correct: false, home, type, motive: setCmp(g.motive, p.motive), since, targets: setCmp(g.targets, p.targets),
-    tools: bucketOf(g.tools, p.tools, TOOL_CUTS), tricks: bucketOf(g.tricks, p.tricks, TRICK_CUTS),
+    tools: bucketOf(g.tools, p.tools, TOOL_CUTS),
   };
 }
 
@@ -151,7 +150,6 @@ export function cells(mode, g, f) {
       say: `first seen ${g.since || 'unknown'}: ${f.since === 'up' ? 'culprit is newer' : f.since === 'down' ? 'culprit is older' : f.since}` },
     targets: { text: OVERLAP[f.targets], say: `targets: ${OVERLAP_SAY[f.targets]}` },
     tools: { text: f.tools === 'match' ? 'Same' : range(TOOL_CUTS)[f.tools], say: `shared tools: ${f.tools === 'match' ? 'all' : f.tools === 'unknown' ? 'unknown' : range(TOOL_CUTS)[f.tools].replace('–', ' to ')}` },
-    tricks: { text: f.tricks === 'match' ? 'Same' : range(TRICK_CUTS)[f.tricks], say: `shared techniques: ${f.tricks === 'match' ? 'all' : f.tricks === 'unknown' ? 'unknown' : range(TRICK_CUTS)[f.tricks].replace('–', ' to ')}` },
   };
   return MODES[mode].cols.map(k => ({ k, tone: TONE[f[k]], ...all[k] }));
 }
@@ -176,10 +174,10 @@ export const shownClue = c => { const { tools, ...facts } = c.facts || {}; retur
 
 // The suspect tracker: which candidates the player can still believe, from what the page already shows.
 // A candidate stays if it fits every shown clue, was not guessed wrong, and (when the mode tracks rows) for each row, comparing
-// that guess with the candidate (folded with the clues shown when the row was made) gives the row the player got. Tools and
-// Tricks need server data, so they are skipped. The culprit always stays: the server built each row the same way from the same public facts.
+// that guess with the candidate (folded with the clues shown when the row was made) gives the row the player got. Tools
+// need server data, so they are skipped. The culprit always stays: the server built each row the same way from the same public facts.
 export function possible(mode, candidates, clues, rows, byId, trackRows = MODES[mode].trackRows) {
-  const cols = MODES[mode].cols.filter(k => k !== 'tools' && k !== 'tricks');
+  const cols = MODES[mode].cols.filter(k => k !== 'tools');
   return candidates.filter(x => fitsAll(x, clues) && rows.every((r, i) => {
     if (r.correct) return r.id === x.id;
     if (r.id === x.id) return false;
