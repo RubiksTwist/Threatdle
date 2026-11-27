@@ -1,7 +1,8 @@
 // Threatdle rules core. Pure functions shared by the Netlify functions, the build tools and the browser.
 //
-// Actor  = { id, name, nickname, aliases, home, type, motive, since, targets, profile, roster, tools? }
+// Actor  = { id, name, nickname, aliases, home, type, motive, since, targets, victims, profile, roster, tools? }
 //          home: ISO-3166 alpha-2 or null; type: 'state' | 'crime' | 'activist' | null; tools: ATT&CK software ids (server only)
+//          victims: ISO-3166 alpha-2 codes of the countries it hit, most reported first; [] = unknown
 // Clue   = { kind, text, facts, source }   facts: { targets?, home?, type?, motive?, tools?, name? }
 // Case   = { id, mode, culprit, reviewed, clues: Clue[], story, report }
 // Row    = { id, name, home, correct, cells: Cell[] }   Cell = { k, text, tone, arrow?, say }

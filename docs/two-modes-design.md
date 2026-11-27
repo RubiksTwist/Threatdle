@@ -25,7 +25,7 @@ Source of truth for rules and evidence: `D:\Threatdle-prototypes\gameloop\SPEC.m
 { "version": "2026-11-26",
   "actors": [{ "id": "G0007", "name": "APT28", "nickname": "Fancy Bear", "aliases": ["Forest Blizzard"],
     "home": "RU", "type": "state", "motive": ["Espionage"], "since": 2004, "targets": ["Government", "Military"],
-    "profile": "Russian military intelligence hackers", "roster": true, "tools": ["S0..."] }] }
+    "victims": ["UA", "US"], "profile": "Russian military intelligence hackers", "roster": true, "tools": ["S0..."] }] }
 ```
 `roster: true` marks the SOC Analyst roster. `tools` (ATT&CK software ids) never leave the server. The client gets a trimmed copy without them.
 

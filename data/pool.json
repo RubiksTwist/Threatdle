@@ -1,5 +1,5 @@
 {
- "version": "9ad67cefe5",
+ "version": "d6c62d531a",
  "actors": [
   {
    "id": "G0001",
@@ -20,6 +20,7 @@
     "Manufacturing",
     "Media"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -43,6 +44,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -66,6 +68,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Iranian hackers",
    "roster": false,
    "tools": [
@@ -106,6 +109,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -149,6 +153,7 @@
     "Government",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -183,6 +188,7 @@
     "Government",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -256,6 +262,10 @@
     "Media",
     "Education"
    ],
+   "victims": [
+    "UA",
+    "US"
+   ],
    "profile": "Russian military intelligence hackers",
    "roster": true,
    "tools": [
@@ -307,6 +317,7 @@
    "targets": [
     "Finance"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -341,6 +352,7 @@
     "Healthcare",
     "Legal"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -395,6 +407,11 @@
     "Government",
     "Military"
    ],
+   "victims": [
+    "UA",
+    "PL",
+    "AF"
+   ],
    "profile": "Russian security-service spies",
    "roster": true,
    "tools": [
@@ -445,6 +462,9 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [
+    "TW"
+   ],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -485,6 +505,7 @@
    "targets": [
     "Private sector"
    ],
+   "victims": [],
    "profile": "South Korean state spies",
    "roster": false,
    "tools": []
@@ -503,6 +524,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -558,6 +580,11 @@
     "Government",
     "NGOs",
     "Media"
+   ],
+   "victims": [
+    "US",
+    "UA",
+    "TR"
    ],
    "profile": "Russian foreign intelligence hackers",
    "roster": true,
@@ -627,6 +654,11 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [
+    "JP",
+    "TW",
+    "RU"
+   ],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -654,6 +686,9 @@
     "Civil society",
     "Government",
     "Private sector"
+   ],
+   "victims": [
+    "HK"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -691,6 +726,7 @@
     "Telecommunications",
     "Manufacturing"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -731,6 +767,7 @@
     "Government",
     "Military"
    ],
+   "victims": [],
    "profile": "American state spies",
    "roster": false,
    "tools": []
@@ -769,6 +806,7 @@
     "Pharmaceuticals",
     "Technology"
    ],
+   "victims": [],
    "profile": "Palestinian state spies",
    "roster": false,
    "tools": [
@@ -812,6 +850,9 @@
     "Telecommunications",
     "Transportation"
    ],
+   "victims": [
+    "US"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -839,6 +880,7 @@
    "targets": [
     "Private sector"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -867,6 +909,9 @@
    "targets": [
     "Government",
     "Private sector"
+   ],
+   "victims": [
+    "US"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -897,6 +942,7 @@
    "motive": [],
    "since": 2013,
    "targets": [],
+   "victims": [],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -927,6 +973,7 @@
     "Government",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -973,6 +1020,14 @@
     "Finance",
     "Education"
    ],
+   "victims": [
+    "US",
+    "AU",
+    "CA",
+    "DE",
+    "FR",
+    "IL"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -1015,6 +1070,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -1034,6 +1090,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -1073,6 +1130,14 @@
     "Manufacturing",
     "Telecommunications",
     "Media"
+   ],
+   "victims": [
+    "PH",
+    "VN",
+    "AU",
+    "HK",
+    "SV",
+    "TW"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -1139,6 +1204,12 @@
     "Telecommunications",
     "Healthcare"
    ],
+   "victims": [
+    "US",
+    "KR",
+    "CA",
+    "JP"
+   ],
    "profile": "North Korean state hackers and bank robbers",
    "roster": true,
    "tools": [
@@ -1182,6 +1253,7 @@
    "motive": [],
    "since": 2005,
    "targets": [],
+   "victims": [],
    "profile": "Brazilian hackers",
    "roster": false,
    "tools": []
@@ -1220,6 +1292,10 @@
     "Energy",
     "Food and agriculture",
     "Media"
+   ],
+   "victims": [
+    "UA",
+    "PL"
    ],
    "profile": "Russian military saboteurs who black out power grids",
    "roster": true,
@@ -1291,6 +1367,10 @@
     "Transportation",
     "Finance"
    ],
+   "victims": [
+    "UA",
+    "US"
+   ],
    "profile": "Russian state spies",
    "roster": true,
    "tools": [
@@ -1316,6 +1396,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Russian hackers",
    "roster": false,
    "tools": []
@@ -1345,6 +1426,9 @@
    "targets": [
     "Hospitality",
     "Retail"
+   ],
+   "victims": [
+    "US"
    ],
    "profile": "Cybercrime gang",
    "roster": true,
@@ -1379,6 +1463,7 @@
    "targets": [
     "Civil society"
    ],
+   "victims": [],
    "profile": "Emirati state spies",
    "roster": false,
    "tools": []
@@ -1397,6 +1482,7 @@
    "motive": [],
    "since": 2014,
    "targets": [],
+   "victims": [],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -1426,6 +1512,11 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [
+    "PK",
+    "CN",
+    "NO"
+   ],
    "profile": "Indian hackers",
    "roster": false,
    "tools": [
@@ -1458,6 +1549,7 @@
     "Government",
     "Military"
    ],
+   "victims": [],
    "profile": "American state spies",
    "roster": false,
    "tools": [
@@ -1474,6 +1566,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -1498,6 +1591,7 @@
    "targets": [
     "Hospitality"
    ],
+   "victims": [],
    "profile": "Chinese state spies who also steal money",
    "roster": false,
    "tools": [
@@ -1537,6 +1631,11 @@
     "Government",
     "Private sector",
     "Media"
+   ],
+   "victims": [
+    "JP",
+    "US",
+    "IN"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -1598,6 +1697,9 @@
     "Technology",
     "Transportation"
    ],
+   "victims": [
+    "US"
+   ],
    "profile": "Card-stealing crime gang that hit restaurants",
    "roster": true,
    "tools": [
@@ -1652,6 +1754,9 @@
     "NGOs",
     "Legal"
    ],
+   "victims": [
+    "UA"
+   ],
    "profile": "Russian spies who hammer Ukraine",
    "roster": true,
    "tools": [
@@ -1673,6 +1778,7 @@
    "motive": [],
    "since": 2015,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -1712,6 +1818,10 @@
     "Hospitality",
     "Telecommunications",
     "Energy"
+   ],
+   "victims": [
+    "SA",
+    "AL"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -1782,6 +1892,7 @@
     "Education",
     "Finance"
    ],
+   "victims": [],
    "profile": "Vietnamese state spies",
    "roster": true,
    "tools": [
@@ -1812,6 +1923,7 @@
    "motive": [],
    "since": 2013,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -1836,6 +1948,7 @@
     "Government",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Iranian state spies",
    "roster": false,
    "tools": [
@@ -1860,6 +1973,7 @@
     "Finance",
     "Hospitality"
    ],
+   "victims": [],
    "profile": "Russian cybercrime gang",
    "roster": false,
    "tools": [
@@ -1885,6 +1999,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "State spies",
    "roster": false,
    "tools": [
@@ -1902,6 +2017,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -1924,6 +2040,12 @@
    "targets": [
     "Government",
     "Individuals"
+   ],
+   "victims": [
+    "CA",
+    "CO",
+    "IN",
+    "VN"
    ],
    "profile": "Turkish state spies",
    "roster": false,
@@ -1974,6 +2096,12 @@
     "Civil society",
     "Media"
    ],
+   "victims": [
+    "US",
+    "IL",
+    "AU",
+    "GB"
+   ],
    "profile": "Iranian spies who pose as journalists",
    "roster": true,
    "tools": [
@@ -2016,6 +2144,10 @@
     "Manufacturing",
     "Critical infrastructure"
    ],
+   "victims": [
+    "JP",
+    "KR"
+   ],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -2055,6 +2187,7 @@
     "Retail",
     "Technology"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -2081,6 +2214,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -2100,6 +2234,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": []
@@ -2132,6 +2267,13 @@
     "Individuals",
     "Energy",
     "Defense"
+   ],
+   "victims": [
+    "US",
+    "AE",
+    "SA",
+    "AU",
+    "KR"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -2187,6 +2329,14 @@
     "Defense",
     "Manufacturing"
    ],
+   "victims": [
+    "US",
+    "KH",
+    "AU",
+    "HK",
+    "KR",
+    "NZ"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -2229,6 +2379,7 @@
     "Civil society",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -2276,6 +2427,9 @@
     "Private sector",
     "Military"
    ],
+   "victims": [
+    "KR"
+   ],
    "profile": "North Korean state spies",
    "roster": true,
    "tools": [
@@ -2309,6 +2463,7 @@
    ],
    "since": 2009,
    "targets": [],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -2346,6 +2501,14 @@
     "Energy",
     "Education",
     "Telecommunications"
+   ],
+   "victims": [
+    "TR",
+    "PK",
+    "IL",
+    "IN",
+    "IQ",
+    "JO"
    ],
    "profile": "Iran's intelligence-ministry hackers",
    "roster": true,
@@ -2389,6 +2552,7 @@
     "Individuals",
     "Telecommunications"
    ],
+   "victims": [],
    "profile": "Lebanese state spies",
    "roster": false,
    "tools": [
@@ -2407,6 +2571,7 @@
    "motive": [],
    "since": 2015,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -2443,6 +2608,7 @@
     "Legal",
     "Finance"
    ],
+   "victims": [],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -2468,6 +2634,10 @@
     "Civil society",
     "Government"
    ],
+   "victims": [
+    "KH",
+    "SG"
+   ],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -2487,6 +2657,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -2507,6 +2678,7 @@
    "motive": [],
    "since": 2017,
    "targets": [],
+   "victims": [],
    "profile": "Iranian hackers",
    "roster": false,
    "tools": [
@@ -2531,6 +2703,9 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [
+    "PK"
+   ],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -2553,6 +2728,7 @@
    "motive": [],
    "since": 2016,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -2580,6 +2756,11 @@
    "since": 2016,
    "targets": [
     "Finance"
+   ],
+   "victims": [
+    "RU",
+    "TW",
+    "UA"
    ],
    "profile": "Cybercrime gang",
    "roster": false,
@@ -2616,6 +2797,7 @@
     "Technology",
     "Transportation"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -2651,6 +2833,14 @@
     "Technology",
     "Individuals"
    ],
+   "victims": [
+    "US",
+    "AE",
+    "BD",
+    "CA",
+    "IR",
+    "JP"
+   ],
    "profile": "North Korean thieves and saboteurs",
    "roster": true,
    "tools": [
@@ -2679,6 +2869,7 @@
     "Technology",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Nigerian cybercrime gang",
    "roster": false,
    "tools": [
@@ -2701,6 +2892,7 @@
    "motive": [],
    "since": 2017,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": []
@@ -2717,6 +2909,7 @@
    "motive": [],
    "since": 2013,
    "targets": [],
+   "victims": [],
    "profile": "Romanian hackers",
    "roster": false,
    "tools": []
@@ -2745,6 +2938,9 @@
     "Hospitality",
     "Individuals",
     "Telecommunications"
+   ],
+   "victims": [
+    "TR"
    ],
    "profile": "Iranian state spies",
    "roster": true,
@@ -2775,6 +2971,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Russian hackers",
    "roster": false,
    "tools": [
@@ -2792,6 +2989,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -2818,6 +3016,7 @@
     "Legal",
     "Technology"
    ],
+   "victims": [],
    "profile": "Palestinian state spies",
    "roster": false,
    "tools": [
@@ -2847,6 +3046,7 @@
    "targets": [
     "Finance"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": true,
    "tools": [
@@ -2882,6 +3082,10 @@
     "Healthcare",
     "Hospitality",
     "Retail"
+   ],
+   "victims": [
+    "US",
+    "PK"
    ],
    "profile": "Russian cybercrime gang",
    "roster": true,
@@ -2926,6 +3130,7 @@
     "Government",
     "Telecommunications"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -2979,6 +3184,11 @@
     "Energy",
     "Healthcare"
    ],
+   "victims": [
+    "KR",
+    "JP",
+    "US"
+   ],
    "profile": "North Korean spies who phish think tanks",
    "roster": true,
    "tools": [
@@ -3022,6 +3232,7 @@
     "Government",
     "Military"
    ],
+   "victims": [],
    "profile": "Brazilian state spies",
    "roster": false,
    "tools": [
@@ -3067,6 +3278,14 @@
     "Government",
     "Hospitality",
     "Education"
+   ],
+   "victims": [
+    "US",
+    "TW",
+    "KR",
+    "TH",
+    "CA",
+    "IN"
    ],
    "profile": "Chinese state spies who also hack for money",
    "roster": true,
@@ -3133,6 +3352,7 @@
     "Media",
     "Government"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -3167,6 +3387,7 @@
     "Manufacturing",
     "Private sector"
    ],
+   "victims": [],
    "profile": "State spies",
    "roster": false,
    "tools": [
@@ -3203,6 +3424,7 @@
     "Government",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Russian state spies",
    "roster": false,
    "tools": [
@@ -3244,6 +3466,10 @@
     "Government",
     "Healthcare",
     "Telecommunications"
+   ],
+   "victims": [
+    "US",
+    "IT"
    ],
    "profile": "Russian-speaking ransomware crew",
    "roster": true,
@@ -3290,6 +3516,7 @@
     "Government",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -3307,6 +3534,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -3330,6 +3558,7 @@
    "targets": [
     "Technology"
    ],
+   "victims": [],
    "profile": "Chinese cybercrime gang",
    "roster": false,
    "tools": []
@@ -3344,6 +3573,7 @@
    "motive": [],
    "since": 2017,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -3362,6 +3592,7 @@
    ],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -3382,6 +3613,7 @@
    "motive": [],
    "since": 2017,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -3402,6 +3634,9 @@
    "targets": [
     "Manufacturing",
     "Transportation"
+   ],
+   "victims": [
+    "TW"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -3428,6 +3663,9 @@
    ],
    "since": 2018,
    "targets": [],
+   "victims": [
+    "US"
+   ],
    "profile": "Cybercrime gang",
    "roster": true,
    "tools": [
@@ -3459,6 +3697,10 @@
     "Healthcare",
     "Manufacturing",
     "Technology"
+   ],
+   "victims": [
+    "IL",
+    "US"
    ],
    "profile": "Iranian state spies",
    "roster": false,
@@ -3493,6 +3735,7 @@
     "Healthcare",
     "Technology"
    ],
+   "victims": [],
    "profile": "Russian state spies who also steal money",
    "roster": true,
    "tools": [
@@ -3521,6 +3764,7 @@
    "motive": [],
    "since": 2018,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -3546,6 +3790,7 @@
     "Military",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Indian hackers",
    "roster": false,
    "tools": [
@@ -3568,6 +3813,7 @@
    "motive": [],
    "since": 2013,
    "targets": [],
+   "victims": [],
    "profile": "Iranian hackers",
    "roster": false,
    "tools": []
@@ -3589,6 +3835,7 @@
    "targets": [
     "Individuals"
    ],
+   "victims": [],
    "profile": "Lebanese hacktivists",
    "roster": false,
    "tools": [
@@ -3606,6 +3853,7 @@
    "motive": [],
    "since": 2011,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -3639,6 +3887,10 @@
     "Telecommunications",
     "Technology"
    ],
+   "victims": [
+    "US",
+    "AU"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -3662,6 +3914,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "South Korean hackers",
    "roster": false,
    "tools": [
@@ -3688,6 +3941,7 @@
    ],
    "since": 2018,
    "targets": [],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -3715,6 +3969,10 @@
    "motive": [],
    "since": 2017,
    "targets": [],
+   "victims": [
+    "US",
+    "GB"
+   ],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": []
@@ -3754,6 +4012,14 @@
     "Government",
     "NGOs",
     "Religious organization"
+   ],
+   "victims": [
+    "MM",
+    "MN",
+    "VN",
+    "US",
+    "HK",
+    "JP"
    ],
    "profile": "Chinese spies who target Asian governments",
    "roster": true,
@@ -3812,6 +4078,9 @@
     "Civil society",
     "Military"
    ],
+   "victims": [
+    "US"
+   ],
    "profile": "Iranian state spies",
    "roster": true,
    "tools": [
@@ -3844,6 +4113,7 @@
     "Military",
     "Private sector"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -3872,6 +4142,7 @@
     "Government",
     "Individuals"
    ],
+   "victims": [],
    "profile": "Russian state spies",
    "roster": false,
    "tools": [
@@ -3898,6 +4169,10 @@
     "Civil society",
     "Government",
     "Military"
+   ],
+   "victims": [
+    "IN",
+    "AF"
    ],
    "profile": "Pakistani state spies",
    "roster": true,
@@ -3926,6 +4201,7 @@
     "Government",
     "Telecommunications"
    ],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -3950,6 +4226,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -3972,6 +4249,7 @@
    "targets": [
     "Individuals"
    ],
+   "victims": [],
    "profile": "Iranian state spies",
    "roster": false,
    "tools": [
@@ -4011,6 +4289,11 @@
     "Food and agriculture",
     "Pharmaceuticals"
    ],
+   "victims": [
+    "KR",
+    "IN",
+    "US"
+   ],
    "profile": "North Korean spies, thieves and saboteurs",
    "roster": true,
    "tools": [
@@ -4035,6 +4318,9 @@
    "targets": [
     "Technology"
    ],
+   "victims": [
+    "IT"
+   ],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -4054,6 +4340,7 @@
    "motive": [],
    "since": 2018,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -4078,6 +4365,7 @@
    "motive": [],
    "since": 2013,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -4100,6 +4388,7 @@
     "Technology",
     "Telecommunications"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -4140,6 +4429,7 @@
     "Technology",
     "Telecommunications"
    ],
+   "victims": [],
    "profile": "Iranian state spies",
    "roster": false,
    "tools": [
@@ -4174,6 +4464,12 @@
     "Energy",
     "Government",
     "Manufacturing"
+   ],
+   "victims": [
+    "CN",
+    "PK",
+    "SA",
+    "BD"
    ],
    "profile": "Indian state spies",
    "roster": false,
@@ -4212,6 +4508,9 @@
     "Technology",
     "NGOs"
    ],
+   "victims": [
+    "UA"
+   ],
    "profile": "Russian saboteurs",
    "roster": true,
    "tools": [
@@ -4246,6 +4545,11 @@
    "targets": [
     "Government",
     "Media"
+   ],
+   "victims": [
+    "BR",
+    "GB",
+    "US"
    ],
    "profile": "Thieves and saboteurs",
    "roster": true,
@@ -4283,6 +4587,7 @@
     "Technology",
     "Transportation"
    ],
+   "victims": [],
    "profile": "Lebanese state spies",
    "roster": true,
    "tools": [
@@ -4320,6 +4625,9 @@
     "NGOs",
     "Telecommunications"
    ],
+   "victims": [
+    "TW"
+   ],
    "profile": "Chinese state spies who also steal money",
    "roster": false,
    "tools": [
@@ -4352,6 +4660,7 @@
     "Government",
     "Telecommunications"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -4373,6 +4682,9 @@
    "targets": [
     "Government",
     "Individuals"
+   ],
+   "victims": [
+    "IN"
    ],
    "profile": "Pakistani state spies",
    "roster": false,
@@ -4405,6 +4717,7 @@
     "Hospitality",
     "Manufacturing"
    ],
+   "victims": [],
    "profile": "Iranian thieves and saboteurs",
    "roster": false,
    "tools": [
@@ -4431,6 +4744,7 @@
     "Healthcare",
     "Technology"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -4470,6 +4784,11 @@
     "Telecommunications",
     "Transportation"
    ],
+   "victims": [
+    "US",
+    "IL",
+    "SA"
+   ],
    "profile": "Iranian state spies",
    "roster": true,
    "tools": [
@@ -4486,6 +4805,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -4507,6 +4827,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -4548,6 +4869,11 @@
     "Government",
     "Individuals"
    ],
+   "victims": [
+    "US",
+    "BH",
+    "GB"
+   ],
    "profile": "Young English-speaking crew that phones help desks",
    "roster": true,
    "tools": [
@@ -4582,6 +4908,9 @@
     "Finance",
     "Retail",
     "Hospitality"
+   ],
+   "victims": [
+    "MX"
    ],
    "profile": "Russian cybercrime gang",
    "roster": false,
@@ -4620,6 +4949,10 @@
     "Government",
     "Defense"
    ],
+   "victims": [
+    "US",
+    "TW"
+   ],
    "profile": "Chinese hackers who pre-position in utilities",
    "roster": true,
    "tools": [
@@ -4652,6 +4985,7 @@
    "motive": [],
    "since": 2017,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -4680,6 +5014,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "Belarusian state spies",
    "roster": false,
    "tools": [
@@ -4704,6 +5039,9 @@
    "motive": [],
    "since": 2017,
    "targets": [],
+   "victims": [
+    "CA"
+   ],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -4730,6 +5068,9 @@
    "since": 2021,
    "targets": [
     "Government"
+   ],
+   "victims": [
+    "KZ"
    ],
    "profile": "Chinese state spies who also steal money",
    "roster": true,
@@ -4759,6 +5100,7 @@
     "Government",
     "Military"
    ],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -4795,6 +5137,14 @@
    "targets": [
     "Defense",
     "Telecommunications"
+   ],
+   "victims": [
+    "US",
+    "FR",
+    "GE",
+    "KR",
+    "MD",
+    "UA"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -4835,6 +5185,13 @@
     "Manufacturing",
     "Pharmaceuticals"
    ],
+   "victims": [
+    "US",
+    "AU",
+    "CA",
+    "IS",
+    "KR"
+   ],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -4862,6 +5219,7 @@
    "targets": [
     "Finance"
    ],
+   "victims": [],
    "profile": "Brazilian cybercrime gang",
    "roster": false,
    "tools": [
@@ -4903,6 +5261,7 @@
     "Transportation",
     "Individuals"
    ],
+   "victims": [],
    "profile": "Palestinian state spies",
    "roster": false,
    "tools": [
@@ -4933,6 +5292,11 @@
    "targets": [
     "Government",
     "Technology"
+   ],
+   "victims": [
+    "IL",
+    "AL",
+    "US"
    ],
    "profile": "Iranian state spies and saboteurs",
    "roster": false,
@@ -4968,6 +5332,7 @@
    "targets": [
     "Government"
    ],
+   "victims": [],
    "profile": "Russian state spies and saboteurs",
    "roster": false,
    "tools": [
@@ -4991,6 +5356,9 @@
    "targets": [
     "Critical infrastructure",
     "Healthcare"
+   ],
+   "victims": [
+    "GB"
    ],
    "profile": "Cybercrime gang",
    "roster": false,
@@ -5028,6 +5396,10 @@
     "NGOs",
     "Finance"
    ],
+   "victims": [
+    "UA",
+    "US"
+   ],
    "profile": "Russian state spies",
    "roster": true,
    "tools": [
@@ -5052,6 +5424,9 @@
     "Education",
     "Government",
     "Individuals"
+   ],
+   "victims": [
+    "HK"
    ],
    "profile": "Chinese state spies",
    "roster": false,
@@ -5079,6 +5454,7 @@
    "motive": [],
    "since": 2020,
    "targets": [],
+   "victims": [],
    "profile": "Russian hackers",
    "roster": false,
    "tools": []
@@ -5102,6 +5478,7 @@
     "Technology",
     "Education"
    ],
+   "victims": [],
    "profile": "North Korean state spies who also steal money",
    "roster": true,
    "tools": [
@@ -5120,6 +5497,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Russian hackers",
    "roster": false,
    "tools": [
@@ -5138,6 +5516,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -5156,6 +5535,12 @@
    "motive": [],
    "since": 2018,
    "targets": [],
+   "victims": [
+    "CA",
+    "AU",
+    "GB",
+    "US"
+   ],
    "profile": "Hackers",
    "roster": false,
    "tools": []
@@ -5170,6 +5555,7 @@
    "motive": [],
    "since": 2022,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -5207,6 +5593,7 @@
     "Telecommunications",
     "Military"
    ],
+   "victims": [],
    "profile": "Turkish state spies",
    "roster": true,
    "tools": [
@@ -5223,6 +5610,7 @@
    "motive": [],
    "since": null,
    "targets": [],
+   "victims": [],
    "profile": "Chinese hackers",
    "roster": false,
    "tools": [
@@ -5249,6 +5637,14 @@
     "Finance",
     "Government",
     "Manufacturing"
+   ],
+   "victims": [
+    "US",
+    "UA",
+    "CN",
+    "CO",
+    "MX",
+    "NL"
    ],
    "profile": "Cybercrime gang",
    "roster": false,
@@ -5292,6 +5688,7 @@
     "NGOs",
     "Pharmaceuticals"
    ],
+   "victims": [],
    "profile": "Iranian state spies",
    "roster": false,
    "tools": [
@@ -5313,6 +5710,9 @@
    "targets": [
     "Telecommunications"
    ],
+   "victims": [
+    "US"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -5331,6 +5731,7 @@
    ],
    "since": 2024,
    "targets": [],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -5354,6 +5755,7 @@
    "motive": [],
    "since": 2021,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -5379,6 +5781,7 @@
     "Government",
     "Energy"
    ],
+   "victims": [],
    "profile": "Chinese state spies",
    "roster": false,
    "tools": [
@@ -5412,6 +5815,7 @@
     "Finance",
     "Individuals"
    ],
+   "victims": [],
    "profile": "North Korean cybercrime gang",
    "roster": true,
    "tools": [
@@ -5433,6 +5837,14 @@
    "since": 2022,
    "targets": [
     "Finance"
+   ],
+   "victims": [
+    "US",
+    "JP",
+    "CA",
+    "DE",
+    "FR",
+    "GB"
    ],
    "profile": "Cybercrime gang",
    "roster": false,
@@ -5458,6 +5870,7 @@
     "Education",
     "Manufacturing"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -5493,6 +5906,11 @@
     "Individuals",
     "Technology"
    ],
+   "victims": [
+    "IN",
+    "LK",
+    "US"
+   ],
    "profile": "North Korean state spies who also steal money",
    "roster": false,
    "tools": [
@@ -5516,6 +5934,9 @@
    "targets": [
     "Education",
     "Healthcare"
+   ],
+   "victims": [
+    "US"
    ],
    "profile": "Cybercrime gang",
    "roster": false,
@@ -5542,6 +5963,7 @@
    "motive": [],
    "since": 2019,
    "targets": [],
+   "victims": [],
    "profile": "Hackers",
    "roster": false,
    "tools": [
@@ -5590,6 +6012,13 @@
    ],
    "since": 2022,
    "targets": [],
+   "victims": [
+    "IL",
+    "AL",
+    "IE",
+    "JO",
+    "US"
+   ],
    "profile": "Iranian saboteurs",
    "roster": false,
    "tools": [
@@ -5622,6 +6051,7 @@
    "targets": [
     "Technology"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -5651,6 +6081,7 @@
     "Food and agriculture",
     "Government"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -5678,6 +6109,7 @@
     "Healthcare",
     "Finance"
    ],
+   "victims": [],
    "profile": "Cybercrime gang",
    "roster": false,
    "tools": [
@@ -5704,6 +6136,14 @@
    "targets": [
     "Defense",
     "Transportation"
+   ],
+   "victims": [
+    "AE",
+    "IL",
+    "AL",
+    "IN",
+    "TR",
+    "US"
    ],
    "profile": "Iranian state spies",
    "roster": false,
