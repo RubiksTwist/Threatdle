@@ -25,7 +25,7 @@ async function api(path, body) {
   return { status: r.status, body: await r.json().catch(() => ({})) };
 }
 const statusOf = m => games[m]?.view?.status ?? 'playing';
-// The suspect tracker: groups the player can still believe, from the clues and rows on screen.
+// The suspect tracker: groups the player can still believe, from the clues on screen (and the rows, in Threat Hunter).
 function suspects(m) {
   const g = games[m];
   if (!g?.today) return new Set();
@@ -315,13 +315,12 @@ function combobox(input, list, items, none, button) {
 const entry = a => ({ id: a.id, label: displayName(a), flag: flagImg(a, 'mini'), sub: [displayName(a) !== a.name ? a.name : null, ...a.aliases.filter(x => x !== displayName(a)).slice(0, 3)].filter(Boolean).join(' · '),
   q: [displayName(a), a.name, ...a.aliases].join(' | ').toLowerCase() });
 
-// Browse: the Most Wanted, grouped by home. Tap one to guess it.
-// Browse: the Most Wanted, grouped by home. Ruled-out groups sink, greyed, and hide unless asked for. Tap one to guess it.
+// Browse: the Most Wanted, grouped by home. Groups the clues rule out sink, greyed, and hide unless asked for. Tap one to guess it.
 let showRuled = false;
 function browseHtml() {
   const guessed = games.analyst?.guesses ?? [], live = suspects('analyst');
   const n = [...live].filter(id => !guessed.includes(id)).length;
-  $('#rosterLive').innerHTML = `<b>${n}</b> ${n === 1 ? 'suspect' : 'suspects'} still possible`;
+  $('#rosterLive').innerHTML = `<b>${n}</b> ${n === 1 ? 'suspect fits' : 'suspects fit'} the clues. Your rows narrow it further.`;
   $('#showRuled').setAttribute('aria-pressed', String(showRuled));
   return SECTIONS.map(([k, label, hint]) => {
     const list = ROSTER.filter(a => sectionOf(a) === k).map(a => ({ a, out: guessed.includes(a.id), ruled: !live.has(a.id) }))

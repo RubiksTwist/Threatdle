@@ -50,3 +50,16 @@ Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   
 Threat Hunter newcomer  | 38%    5                   | 1%   3%   5%   7%   10%  11%  62%
 Threat Hunter tracker   | 98%    4                   | 1%   14%  33%  29%  16%  5%   2%
 Threat Hunter ideal     | 100%   3                   | 0%   12%  59%  29%  0%   0%   0%
+
+## Round 4: country no earlier than SOC Analyst clue 3, SOC Analyst tracker follows clues only (live before this: tracker mean 2.36, median 2)
+cases: analyst 73, hunter 84; N=200 games per case for each random player
+SOC Analyst   player    | mean  median P90 | 1    2    3    4    5    6-9  10+
+SOC Analyst   random    | 26.47 26     47  | 2%   2%   2%   2%   2%   8%   83%
+SOC Analyst   newcomer  | 3.39  3      5   | 6%   17%  31%  28%  13%  4%   0%
+SOC Analyst   tracker   | 4.16  4      6   | 6%   6%   8%   41%  25%  13%  0%
+SOC Analyst   ideal     | 2.22  2      3   | 0%   78%  22%  0%   0%   0%   0%
+Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold
+Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   1%   97%
+Threat Hunter newcomer  | 37%    5                   | 1%   3%   5%   7%   10%  11%  63%
+Threat Hunter tracker   | 97%    4                   | 1%   14%  33%  28%  16%  6%   3%
+Threat Hunter ideal     | 100%   3                   | 0%   14%  57%  29%  0%   0%   0%
