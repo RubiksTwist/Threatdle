@@ -4,11 +4,11 @@
 // Players:
 //   random   taps any Most Wanted group it has not tried (Hunter: any group).
 //   newcomer knows no group facts. Without the tracker it reads the clues against the Browse cards (home, profile, targets)
-//            and the Home and Type cells of its rows, then guesses any group that still looks possible.
+//            and the Home, Motive and Victims cells of its rows, then guesses any group that still looks possible.
 //   tracker  guesses any group the page's suspect tracker still lists (SOC Analyst's follows the clues only, Threat Hunter's the rows too).
 //   ideal    knows every public card, reads every row, and picks the guess that splits the suspects best.
 import { readFileSync } from 'node:fs';
-import { MODES, fits, fitsAll, fold, compare, play, possible } from '../public/js/rules.mjs';
+import { MODES, fitsAll, fold, compare, cells, play, possible } from '../public/js/rules.mjs';
 import { buildPool, buildCases } from './export.mjs';
 
 const args = process.argv.slice(2), N = +(args.find(a => /^\d+$/.test(a)) || 200);
@@ -22,13 +22,14 @@ const cases = (dataDir ? read('cases.json').cases : buildCases()).filter(c => !a
 function rng(seed) { let s = seed >>> 0; return () => { s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const ROSTER = Object.values(byId).filter(a => a.roster), ALL = Object.values(byId);
 
-// The newcomer without the tracker: clue facts it can check on a card, plus the Home and Type cells.
+// The newcomer without the tracker: clue facts it can check on a card, plus the cells it understands without expert knowledge.
+const PLAIN = ['home', 'motive', 'victims'];
 function looksPossible(mode, x, g) {
   if (!fitsAll(x, g.clues)) return false;
   return g.rows.every((r, i) => {
     if (r.id === x.id) return false;
-    const f = compare(byId[r.id], fold(x, g.clues.slice(0, i + MODES[mode].open)));
-    return ['home', 'type'].every(k => r.cells.find(c => c.k === k).tone === { match: 'hit', near: 'near', partial: 'near', miss: 'miss', unknown: 'unk' }[f[k]]);
+    const got = cells(mode, byId[r.id], compare(byId[r.id], fold(x, g.clues.slice(0, i + MODES[mode].open))));
+    return PLAIN.every(k => got.find(c => c.k === k).tone === r.cells.find(c => c.k === k).tone);
   });
 }
 const key = (mode, f) => [f.correct, ...MODES[mode].cols.filter(k => k !== 'tools').map(k => f[k])].join('|');

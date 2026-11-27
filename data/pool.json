@@ -1,5 +1,5 @@
 {
- "version": "d6c62d531a",
+ "version": "bf5aa94028",
  "actors": [
   {
    "id": "G0001",
@@ -15,10 +15,10 @@
    ],
    "since": 2008,
    "targets": [
-    "Defense",
-    "Government",
+    "Media",
     "Manufacturing",
-    "Media"
+    "Defense",
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -150,10 +150,14 @@
    ],
    "since": 2010,
    "targets": [
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
-   "victims": [],
+   "victims": [
+    "TW",
+    "JP",
+    "US"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -185,8 +189,8 @@
    ],
    "since": 2006,
    "targets": [
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -250,17 +254,17 @@
    ],
    "since": 2004,
    "targets": [
-    "Government",
-    "Military",
-    "Individuals",
     "Hospitality",
-    "Energy",
-    "Telecommunications",
-    "Transportation",
     "NGOs",
-    "Civil society",
     "Media",
-    "Education"
+    "Transportation",
+    "Civil society",
+    "Individuals",
+    "Energy",
+    "Military",
+    "Telecommunications",
+    "Education",
+    "Government"
    ],
    "victims": [
     "UA",
@@ -345,12 +349,12 @@
    ],
    "since": 2014,
    "targets": [
-    "Government",
-    "Defense",
-    "Finance",
-    "Telecommunications",
+    "Legal",
     "Healthcare",
-    "Legal"
+    "Defense",
+    "Telecommunications",
+    "Finance",
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -404,8 +408,8 @@
    ],
    "since": 2004,
    "targets": [
-    "Government",
-    "Military"
+    "Military",
+    "Government"
    ],
    "victims": [
     "UA",
@@ -574,12 +578,12 @@
    ],
    "since": 2008,
    "targets": [
+    "NGOs",
+    "Media",
+    "Civil society",
     "Education",
     "Technology",
-    "Civil society",
-    "Government",
-    "NGOs",
-    "Media"
+    "Government"
    ],
    "victims": [
     "US",
@@ -684,8 +688,8 @@
    "since": 2012,
    "targets": [
     "Civil society",
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [
     "HK"
@@ -721,10 +725,10 @@
    "since": 2010,
    "targets": [
     "Critical infrastructure",
+    "Manufacturing",
     "Defense",
-    "Government",
     "Telecommunications",
-    "Manufacturing"
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -764,8 +768,8 @@
    ],
    "since": null,
    "targets": [
-    "Government",
-    "Military"
+    "Military",
+    "Government"
    ],
    "victims": [],
    "profile": "American state spies",
@@ -792,19 +796,19 @@
    ],
    "since": 2012,
    "targets": [
+    "Pharmaceuticals",
+    "Legal",
+    "NGOs",
+    "Media",
     "Civil society",
+    "Energy",
+    "Military",
+    "Healthcare",
     "Defense",
     "Education",
-    "Energy",
+    "Technology",
     "Finance",
-    "Government",
-    "Healthcare",
-    "Legal",
-    "Media",
-    "Military",
-    "NGOs",
-    "Pharmaceuticals",
-    "Technology"
+    "Government"
    ],
    "victims": [],
    "profile": "Palestinian state spies",
@@ -844,14 +848,15 @@
    ],
    "since": 2010,
    "targets": [
+    "Transportation",
     "Private sector",
     "Defense",
-    "Technology",
     "Telecommunications",
-    "Transportation"
+    "Technology"
    ],
    "victims": [
-    "US"
+    "US",
+    "HK"
    ],
    "profile": "Chinese state spies",
    "roster": true,
@@ -907,8 +912,8 @@
    ],
    "since": 2007,
    "targets": [
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [
     "US"
@@ -970,8 +975,8 @@
    "since": 2009,
    "targets": [
     "Civil society",
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -1014,11 +1019,11 @@
    ],
    "since": 2010,
    "targets": [
-    "Government",
     "Private sector",
     "Defense",
+    "Education",
     "Finance",
-    "Education"
+    "Government"
    ],
    "victims": [
     "US",
@@ -1125,11 +1130,11 @@
    ],
    "since": 2009,
    "targets": [
-    "Government",
-    "Military",
+    "Media",
     "Manufacturing",
+    "Military",
     "Telecommunications",
-    "Media"
+    "Government"
    ],
    "victims": [
     "PH",
@@ -1196,13 +1201,13 @@
    ],
    "since": 2009,
    "targets": [
-    "Defense",
-    "Finance",
-    "Government",
     "Media",
-    "Technology",
+    "Healthcare",
+    "Defense",
     "Telecommunications",
-    "Healthcare"
+    "Technology",
+    "Finance",
+    "Government"
    ],
    "victims": [
     "US",
@@ -1287,11 +1292,11 @@
    ],
    "since": 2009,
    "targets": [
-    "Government",
-    "Private sector",
-    "Energy",
     "Food and agriculture",
-    "Media"
+    "Media",
+    "Energy",
+    "Private sector",
+    "Government"
    ],
    "victims": [
     "UA",
@@ -1361,15 +1366,15 @@
    "since": 2010,
    "targets": [
     "Critical infrastructure",
-    "Defense",
-    "Energy",
-    "Government",
     "Transportation",
-    "Finance"
+    "Energy",
+    "Defense",
+    "Finance",
+    "Government"
    ],
    "victims": [
-    "UA",
-    "US"
+    "US",
+    "UA"
    ],
    "profile": "Russian state spies",
    "roster": true,
@@ -1424,8 +1429,8 @@
    ],
    "since": null,
    "targets": [
-    "Hospitality",
-    "Retail"
+    "Retail",
+    "Hospitality"
    ],
    "victims": [
     "US"
@@ -1546,8 +1551,8 @@
    ],
    "since": 2011,
    "targets": [
-    "Government",
-    "Military"
+    "Military",
+    "Government"
    ],
    "victims": [],
    "profile": "American state spies",
@@ -1628,9 +1633,9 @@
    ],
    "since": 2006,
    "targets": [
-    "Government",
+    "Media",
     "Private sector",
-    "Media"
+    "Government"
    ],
    "victims": [
     "JP",
@@ -1689,13 +1694,13 @@
    ],
    "since": 2013,
    "targets": [
-    "Finance",
-    "Healthcare",
+    "Retail",
     "Hospitality",
     "Media",
-    "Retail",
+    "Transportation",
+    "Healthcare",
     "Technology",
-    "Transportation"
+    "Finance"
    ],
    "victims": [
     "US"
@@ -1750,9 +1755,9 @@
    ],
    "since": 2013,
    "targets": [
-    "Government",
+    "Legal",
     "NGOs",
-    "Legal"
+    "Government"
    ],
    "victims": [
     "UA"
@@ -1812,12 +1817,12 @@
    ],
    "since": 2014,
    "targets": [
-    "Private sector",
-    "Finance",
-    "Government",
     "Hospitality",
+    "Energy",
+    "Private sector",
     "Telecommunications",
-    "Energy"
+    "Finance",
+    "Government"
    ],
    "victims": [
     "SA",
@@ -1887,12 +1892,19 @@
    "since": 2014,
    "targets": [
     "Civil society",
-    "Government",
     "Private sector",
     "Education",
-    "Finance"
+    "Finance",
+    "Government"
    ],
-   "victims": [],
+   "victims": [
+    "PH",
+    "CN",
+    "LA",
+    "KH",
+    "FR",
+    "DE"
+   ],
    "profile": "Vietnamese state spies",
    "roster": true,
    "tools": [
@@ -1945,8 +1957,8 @@
    "since": 2013,
    "targets": [
     "Civil society",
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [],
    "profile": "Iranian state spies",
@@ -1970,8 +1982,8 @@
    ],
    "since": 2008,
    "targets": [
-    "Finance",
-    "Hospitality"
+    "Hospitality",
+    "Finance"
    ],
    "victims": [],
    "profile": "Russian cybercrime gang",
@@ -2038,8 +2050,8 @@
    ],
    "since": 2012,
    "targets": [
-    "Government",
-    "Individuals"
+    "Individuals",
+    "Government"
    ],
    "victims": [
     "CA",
@@ -2085,16 +2097,16 @@
    ],
    "since": 2014,
    "targets": [
-    "Defense",
-    "Education",
-    "Government",
-    "Healthcare",
-    "Individuals",
-    "Manufacturing",
     "NGOs",
+    "Media",
     "Transportation",
     "Civil society",
-    "Media"
+    "Individuals",
+    "Manufacturing",
+    "Healthcare",
+    "Defense",
+    "Education",
+    "Government"
    ],
    "victims": [
     "US",
@@ -2140,9 +2152,9 @@
    ],
    "since": 2008,
    "targets": [
-    "Private sector",
+    "Critical infrastructure",
     "Manufacturing",
-    "Critical infrastructure"
+    "Private sector"
    ],
    "victims": [
     "JP",
@@ -2183,8 +2195,8 @@
    ],
    "since": 2016,
    "targets": [
-    "Hospitality",
     "Retail",
+    "Hospitality",
     "Technology"
    ],
    "victims": [],
@@ -2261,12 +2273,12 @@
    ],
    "since": 2013,
    "targets": [
-    "Private sector",
     "Pharmaceuticals",
-    "Education",
     "Individuals",
     "Energy",
-    "Defense"
+    "Private sector",
+    "Defense",
+    "Education"
    ],
    "victims": [
     "US",
@@ -2322,12 +2334,12 @@
    ],
    "since": 2009,
    "targets": [
-    "Government",
-    "Private sector",
-    "Education",
     "Transportation",
+    "Manufacturing",
+    "Private sector",
     "Defense",
-    "Manufacturing"
+    "Education",
+    "Government"
    ],
    "victims": [
     "US",
@@ -2423,9 +2435,9 @@
    ],
    "since": 2012,
    "targets": [
-    "Government",
+    "Military",
     "Private sector",
-    "Military"
+    "Government"
    ],
    "victims": [
     "KR"
@@ -2497,10 +2509,10 @@
    ],
    "since": 2017,
    "targets": [
-    "Government",
     "Energy",
+    "Telecommunications",
     "Education",
-    "Telecommunications"
+    "Government"
    ],
    "victims": [
     "TR",
@@ -2548,9 +2560,9 @@
    ],
    "since": 2012,
    "targets": [
-    "Government",
     "Individuals",
-    "Telecommunications"
+    "Telecommunications",
+    "Government"
    ],
    "victims": [],
    "profile": "Lebanese state spies",
@@ -2792,10 +2804,10 @@
    ],
    "since": 2011,
    "targets": [
-    "Government",
+    "Transportation",
     "Healthcare",
     "Technology",
-    "Transportation"
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -2829,17 +2841,16 @@
    ],
    "since": 2014,
    "targets": [
-    "Finance",
+    "Individuals",
     "Technology",
-    "Individuals"
+    "Finance"
    ],
    "victims": [
     "US",
-    "AE",
     "BD",
-    "CA",
-    "IR",
-    "JP"
+    "TW",
+    "JP",
+    "PL"
    ],
    "profile": "North Korean thieves and saboteurs",
    "roster": true,
@@ -2864,10 +2875,10 @@
    ],
    "since": 2014,
    "targets": [
-    "Education",
     "Manufacturing",
-    "Technology",
-    "Private sector"
+    "Private sector",
+    "Education",
+    "Technology"
    ],
    "victims": [],
    "profile": "Nigerian cybercrime gang",
@@ -2934,10 +2945,10 @@
    ],
    "since": 2014,
    "targets": [
-    "Education",
     "Hospitality",
     "Individuals",
-    "Telecommunications"
+    "Telecommunications",
+    "Education"
    ],
    "victims": [
     "TR"
@@ -3011,10 +3022,10 @@
    ],
    "since": 2018,
    "targets": [
-    "Defense",
-    "Government",
     "Legal",
-    "Technology"
+    "Defense",
+    "Technology",
+    "Government"
    ],
    "victims": [],
    "profile": "Palestinian state spies",
@@ -3046,7 +3057,14 @@
    "targets": [
     "Finance"
    ],
-   "victims": [],
+   "victims": [
+    "RU",
+    "UA",
+    "BY",
+    "AZ",
+    "PL",
+    "KZ"
+   ],
    "profile": "Cybercrime gang",
    "roster": true,
    "tools": [
@@ -3077,11 +3095,11 @@
    ],
    "since": 2014,
    "targets": [
-    "Education",
-    "Finance",
-    "Healthcare",
+    "Retail",
     "Hospitality",
-    "Retail"
+    "Healthcare",
+    "Education",
+    "Finance"
    ],
    "victims": [
     "US",
@@ -3125,10 +3143,10 @@
    ],
    "since": 2012,
    "targets": [
+    "Telecommunications",
     "Education",
     "Finance",
-    "Government",
-    "Telecommunications"
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -3177,12 +3195,12 @@
    ],
    "since": 2012,
    "targets": [
-    "Education",
-    "Government",
-    "Individuals",
     "NGOs",
+    "Individuals",
     "Energy",
-    "Healthcare"
+    "Healthcare",
+    "Education",
+    "Government"
    ],
    "victims": [
     "KR",
@@ -3229,8 +3247,8 @@
    ],
    "since": 2010,
    "targets": [
-    "Government",
-    "Military"
+    "Military",
+    "Government"
    ],
    "victims": [],
    "profile": "Brazilian state spies",
@@ -3270,14 +3288,14 @@
    ],
    "since": 2012,
    "targets": [
-    "Healthcare",
     "Retail",
-    "Technology",
-    "Telecommunications",
-    "Transportation",
-    "Government",
     "Hospitality",
-    "Education"
+    "Transportation",
+    "Healthcare",
+    "Telecommunications",
+    "Education",
+    "Technology",
+    "Government"
    ],
    "victims": [
     "US",
@@ -3348,8 +3366,8 @@
    ],
    "since": 2013,
    "targets": [
-    "Manufacturing",
     "Media",
+    "Manufacturing",
     "Government"
    ],
    "victims": [],
@@ -3382,10 +3400,10 @@
    "since": 2018,
    "targets": [
     "Energy",
-    "Finance",
-    "Government",
     "Manufacturing",
-    "Private sector"
+    "Private sector",
+    "Finance",
+    "Government"
    ],
    "victims": [],
    "profile": "State spies",
@@ -3421,8 +3439,8 @@
    ],
    "since": 2014,
    "targets": [
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [],
    "profile": "Russian state spies",
@@ -3461,11 +3479,11 @@
    ],
    "since": 2016,
    "targets": [
-    "Defense",
-    "Finance",
-    "Government",
     "Healthcare",
-    "Telecommunications"
+    "Defense",
+    "Telecommunications",
+    "Finance",
+    "Government"
    ],
    "victims": [
     "US",
@@ -3513,8 +3531,8 @@
    ],
    "since": 2012,
    "targets": [
-    "Government",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -3632,8 +3650,8 @@
    ],
    "since": 2018,
    "targets": [
-    "Manufacturing",
-    "Transportation"
+    "Transportation",
+    "Manufacturing"
    ],
    "victims": [
     "TW"
@@ -3691,12 +3709,12 @@
    ],
    "since": 2017,
    "targets": [
-    "Defense",
     "Energy",
-    "Government",
-    "Healthcare",
     "Manufacturing",
-    "Technology"
+    "Healthcare",
+    "Defense",
+    "Technology",
+    "Government"
    ],
    "victims": [
     "IL",
@@ -3731,11 +3749,14 @@
    ],
    "since": 2014,
    "targets": [
-    "Finance",
     "Healthcare",
-    "Technology"
+    "Technology",
+    "Finance"
    ],
-   "victims": [],
+   "victims": [
+    "US",
+    "GB"
+   ],
    "profile": "Russian state spies who also steal money",
    "roster": true,
    "tools": [
@@ -3786,9 +3807,9 @@
    "motive": [],
    "since": 2012,
    "targets": [
-    "Government",
     "Military",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
    "victims": [],
    "profile": "Indian hackers",
@@ -3878,14 +3899,14 @@
    ],
    "since": 2021,
    "targets": [
-    "Defense",
-    "Education",
-    "Government",
-    "Healthcare",
     "Legal",
     "NGOs",
+    "Healthcare",
+    "Defense",
     "Telecommunications",
-    "Technology"
+    "Education",
+    "Technology",
+    "Government"
    ],
    "victims": [
     "US",
@@ -4008,10 +4029,10 @@
    ],
    "since": 2012,
    "targets": [
-    "Education",
-    "Government",
+    "Religious organization",
     "NGOs",
-    "Religious organization"
+    "Education",
+    "Government"
    ],
    "victims": [
     "MM",
@@ -4109,11 +4130,16 @@
    ],
    "since": 2009,
    "targets": [
-    "Government",
     "Military",
-    "Private sector"
+    "Private sector",
+    "Government"
    ],
-   "victims": [],
+   "victims": [
+    "KR",
+    "JP",
+    "TW",
+    "US"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -4139,8 +4165,8 @@
    ],
    "since": 2014,
    "targets": [
-    "Government",
-    "Individuals"
+    "Individuals",
+    "Government"
    ],
    "victims": [],
    "profile": "Russian state spies",
@@ -4167,8 +4193,8 @@
    "since": 2013,
    "targets": [
     "Civil society",
-    "Government",
-    "Military"
+    "Military",
+    "Government"
    ],
    "victims": [
     "IN",
@@ -4198,8 +4224,8 @@
    "motive": [],
    "since": 2017,
    "targets": [
-    "Government",
-    "Telecommunications"
+    "Telecommunications",
+    "Government"
    ],
    "victims": [],
    "profile": "Hackers",
@@ -4280,14 +4306,14 @@
    ],
    "since": 2009,
    "targets": [
+    "Food and agriculture",
+    "Pharmaceuticals",
+    "Manufacturing",
+    "Military",
+    "Healthcare",
     "Defense",
     "Finance",
-    "Government",
-    "Military",
-    "Manufacturing",
-    "Healthcare",
-    "Food and agriculture",
-    "Pharmaceuticals"
+    "Government"
    ],
    "victims": [
     "KR",
@@ -4384,11 +4410,13 @@
    ],
    "since": 2020,
    "targets": [
-    "Government",
+    "Telecommunications",
     "Technology",
-    "Telecommunications"
+    "Government"
    ],
-   "victims": [],
+   "victims": [
+    "PE"
+   ],
    "profile": "Chinese state spies",
    "roster": true,
    "tools": [
@@ -4421,13 +4449,13 @@
    ],
    "since": 2017,
    "targets": [
-    "Defense",
-    "Education",
     "Energy",
-    "Government",
     "Military",
+    "Defense",
+    "Telecommunications",
+    "Education",
     "Technology",
-    "Telecommunications"
+    "Government"
    ],
    "victims": [],
    "profile": "Iranian state spies",
@@ -4462,8 +4490,8 @@
    "since": 2013,
    "targets": [
     "Energy",
-    "Government",
-    "Manufacturing"
+    "Manufacturing",
+    "Government"
    ],
    "victims": [
     "CN",
@@ -4503,10 +4531,10 @@
    "since": 2020,
    "targets": [
     "Critical infrastructure",
-    "Government",
+    "NGOs",
     "Telecommunications",
     "Technology",
-    "NGOs"
+    "Government"
    ],
    "victims": [
     "UA"
@@ -4543,8 +4571,8 @@
    ],
    "since": 2021,
    "targets": [
-    "Government",
-    "Media"
+    "Media",
+    "Government"
    ],
    "victims": [
     "BR",
@@ -4574,20 +4602,22 @@
    ],
    "since": 2022,
    "targets": [
-    "Civil society",
-    "Defense",
-    "Finance",
     "Food and agriculture",
-    "Government",
-    "Healthcare",
+    "Pharmaceuticals",
+    "NGOs",
+    "Transportation",
+    "Civil society",
     "Manufacturing",
     "Military",
-    "NGOs",
-    "Pharmaceuticals",
+    "Healthcare",
+    "Defense",
     "Technology",
-    "Transportation"
+    "Finance",
+    "Government"
    ],
-   "victims": [],
+   "victims": [
+    "IL"
+   ],
    "profile": "Lebanese state spies",
    "roster": true,
    "tools": [
@@ -4619,11 +4649,11 @@
    ],
    "since": 2019,
    "targets": [
-    "Education",
-    "Government",
-    "Media",
     "NGOs",
-    "Telecommunications"
+    "Media",
+    "Telecommunications",
+    "Education",
+    "Government"
    ],
    "victims": [
     "TW"
@@ -4656,9 +4686,9 @@
    ],
    "since": 2013,
    "targets": [
+    "Telecommunications",
     "Education",
-    "Government",
-    "Telecommunications"
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -4680,8 +4710,8 @@
    ],
    "since": 2019,
    "targets": [
-    "Government",
-    "Individuals"
+    "Individuals",
+    "Government"
    ],
    "victims": [
     "IN"
@@ -4710,12 +4740,12 @@
    ],
    "since": 2021,
    "targets": [
-    "Education",
-    "Energy",
-    "Finance",
-    "Government",
     "Hospitality",
-    "Manufacturing"
+    "Energy",
+    "Manufacturing",
+    "Education",
+    "Finance",
+    "Government"
    ],
    "victims": [],
    "profile": "Iranian thieves and saboteurs",
@@ -4769,20 +4799,20 @@
    ],
    "since": 2018,
    "targets": [
-    "Civil society",
-    "Defense",
-    "Energy",
-    "Finance",
-    "Government",
-    "Healthcare",
-    "Legal",
-    "Media",
-    "Military",
-    "NGOs",
     "Pharmaceuticals",
-    "Technology",
+    "Legal",
+    "NGOs",
+    "Media",
+    "Transportation",
+    "Civil society",
+    "Energy",
+    "Military",
+    "Healthcare",
+    "Defense",
     "Telecommunications",
-    "Transportation"
+    "Technology",
+    "Finance",
+    "Government"
    ],
    "victims": [
     "US",
@@ -4860,18 +4890,17 @@
    ],
    "since": 2022,
    "targets": [
-    "Finance",
-    "Hospitality",
     "Retail",
-    "Technology",
-    "Telecommunications",
+    "Hospitality",
     "Transportation",
-    "Government",
-    "Individuals"
+    "Individuals",
+    "Telecommunications",
+    "Technology",
+    "Finance",
+    "Government"
    ],
    "victims": [
     "US",
-    "BH",
     "GB"
    ],
    "profile": "Young English-speaking crew that phones help desks",
@@ -4905,9 +4934,9 @@
    ],
    "since": 2016,
    "targets": [
-    "Finance",
     "Retail",
-    "Hospitality"
+    "Hospitality",
+    "Finance"
    ],
    "victims": [
     "MX"
@@ -4944,10 +4973,10 @@
    "since": 2021,
    "targets": [
     "Critical infrastructure",
-    "Technology",
+    "Defense",
     "Education",
-    "Government",
-    "Defense"
+    "Technology",
+    "Government"
    ],
    "victims": [
     "US",
@@ -5097,8 +5126,8 @@
    "motive": [],
    "since": 2020,
    "targets": [
-    "Government",
-    "Military"
+    "Military",
+    "Government"
    ],
    "victims": [],
    "profile": "Hackers",
@@ -5180,10 +5209,10 @@
    ],
    "since": 2023,
    "targets": [
+    "Pharmaceuticals",
     "Transportation",
-    "Government",
     "Manufacturing",
-    "Pharmaceuticals"
+    "Government"
    ],
    "victims": [
     "US",
@@ -5246,20 +5275,20 @@
    ],
    "since": 2014,
    "targets": [
-    "Civil society",
-    "Defense",
-    "Education",
-    "Energy",
-    "Finance",
-    "Government",
     "Legal",
-    "Media",
-    "Military",
     "NGOs",
-    "Technology",
-    "Telecommunications",
+    "Media",
     "Transportation",
-    "Individuals"
+    "Civil society",
+    "Individuals",
+    "Energy",
+    "Military",
+    "Defense",
+    "Telecommunications",
+    "Education",
+    "Technology",
+    "Finance",
+    "Government"
    ],
    "victims": [],
    "profile": "Palestinian state spies",
@@ -5290,8 +5319,8 @@
    ],
    "since": 2020,
    "targets": [
-    "Government",
-    "Technology"
+    "Technology",
+    "Government"
    ],
    "victims": [
     "IL",
@@ -5390,15 +5419,16 @@
    ],
    "since": 2019,
    "targets": [
+    "NGOs",
     "Defense",
     "Education",
-    "Government",
-    "NGOs",
-    "Finance"
+    "Finance",
+    "Government"
    ],
    "victims": [
-    "UA",
-    "US"
+    "US",
+    "GB",
+    "UA"
    ],
    "profile": "Russian state spies",
    "roster": true,
@@ -5421,9 +5451,9 @@
    ],
    "since": 2012,
    "targets": [
+    "Individuals",
     "Education",
-    "Government",
-    "Individuals"
+    "Government"
    ],
    "victims": [
     "HK"
@@ -5475,8 +5505,8 @@
    "since": 2023,
    "targets": [
     "Defense",
-    "Technology",
-    "Education"
+    "Education",
+    "Technology"
    ],
    "victims": [],
    "profile": "North Korean state spies who also steal money",
@@ -5588,12 +5618,17 @@
    ],
    "since": 2017,
    "targets": [
-    "Government",
-    "Technology",
+    "Military",
     "Telecommunications",
-    "Military"
+    "Technology",
+    "Government"
    ],
-   "victims": [],
+   "victims": [
+    "IQ",
+    "GR",
+    "SE",
+    "SY"
+   ],
    "profile": "Turkish state spies",
    "roster": true,
    "tools": [
@@ -5631,12 +5666,12 @@
    ],
    "since": 2021,
    "targets": [
+    "Food and agriculture",
     "Critical infrastructure",
     "Energy",
-    "Food and agriculture",
+    "Manufacturing",
     "Finance",
-    "Government",
-    "Manufacturing"
+    "Government"
    ],
    "victims": [
     "US",
@@ -5674,19 +5709,19 @@
    ],
    "since": 2015,
    "targets": [
+    "Pharmaceuticals",
+    "Legal",
+    "NGOs",
+    "Media",
     "Civil society",
+    "Energy",
+    "Manufacturing",
+    "Military",
+    "Healthcare",
     "Defense",
     "Education",
-    "Energy",
     "Finance",
-    "Government",
-    "Healthcare",
-    "Legal",
-    "Manufacturing",
-    "Media",
-    "Military",
-    "NGOs",
-    "Pharmaceuticals"
+    "Government"
    ],
    "victims": [],
    "profile": "Iranian state spies",
@@ -5775,11 +5810,11 @@
    ],
    "since": 2022,
    "targets": [
+    "Energy",
     "Defense",
-    "Technology",
     "Telecommunications",
-    "Government",
-    "Energy"
+    "Technology",
+    "Government"
    ],
    "victims": [],
    "profile": "Chinese state spies",
@@ -5812,10 +5847,12 @@
    ],
    "since": 2018,
    "targets": [
-    "Finance",
-    "Individuals"
+    "Individuals",
+    "Finance"
    ],
-   "victims": [],
+   "victims": [
+    "US"
+   ],
    "profile": "North Korean cybercrime gang",
    "roster": true,
    "tools": [
@@ -5866,9 +5903,9 @@
    "since": 2021,
    "targets": [
     "Critical infrastructure",
-    "Technology",
+    "Manufacturing",
     "Education",
-    "Manufacturing"
+    "Technology"
    ],
    "victims": [],
    "profile": "Cybercrime gang",
@@ -5902,9 +5939,9 @@
    ],
    "since": 2023,
    "targets": [
-    "Finance",
     "Individuals",
-    "Technology"
+    "Technology",
+    "Finance"
    ],
    "victims": [
     "IN",
@@ -5932,8 +5969,8 @@
    ],
    "since": 2021,
    "targets": [
-    "Education",
-    "Healthcare"
+    "Healthcare",
+    "Education"
    ],
    "victims": [
     "US"
@@ -6075,10 +6112,10 @@
    ],
    "since": 2019,
    "targets": [
+    "Food and agriculture",
+    "Healthcare",
     "Education",
     "Technology",
-    "Healthcare",
-    "Food and agriculture",
     "Government"
    ],
    "victims": [],
@@ -6103,10 +6140,10 @@
    ],
    "since": 2025,
    "targets": [
-    "Manufacturing",
-    "Education",
     "Transportation",
+    "Manufacturing",
     "Healthcare",
+    "Education",
     "Finance"
    ],
    "victims": [],
@@ -6134,8 +6171,8 @@
    ],
    "since": 2021,
    "targets": [
-    "Defense",
-    "Transportation"
+    "Transportation",
+    "Defense"
    ],
    "victims": [
     "AE",

@@ -72,6 +72,10 @@ export function buildPool() {
     a.profile = profile(a);
     return a;
   });
+  // Targets rarest across the pool first, so a board cell can show a group's most distinctive sector.
+  const seen = {};
+  for (const a of actors) for (const t of a.targets) seen[t] = (seen[t] || 0) + 1;
+  for (const a of actors) a.targets = [...a.targets].sort((x, y) => seen[x] - seen[y] || x.localeCompare(y));
   return { version: createHash('sha256').update(JSON.stringify(actors)).digest('hex').slice(0, 10), actors };
 }
 

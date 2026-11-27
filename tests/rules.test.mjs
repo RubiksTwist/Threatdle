@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import * as R from '../public/js/rules.mjs';
 
-const A = (id, o = {}) => ({ id, name: id, nickname: null, aliases: [], home: null, type: null, motive: [], since: null, targets: [], profile: '', roster: true, tools: [], ...o });
+const A = (id, o = {}) => ({ id, name: id, nickname: null, aliases: [], home: null, type: null, motive: [], since: null, targets: [], victims: [], profile: '', roster: true, tools: [], ...o });
 const bear = A('G1', { nickname: 'Fancy Bear', home: 'RU', type: 'state', motive: ['Espionage'], since: 2004, targets: ['Government', 'Military'], tools: ['S1', 'S2', 'S3'] });
 const cozy = A('G2', { nickname: 'Cozy Bear', home: 'RU', type: 'state', motive: ['Espionage'], since: 2008, targets: ['Government'], tools: ['S1'] });
 const panda = A('G3', { home: 'CN', type: 'state', motive: ['Espionage', 'Financial Gain'], since: 2012, targets: ['Technology'] });
@@ -39,6 +39,54 @@ test('compare: since points at the culprit, up when the culprit is newer', () =>
   assert.equal(R.compare(A('y', { since: 2008 }), cozy).since, 'match');
 });
 
+test('since within 2 years is amber and keeps its arrow; 3 years is a miss', () => {
+  const cell = (since, cul) => R.cells('analyst', A('s', { since }), R.compare(A('s', { since }), A('c', { since: cul }))).find(c => c.k === 'since');
+  assert.deepEqual([cell(2010, 2012).tone, cell(2010, 2012).arrow], ['near', '↑']);
+  assert.deepEqual([cell(2010, 2008).tone, cell(2010, 2008).arrow], ['near', '↓']);
+  assert.deepEqual([cell(2010, 2013).tone, cell(2010, 2013).arrow], ['miss', '↑']);
+  assert.deepEqual([cell(2010, 2010).tone, cell(2010, 2010).arrow], ['hit', '']);
+  assert.equal(cell(2010, null).tone, 'unk');
+});
+
+test('victims: same main victim is green, a victim the culprit also hit is amber, no list is unknown', () => {
+  const cul = A('c', { victims: ['UA', 'US', 'PL'] });
+  const cell = victims => R.cells('analyst', A('g', { victims }), R.compare(A('g', { victims }), cul)).find(c => c.k === 'victims');
+  assert.deepEqual([cell(['UA', 'DE']).text, cell(['UA', 'DE']).tone], ['UA', 'hit']);
+  assert.deepEqual([cell(['US', 'UA']).text, cell(['US', 'UA']).tone], ['US', 'near']);
+  assert.deepEqual([cell(['JP', 'UA']).text, cell(['JP', 'UA']).tone], ['JP', 'miss'], 'only the guess main victim counts');
+  assert.deepEqual([cell([]).text, cell([]).tone], ['?', 'unk']);
+  assert.equal(R.compare(A('g', { victims: ['UA'] }), A('c')).victims, 'unknown', 'an unknown culprit list is unknown');
+  assert.match(cell(['PH']).say, /Philippines/, 'say names the country');
+  assert.equal(R.compare(A('g'), A('g')).victims, 'match', 'a correct guess is a match even with no victims');
+});
+
+test('motive shows the whole combination in short words', () => {
+  const text = motive => R.cells('analyst', A('m', { motive }), R.compare(A('m', { motive }), bear)).find(c => c.k === 'motive').text;
+  assert.equal(text(['Espionage']), 'Spy');
+  assert.equal(text(['Espionage', 'Financial Gain']), 'Spy+Money');
+  assert.equal(text(['Financial Gain', 'Espionage']), 'Spy+Money', 'always in the same order');
+  assert.equal(text(['Espionage', 'Financial Gain', 'Sabotage']), 'Spy+Money+Harm');
+  assert.equal(text([]), '?');
+});
+
+test('targets ignore Government unless it is all one side lists', () => {
+  const t = (g, p) => R.compare(A('g', { targets: g }), A('p', { targets: p })).targets;
+  assert.equal(t(['Government', 'Energy'], ['Government', 'Finance']), 'miss', 'sharing only Government is no overlap');
+  assert.equal(t(['Government', 'Energy'], ['Energy']), 'match');
+  assert.equal(t(['Government'], ['Government', 'Finance']), 'partial', 'a Government-only group still overlaps');
+  assert.equal(t(['Government'], ['Government']), 'match');
+  assert.equal(t(['Government'], ['Finance']), 'miss');
+});
+
+test('targets text is the first sector other than Government, plus how many more', () => {
+  const text = targets => R.cells('analyst', A('t', { targets }), R.compare(A('t', { targets }), bear)).find(c => c.k === 'targets');
+  assert.equal(text(['Energy', 'Government', 'Finance']).text, 'Energy+2');
+  assert.equal(text(['Government', 'Telecommunications']).text, 'Telco+1');
+  assert.equal(text(['Government']).text, 'Govt');
+  assert.equal(text([]).text, '?');
+  assert.match(text(['Energy', 'Government', 'Finance']).say, /energy, government, finance/, 'say lists every sector');
+});
+
 test('compare: targets and motive as same, some or none', () => {
   assert.equal(R.compare(cozy, bear).targets, 'partial');
   assert.equal(R.compare(panda, bear).targets, 'miss');
@@ -69,7 +117,7 @@ test('fold adds clue facts to the culprit without dropping its own', () => {
 test('play: a row folds only the clues shown when it was made', () => {
   // Cozy Bear guessed first: only the two opening clues (telecoms, state) are shown, so targets compare with Government, Military, Telecommunications.
   const g = R.play('analyst', kase, ['G2'], byId);
-  assert.equal(g.rows[0].cells.find(c => c.k === 'targets').text, 'Some');
+  assert.equal(g.rows[0].cells.find(c => c.k === 'targets').tone, 'near');
   assert.equal(g.status, 'playing');
   assert.deepEqual(g.clues.map(c => c.text), ['Hit telecoms.', 'A state actor.', 'From Russia.']);
   // A guess that shares telecoms only matches through the fold.

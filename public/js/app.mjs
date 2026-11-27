@@ -94,13 +94,15 @@ function clueList(clues, total, freshIndex) {
   return `<ol class="clues">${items.join('')}</ol>`;
 }
 
-const LEGEND = { home: 'Home', type: 'Type', motive: 'Motive', since: 'Since', targets: 'Targets', tools: 'Tools' };
+const LEGEND = { home: 'Home', motive: 'Motive', since: 'Since', victims: 'Victims', targets: 'Targets', tools: 'Tools' };
+// A cell may wrap at a '+' so it fits a phone: "Spy+|Money", "Money|+Harm", "Banks|+3".
+const cellText = t => esc(t).replace(/\+(?=\d)/g, '<wbr>+').replace(/\+(?=\D)/g, '<wbr>+<wbr>');
 function row(m, r, latest) {
   const g = byId[r.id] || { home: r.home, type: null };
   const r5 = m === 'analyst';
   return `<li class="fbr ${r5 ? 'r5' : ''} ${r.correct ? 'win' : ''} ${latest && !reduce() ? 'lift2' : ''}" aria-label="${esc(r.name)}${r.correct ? ': the culprit' : ': ' + esc(r.cells.map(c => c.say).join('; '))}">
     <span class="fn" title="${esc(r.name)}">${esc(r.name)}</span>
-    ${r.cells.map(c => `<span class="fc ${c.tone}" aria-hidden="true">${c.k === 'home' ? (r5 ? flagImg({ ...g, home: r.home }, 'mini rf') : r.home ? flagImg({ ...g, home: r.home }, 'mini') + `<span>${esc(c.text)}</span>` : `<span>${esc(c.text)}</span>`) : `<span>${esc(c.text)}</span>`}${c.arrow ? `<b class="arw">${c.arrow}</b>` : ''}</span>`).join('')}
+    ${r.cells.map(c => `<span class="fc ${c.tone}" aria-hidden="true">${c.k === 'home' ? (r5 ? flagImg({ ...g, home: r.home }, 'mini rf') : r.home ? flagImg({ ...g, home: r.home }, 'mini') + `<span>${esc(c.text)}</span>` : `<span>${esc(c.text)}</span>`) : `<span>${cellText(c.text)}</span>`}${c.arrow ? `<b class="arw">${c.arrow}</b>` : ''}</span>`).join('')}
   </li>`;
 }
 
@@ -108,12 +110,12 @@ function row(m, r, latest) {
 const HOWTO = {
   analyst: () => [`Who hacked them? Guess from the ${ROSTER.length} Most Wanted.`, [
     'Read the clues. Type a group, or tap <b>Browse</b> and pick one.',
-    'Each wrong guess unlocks a clue and adds a row. Green = same as the culprit. Amber = close. ↑ ↓ = the culprit showed up later or earlier.',
+    'Each wrong guess unlocks a clue and adds a row about the group you picked: home, motive, first seen, the country it hit most, and what it targets. Green = same as the culprit. Amber = close. ↑ ↓ = the culprit showed up later or earlier.',
     'No limit. Your score is how many guesses it took.'],
     'Nicknames hint at home: Bear = Russia, Panda = China, Kitten = Iran, Chollima = N. Korea, Spider = crime.'],
   hunter: () => ['Name the hacker group behind a real case.', [
     'Type any group, nickname or APT number (Fancy Bear, APT28, Lazarus), or tap <b>Browse</b> and pick one.',
-    'Each wrong accusation unlocks a clue and adds a row. Green = same as the culprit. Amber = close. ↑ ↓ = the culprit showed up later or earlier.',
+    'Each wrong accusation unlocks a clue and adds a row about the group you named: home, motive, first seen, the country it hit most, what it targets and its tools. Green = same as the culprit. Amber = close. ↑ ↓ = the culprit showed up later or earlier.',
     `You get ${MODES.hunter.max} accusations. Run out and the case goes cold.`],
     "Rows compare with the culprit as today's report describes it, so trust the clues."],
 };
@@ -197,7 +199,7 @@ function render() {
       <h2 class="fbH" id="fbH">Your ${mode === 'hunter' ? 'accusations' : 'guesses'}</h2>
       ${rows.length ? `<div class="fbr ${mode === 'analyst' ? 'r5' : ''} head" aria-hidden="true"><span class="fn"></span>${legend}</div>
         <ol class="rows">${rows.slice().reverse().map((r, i) => row(mode, r, i === 0 && fresh.row)).join('')}</ol>
-        <p class="fkey"><i class="sw hit"></i>Same <i class="sw near"></i>Close <i class="sw miss"></i>No <span>↑ culprit is newer · ↓ older</span>${mode === 'hunter' ? '<span>Tools: how many the culprit shares with your guess</span>' : ''}</p>`
+        <p class="fkey"><i class="sw hit"></i>Same <i class="sw near"></i>Close <i class="sw miss"></i>No <span>↑ culprit is newer · ↓ older</span><span>Victims: the country it hit most; amber = the culprit hit it too</span>${mode === 'hunter' ? '<span>Tools: how many the culprit shares with your guess</span>' : ''}</p>`
       : `<p class="empty">Not sure? <b>Browse</b> ${mode === 'analyst' ? `the ${ROSTER.length} Most Wanted` : `all ${POOL.length} groups`}. Each ${mode === 'hunter' ? 'accusation' : 'guess'} lands here, compared with the culprit.</p>`}
     </section>
     ${finished(mode) ? '' : `<p class="crowd">${g.today.solvedCount ? `${fmt(g.today.solvedCount)} ${MODES[mode].who} closed this case today` : `Be the first ${one(mode)} to close this case today`}</p>`}`;
