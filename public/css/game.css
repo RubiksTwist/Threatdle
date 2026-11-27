@@ -114,10 +114,9 @@ main{max-width:760px;margin:0 auto;padding:10px 16px}
 /* input bars */
 .hbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(13,12,10,.97);border-top:1px solid var(--deskline)}
 .hbar-in{max-width:760px;margin:0 auto;padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;position:relative}
-#guess,#rguess{flex:1;min-width:0;min-height:52px;padding:0 14px;border-radius:8px;border:2px solid #4a4537;background:#1d1b16;color:var(--paperT);font:500 16px Inter,sans-serif}
-#guess::placeholder,#rguess::placeholder{color:#968d78}
-#guess:focus-visible,#rguess:focus-visible{outline:none;border-color:var(--amber)}
-#go{flex:none;min-width:104px}
+#guess{flex:1;min-width:0;min-height:52px;padding:0 14px;border-radius:8px;border:2px solid #4a4537;background:#1d1b16;color:var(--paperT);font:500 16px Inter,sans-serif}
+#guess::placeholder{color:#968d78}
+#guess:focus-visible,#rosterQ:focus-visible{outline:none;border-color:var(--amber)}
 #browse{flex:none;min-width:112px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 #browse small{font:600 12px Inter,sans-serif;background:rgba(0,0,0,.25);border-radius:10px;padding:1px 7px}
 .ac-list{position:absolute;left:16px;right:16px;bottom:100%;margin:0 0 6px;padding:4px;list-style:none;background:var(--paperT);color:var(--inkE);border-radius:8px;box-shadow:0 -8px 24px rgba(0,0,0,.5);max-height:min(320px,50vh);overflow:auto}
@@ -216,7 +215,11 @@ main{max-width:760px;margin:0 auto;padding:10px 16px}
 .rc.ruled{background:#3a372f;color:#cfc6b0;filter:grayscale(1)}
 .rc.ruled small{color:#b3aa95}
 .rc.ruled i{color:#e3b0aa;border-color:#e3b0aa}
-.rhead .tog{grid-column:1/3;grid-row:3;justify-self:start;margin-top:8px;min-height:44px;color:var(--paperT)}
+.rtools{grid-column:1/3;grid-row:3;display:flex;gap:8px;margin-top:8px}
+#rosterQ{flex:1;min-width:0;min-height:44px;padding:0 12px;border-radius:8px;border:2px solid #4a4537;background:#1d1b16;color:var(--paperT);font:500 16px Inter,sans-serif}
+#rosterQ::placeholder{color:#968d78}
+.rhead .tog{flex:none;min-height:44px;color:var(--paperT)}
+.rnone{margin:18px 0;color:var(--dimT)}
 .rhead .tog[aria-pressed="true"]{background:var(--paperT);color:var(--inkE);border-color:var(--paperT)}
 .rhead p b{color:var(--amber)}
 .poss{font:600 12px Inter,sans-serif;color:var(--dimT);font-variant-numeric:tabular-nums;white-space:nowrap}

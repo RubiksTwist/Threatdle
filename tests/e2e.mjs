@@ -48,7 +48,7 @@ async function open(browser, vp, { mode, streak, seen } = {}) {
   return { ctx, page, errors };
 }
 async function type(page, m, id) {
-  const input = m === 'hunter' ? '#guess' : '#rguess';
+  const input = '#guess';
   await page.fill(input, name(id));
   await page.press(input, 'Enter');
   await page.waitForFunction(n => document.querySelectorAll('.rows > li').length >= n || document.querySelector('.endE'), (await page.locator('.rows > li').count()) + 1);
@@ -87,9 +87,9 @@ async function run(browser, vp) {
   else {  // only the culprit is left: a ruled-out group can still be typed
     await a.page.click('#rosterClose');
     w2 = wrong('analyst', 2)[1];
-    await a.page.fill('#rguess', name(w2));
-    check(`tracker ${tag} autocomplete marks ruled-out groups`, (await a.page.locator('#raclist li.ruled').count()) >= 1);
-    await a.page.press('#rguess', 'Enter');
+    await a.page.fill('#guess', name(w2));
+    check(`tracker ${tag} autocomplete marks ruled-out groups`, (await a.page.locator('#aclist li.ruled').count()) >= 1);
+    await a.page.press('#guess', 'Enter');
   }
   await a.page.waitForFunction(() => document.querySelectorAll('.rows > li').length === 2);
   check(`analyst ${tag} two rows, newest first`, (await a.page.textContent('.rows > li:first-child .fn')) === name(w2));
@@ -125,7 +125,7 @@ async function run(browser, vp) {
   // Next mode leads to the other mode's own case.
   await a.page.click('#nextMode');
   await a.page.waitForSelector('body[data-mode="hunter"]');
-  check(`next mode ${tag} opens Threat Hunter`, (await a.page.getAttribute('.mode[data-mode="hunter"]', 'aria-pressed')) === 'true' && await a.page.isVisible('#hbar'));
+  check(`next mode ${tag} opens Threat Hunter`, (await a.page.getAttribute('.mode[data-mode="hunter"]', 'aria-pressed')) === 'true' && await a.page.isVisible('#bar'));
   check(`next mode ${tag} is a different case`, (await a.page.textContent('.clue.now .txt')) === kase('hunter').clues[0].text);
   await shot(a.page, `hunter-first-${tag}.png`); await axe(a.page, `hunter first ${tag}`);
   check(`analyst ${tag} no page errors`, a.errors.length === 0, a.errors.join(' | '));
@@ -144,11 +144,26 @@ async function run(browser, vp) {
       await h.page.waitForSelector('#aclist:not([hidden])');
       await shot(h.page, `hunter-autocomplete-${tag}.png`); await axe(h.page, `hunter autocomplete ${tag}`);
       await h.page.press('#guess', 'Escape'); await h.page.fill('#guess', '');
+      // Browse lists every group; its search ignores spaces and dashes.
+      await h.page.click('#browse');
+      await h.page.waitForSelector('#roster[open]');
+      check(`hunter ${tag} browse lists all groups`, (await h.page.textContent('#rosterT')) === 'All groups' && +(await h.page.textContent('#rosterN')) === 178);
+      await h.page.fill('#rosterQ', 'apt 28');
+      check(`hunter ${tag} browse search finds APT28 from "apt 28"`, (await h.page.locator('#rosterBody .rc[data-id="G0007"]').count()) === 1);
+      if (tag === 390) await shot(h.page, 'hunter-browse-390.png');
+      await axe(h.page, `hunter browse ${tag}`);
+      await h.page.fill('#rosterQ', 'zzzz');
+      check(`hunter ${tag} browse search says when nothing matches`, await h.page.isVisible('#rosterBody .rnone'));
+      await h.page.click('#rosterClose');
+      await h.page.fill('#guess', 'apt-29');
+      check(`hunter ${tag} guess box finds APT29 from "apt-29"`, /APT29|Cozy Bear/.test(await h.page.textContent('#aclist li:first-child')));
+      await h.page.press('#guess', 'Escape'); await h.page.fill('#guess', '');
       await shot(h.page, `hunter-mid-${tag}.png`); await axe(h.page, `hunter mid ${tag}`);
     }
   }
   await h.page.waitForSelector('.endE');
   check(`hunter ${tag} cold stamp`, (await h.page.textContent('#endH')) === 'Case gone cold');
+  check(`hunter ${tag} no stale "be the first" line after the end`, (await h.page.locator('.crowd').count()) === 0);
   const hs = await h.page.textContent('.shareE');
   check(`hunter ${tag} cold share`, /^Threatdle #\d+ · Threat Hunter X\/6 · 🔥0\n/.test(hs) && hs.split('\n').length === 7, hs.split('\n')[0]);
   check(`hunter ${tag} reveals the culprit`, (await h.page.textContent('.endE .nm')) === name(culprit.hunter));
