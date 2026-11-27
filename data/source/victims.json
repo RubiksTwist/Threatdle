@@ -1,0 +1,879 @@
+{
+ "why": "Victim countries per group from OPTIC (vendor reports, extracted with quotes), most reported first, the group's own home left out. articles[i] counts reports naming victims[i]. Regenerate with node tools/optic-victims.mjs; hand fixes go in overrides.json.",
+ "actors": {
+  "G0007": {
+   "victims": [
+    "UA",
+    "US"
+   ],
+   "articles": [
+    13,
+    5
+   ],
+   "why": "Google/Mandiant: A NEARTWIST cluster of activity used against Ukraine (linked to APT28 with moderate confidence) logged in to web shells using ExpressVPN IP addresses."
+  },
+  "G0010": {
+   "victims": [
+    "UA",
+    "PL",
+    "AF"
+   ],
+   "articles": [
+    10,
+    4,
+    2
+   ],
+   "why": "Microsoft Security: historically targeted organizations in the government and diplomatic sector in Europe and Central Asia, as well as systems in Ukraine"
+  },
+  "G0011": {
+   "victims": [
+    "TW"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Google/Mandiant: APT24 compromised a regional digital marketing firm in Taiwan"
+  },
+  "G0016": {
+   "victims": [
+    "US",
+    "UA",
+    "TR"
+   ],
+   "articles": [
+    9,
+    5,
+    2
+   ],
+   "why": "Google/Mandiant: In the past 12 months, Mandiant has observed APT29 targeting technology companies and IT service providers in the United States and Europe, which is a potential risk to elections as APT29 has demonstrated a pattern of targeting these types of organizations to facilitate third party compromises of go"
+  },
+  "G0017": {
+   "victims": [
+    "JP",
+    "TW",
+    "RU"
+   ],
+   "articles": [
+    3,
+    2,
+    1
+   ],
+   "why": "Sophos: BRONZE OVERBROOK State sponsor: China Objectives: Espionage Aliases: DragonOK (Palo Alto), Shallow Taurus (Palo Alto), Danti (Kaspersky), Temp.DragonOK (FireEye), Samurai Panda (CrowdStrike) Tools: IsSpace, Rambo, Godzilla Webshell, DDKONG, HelloBridge, NFLog Trojan, PlugX, PLAINTEE, Aveo Summary BR"
+  },
+  "G0018": {
+   "victims": [
+    "HK"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Google/Mandiant: targeting Hong Kong-based media organizations"
+  },
+  "G0022": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    2
+   ],
+   "why": "Unit 42: activity consistent with a spear-phishing attack targeting the US Government"
+  },
+  "G0024": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "CrowdStrike: has heavily targeted the US defense and European satellite/aerospace industries"
+  },
+  "G0027": {
+   "victims": [
+    "US",
+    "AU",
+    "CA",
+    "DE",
+    "FR",
+    "IL"
+   ],
+   "articles": [
+    5,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Unit 42: We have observed an attack led by the APT group Wekby targeting a US-based organization in recent weeks."
+  },
+  "G0030": {
+   "victims": [
+    "PH",
+    "VN",
+    "AU",
+    "HK",
+    "SV",
+    "TW"
+   ],
+   "articles": [
+    3,
+    2,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Cisco Talos: The operation appears to have achieved significant success, targeting organizations in sectors such as government, manufacturing, telecommunications and media in areas including the Philippines, Vietnam, Hong Kong and Taiwan."
+  },
+  "G0032": {
+   "victims": [
+    "US",
+    "KR",
+    "CA",
+    "JP"
+   ],
+   "articles": [
+    12,
+    5,
+    3,
+    3
+   ],
+   "why": "Cisco Talos: Lazarus was primarily targeting energy companies in Canada, the U.S. and Japan."
+  },
+  "G0034": {
+   "victims": [
+    "UA",
+    "PL"
+   ],
+   "articles": [
+    20,
+    4
+   ],
+   "why": "CrowdStrike: This adversary displays a particular focus on targeting entities in the Ukraine"
+  },
+  "G0035": {
+   "victims": [
+    "UA",
+    "US"
+   ],
+   "articles": [
+    2,
+    1
+   ],
+   "why": "Cisco Talos: One of the clearer targeting shifts we observed was that Static Tundra’s operations against entities in Ukraine escalated at the start of the Russia-Ukraine war, and have remained high since then."
+  },
+  "G0037": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Sophos: GOLD FRANKLIN engages in targeted breaches frequently against retail, hospitality, and food services organizations in the United States that process large quantities of payment card data."
+  },
+  "G0040": {
+   "victims": [
+    "PK",
+    "CN",
+    "NO"
+   ],
+   "articles": [
+    4,
+    1,
+    1
+   ],
+   "why": "Cisco Talos: Now, considering that Transparent Tribe focuses on targets in India and Sidewinder and Donut have been reported to focus their activities on targets in Pakistan, it was particularly interesting to find out that VBA code of potentially opposing groups reuse portions of the code."
+  },
+  "G0045": {
+   "victims": [
+    "JP",
+    "US",
+    "IN"
+   ],
+   "articles": [
+    5,
+    2,
+    1
+   ],
+   "why": "Cisco Talos: The group is known to target organizations in Japan and other countries."
+  },
+  "G0046": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    17
+   ],
+   "why": "Google/Mandiant: FireEye recently observed a FIN7 spear phishing campaign targeting personnel involved with United States Securities and Exchange Commission (SEC) filings at various organizations."
+  },
+  "G0047": {
+   "victims": [
+    "UA"
+   ],
+   "articles": [
+    13
+   ],
+   "why": "Cisco Talos: Based on these observations and Gamaredon's operational history of almost exclusively targeting Ukraine, we assess that this latest campaign is almost certainly directly targeting entities based in Ukraine."
+  },
+  "G0049": {
+   "victims": [
+    "SA",
+    "AL"
+   ],
+   "articles": [
+    7,
+    2
+   ],
+   "why": "Google/Mandiant: UNC1860 also used a command-line tool to validate credentials of accounts and email addresses across multiple domains belonging to Qatari and Saudi Arabian entities, and later targeted VPN servers of entities in the region."
+  },
+  "G0056": {
+   "victims": [
+    "CA",
+    "CO",
+    "IN",
+    "VN"
+   ],
+   "articles": [
+    2,
+    2,
+    2,
+    2
+   ],
+   "why": "Cisco Talos: The PROMETHIUM actor expands its reach and tries to infect new targets in Colombia, India, Canada and Vietnam by teaming up with StrongPity3."
+  },
+  "G0059": {
+   "victims": [
+    "US",
+    "IL",
+    "AU",
+    "GB"
+   ],
+   "articles": [
+    9,
+    7,
+    3,
+    3
+   ],
+   "why": "Google/Mandiant: APT42 used a compromised email account of a U.S.-based think tank to target Middle East researchers at similar organizations, U.S. government officials involved in Middle East and Iran policy, and other individuals."
+  },
+  "G0060": {
+   "victims": [
+    "JP",
+    "KR"
+   ],
+   "articles": [
+    4,
+    3
+   ],
+   "why": "Unit 42: The “Tick” group has conducted cyber espionage attacks against organizations in the Republic of Korea and Japan for several years."
+  },
+  "G0064": {
+   "victims": [
+    "US",
+    "AE",
+    "SA",
+    "AU",
+    "KR"
+   ],
+   "articles": [
+    5,
+    2,
+    2,
+    1,
+    1
+   ],
+   "why": "CrowdStrike: REFINED KITTEN’s targeting typically concentrates on entities in Saudi Arabia, the United Arab Emirates, and the United States"
+  },
+  "G0065": {
+   "victims": [
+    "US",
+    "KH",
+    "AU",
+    "HK",
+    "KR",
+    "NZ"
+   ],
+   "articles": [
+    3,
+    3,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Google/Mandiant: Identified victims were mostly found in the United States"
+  },
+  "G0067": {
+   "victims": [
+    "KR"
+   ],
+   "articles": [
+    9
+   ],
+   "why": "Google/Mandiant: The group has been observed targeting a wide range of industries, primarily in South Korea."
+  },
+  "G0069": {
+   "victims": [
+    "TR",
+    "PK",
+    "IL",
+    "IN",
+    "IQ",
+    "JO"
+   ],
+   "articles": [
+    5,
+    3,
+    2,
+    2,
+    2,
+    2
+   ],
+   "why": "Cisco Talos: Cisco Talos recently observed a campaign operated by MuddyWater targeting users in Turkey."
+  },
+  "G0075": {
+   "victims": [
+    "KH",
+    "SG"
+   ],
+   "articles": [
+    2,
+    1
+   ],
+   "why": "Unit 42: the group has persistently targeted at least one government organization in Cambodia from December 2018 through January 2019"
+  },
+  "G0078": {
+   "victims": [
+    "PK"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Unit 42: Gorgon Group had been consistently targeting worldwide governmental organizations operating within Pakistan."
+  },
+  "G0080": {
+   "victims": [
+    "RU",
+    "TW",
+    "UA"
+   ],
+   "articles": [
+    2,
+    1,
+    1
+   ],
+   "why": "CrowdStrike: the group COBALT SPIDER (also known as Cobalt) that, again, specializes in targeting Russian banks"
+  },
+  "G0082": {
+   "victims": [
+    "US",
+    "AE",
+    "BD",
+    "CA",
+    "IR",
+    "JP"
+   ],
+   "articles": [
+    3,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Microsoft Security: These targets are often global, with a particular interest in the United States, as well as countries in Asia and the Middle East."
+  },
+  "G0087": {
+   "victims": [
+    "TR"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Unit 42: In November 2018 the Chafer threat group targeted a Turkish government entity"
+  },
+  "G0092": {
+   "victims": [
+    "US",
+    "PK"
+   ],
+   "articles": [
+    9,
+    2
+   ],
+   "why": "Unit 42: TA505, a group known for leveraging Cl0p ransomware, has more than 3,000 U.S.-based organizations and 8,000 global organizations victims"
+  },
+  "G0094": {
+   "victims": [
+    "KR",
+    "JP",
+    "US"
+   ],
+   "articles": [
+    7,
+    2,
+    2
+   ],
+   "why": "Cisco Talos: Kimsuky is a highly motivated APT that has traditionally targeted entities in South Korea."
+  },
+  "G0096": {
+   "victims": [
+    "US",
+    "TW",
+    "KR",
+    "TH",
+    "CA",
+    "IN"
+   ],
+   "articles": [
+    9,
+    4,
+    3,
+    3,
+    2,
+    2
+   ],
+   "why": "Google/Mandiant: APT41 used CVE-2021-44228 to target at least four organizations: a telecom company based in the APJ region that is a frequent target of Chinese espionage operations, one US-based financial organization, and two state level government agencies in the U.S."
+  },
+  "G0102": {
+   "victims": [
+    "US",
+    "IT"
+   ],
+   "articles": [
+    6,
+    2
+   ],
+   "why": "CrowdStrike: As students all over the United States donned their backpacks and packed their lunches to go back to school this year, the all-to-familiar impact of ransomware created confusion and disarray for school districts"
+  },
+  "G0114": {
+   "victims": [
+    "TW"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Sophos: BRONZE VAPOR's intent appears to be information theft, focusing on intellectual property and personally identifiable information.Prior to 2019, BRONZE VAPOR primarily focused on targets in East Asia, particularity semiconductor organizations in Taiwan."
+  },
+  "G0115": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "CrowdStrike: you can work in all types of activities of a given state."
+  },
+  "G0117": {
+   "victims": [
+    "IL",
+    "US"
+   ],
+   "articles": [
+    3,
+    1
+   ],
+   "why": "Google/Mandiant: Focused targeting of Israeli entities and organizations, or organizations operating in Israel, consistent with other clusters of activity operated by Iranian threat actors, specifically UNC757."
+  },
+  "G0125": {
+   "victims": [
+    "US",
+    "AU"
+   ],
+   "articles": [
+    5,
+    1
+   ],
+   "why": "Google/Mandiant: Microsoft reported the exploitation occurred together and is linked to a single group of actors tracked as “HAFNIUM”, a group that has previously targeted the US-based defense companies, law firms, infectious disease researchers, and think tanks."
+  },
+  "G0128": {
+   "victims": [
+    "US",
+    "GB"
+   ],
+   "articles": [
+    4,
+    1
+   ],
+   "why": "Google/Mandiant: SQL injection test results against specific US-based targets"
+  },
+  "G0129": {
+   "victims": [
+    "MM",
+    "MN",
+    "VN",
+    "US",
+    "HK",
+    "JP"
+   ],
+   "articles": [
+    6,
+    4,
+    4,
+    3,
+    2,
+    2
+   ],
+   "why": "Cisco Talos: The threat actor has aggressively targeted the government of Myanmar since 2019 , even breaching their websites on multiple occasions to host malware payloads."
+  },
+  "G0130": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "CrowdStrike: targeting of multiple U.S.-based defense contractors"
+  },
+  "G0134": {
+   "victims": [
+    "IN",
+    "AF"
+   ],
+   "articles": [
+    8,
+    2
+   ],
+   "why": "Cisco Talos: But Transparent Tribe’s attacks are not limited to only India."
+  },
+  "G0138": {
+   "victims": [
+    "KR",
+    "IN",
+    "US"
+   ],
+   "articles": [
+    6,
+    3,
+    3
+   ],
+   "why": "Google/Mandiant: APT45 likely leveraged RIFLE to target a South Korean financial organization"
+  },
+  "G0139": {
+   "victims": [
+    "IT"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Unit 42: to harvest credentials from Italian and other European targets"
+  },
+  "G1002": {
+   "victims": [
+    "CN",
+    "PK",
+    "SA",
+    "BD"
+   ],
+   "articles": [
+    2,
+    2,
+    2,
+    1
+   ],
+   "why": "Cisco Talos: They have been active since 2013, targeting energy, engineering and government sectors in China, Pakistan and Saudi Arabia."
+  },
+  "G1003": {
+   "victims": [
+    "UA"
+   ],
+   "articles": [
+    10
+   ],
+   "why": "CrowdStrike: destructive activity against Ukrainian networks using the WhisperGate wiper"
+  },
+  "G1004": {
+   "victims": [
+    "BR",
+    "GB",
+    "US"
+   ],
+   "articles": [
+    2,
+    1,
+    1
+   ],
+   "why": "Unit 42: In December 2021, the Ministry of Health of Brazil fell victim to an attack claimed by Lapsus$"
+  },
+  "G1006": {
+   "victims": [
+    "TW"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Microsoft Security: Their activities have predominantly focused on entities within Taiwan, Thailand, Mongolia, Malaysia, France, and Nepal"
+  },
+  "G1008": {
+   "victims": [
+    "IN"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Cisco Talos: Cisco Talos is tracking an increase in SideCopy's activities targeting government personnel in India using themes and tactics similar to APT36 (aka Mythic Leopard and Transparent Tribe)."
+  },
+  "G1012": {
+   "victims": [
+    "US",
+    "IL",
+    "SA"
+   ],
+   "articles": [
+    3,
+    1,
+    1
+   ],
+   "why": "Cisco Talos: The Tortoiseshell APT uses a fake hiring website targeted toward U.S."
+  },
+  "G1015": {
+   "victims": [
+    "US",
+    "BH",
+    "GB"
+   ],
+   "articles": [
+    4,
+    1,
+    1
+   ],
+   "why": "Unit 42: Primarily targeting U.S.-based companies, Muddled Libra has expanded its focus from telecommunications and business process outsourcing (BPO) sectors"
+  },
+  "G1016": {
+   "victims": [
+    "MX"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Google/Mandiant: FIN13 operates exclusively against organizations based in Mexico"
+  },
+  "G1017": {
+   "victims": [
+    "US",
+    "TW"
+   ],
+   "articles": [
+    10,
+    2
+   ],
+   "why": "Google/Mandiant: targeting critical infrastructure organizations in the United States"
+  },
+  "G1020": {
+   "victims": [
+    "CA"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Unit 42: These phishing attacks targeted customers of banking services in many countries including: Canada."
+  },
+  "G1021": {
+   "victims": [
+    "KZ"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Sophos: One victim of Rook ransomware was a bank in Kazakhstan"
+  },
+  "G1023": {
+   "victims": [
+    "US",
+    "FR",
+    "GE",
+    "KR",
+    "MD",
+    "UA"
+   ],
+   "articles": [
+    3,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Google/Mandiant: conducted two separate campaigns in mid to late 2024 and in May 2025 against current and former employees of major aerospace and defense contractors"
+  },
+  "G1024": {
+   "victims": [
+    "US",
+    "AU",
+    "CA",
+    "IS",
+    "KR"
+   ],
+   "articles": [
+    2,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Cisco Talos: Akira affiliates are known to heavily target small- to medium-sized businesses within several verticals primarily located within the U.S."
+  },
+  "G1030": {
+   "victims": [
+    "IL",
+    "AL",
+    "US"
+   ],
+   "articles": [
+    5,
+    1,
+    1
+   ],
+   "why": "Sophos: Other Iranian threat groups such as COBALT SAPLING , COBALT MYSTIQUE , and COBALT SHADOW hide behind fake hacktivist personas to target specific organizations in Israel and Albania with disruptive ransomware and data theft attacks."
+  },
+  "G1032": {
+   "victims": [
+    "GB"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Unit 42: Tarnished Scorpius has notably shifted focus by launching attacks on healthcare institutions in the UK."
+  },
+  "G1033": {
+   "victims": [
+    "UA",
+    "US"
+   ],
+   "articles": [
+    6,
+    2
+   ],
+   "why": "Google/Mandiant: The group has also continued targeting individuals connected to Ukraine."
+  },
+  "G1034": {
+   "victims": [
+    "HK"
+   ],
+   "articles": [
+    1
+   ],
+   "why": "Sophos: BRONZE HIGHLAND State sponsor: China Objectives: Espionage Aliases: Daggerfly, Evasive Panda (MalwareBytes), Storm Bamboo (Volexity), Evasive Panda (CrowdStrike), Daggerfly (Symantec) Tools: MgBot, Nightdoor, Cobalt Strike, KsRemote, Macma, PlugX Summary BRONZE HIGHLAND has been observed using spear"
+  },
+  "G1039": {
+   "victims": [
+    "CA",
+    "AU",
+    "GB",
+    "US"
+   ],
+   "articles": [
+    2,
+    1,
+    1,
+    1
+   ],
+   "why": "Sophos: Nearly 80% of GOLD BLADE attacks linked to the STAC6565 campaign targeted Canada-based organizations."
+  },
+  "G1043": {
+   "victims": [
+    "US",
+    "UA",
+    "CN",
+    "CO",
+    "MX",
+    "NL"
+   ],
+   "articles": [
+    4,
+    3,
+    2,
+    2,
+    2,
+    2
+   ],
+   "why": "Unit 42: These victims have been observed primarily within the U.S."
+  },
+  "G1045": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    2
+   ],
+   "why": "Cisco Talos: widespread intrusion activity against several major U.S. telecommunications companies"
+  },
+  "G1050": {
+   "victims": [
+    "US",
+    "JP",
+    "CA",
+    "DE",
+    "FR",
+    "GB"
+   ],
+   "articles": [
+    2,
+    2,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Cisco Talos: countries most severely affected include the United States."
+  },
+  "G1052": {
+   "victims": [
+    "IN",
+    "LK",
+    "US"
+   ],
+   "articles": [
+    2,
+    1,
+    1
+   ],
+   "why": "Cisco Talos: Cisco Talos has discovered that the North Korean-aligned threat actor Famous Chollima has been actively targeting cryptocurrency and blockchain professionals (primarily in India) through sophisticated phishing campaigns."
+  },
+  "G1053": {
+   "victims": [
+    "US"
+   ],
+   "articles": [
+    2
+   ],
+   "why": "Microsoft Security: targeted multiple sectors in the United States"
+  },
+  "G1055": {
+   "victims": [
+    "IL",
+    "AL",
+    "IE",
+    "JO",
+    "US"
+   ],
+   "articles": [
+    5,
+    2,
+    1,
+    1,
+    1
+   ],
+   "why": "Sophos: Other Iranian threat groups such as COBALT SAPLING , COBALT MYSTIQUE , and COBALT SHADOW hide behind fake hacktivist personas to target specific organizations in Israel and Albania with disruptive ransomware and data theft attacks."
+  },
+  "G1059": {
+   "victims": [
+    "AE",
+    "IL",
+    "AL",
+    "IN",
+    "TR",
+    "US"
+   ],
+   "articles": [
+    2,
+    2,
+    1,
+    1,
+    1,
+    1
+   ],
+   "why": "Unit 42: we believe that the group targeted entities in the U.S., Israel and the United Arab Emirates"
+  }
+ }
+}
