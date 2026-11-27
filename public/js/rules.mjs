@@ -103,10 +103,15 @@ export function fold(a, clues) {
 }
 
 // ---------- compare ----------
-// Buckets, not counts: exact shared counts let anyone with ATT&CK open solve in 2.
+// Buckets, not counts: exact shared counts let anyone with ATT&CK open solve in 2. A cell shows its bucket as a range
+// ("0", "1-2", "3+"), so it reads as "how many the guess shares with the culprit" and never as "this group has no tools".
+// Most groups share no malware: across every hunter culprit and every guess, Tools is 0 for 73% of pairs, 1-2 for 21%, 3+ for 6%.
 export const TOOL_CUTS = [1, 3];
 export const TRICK_CUTS = [1, 10];
 export const bucket = (n, [some, many]) => (n >= many ? 'many' : n >= some ? 'some' : 'none');
+// A group ATT&CK lists no software (or techniques) for is unknown, not "shares none".
+const bucketOf = (a, b, cuts) => (a?.length && b?.length ? bucket(shared(a, b), cuts) : 'unknown');
+const range = ([some, many]) => ({ none: '0', some: some === many - 1 ? String(some) : `${some}–${many - 1}`, many: `${many}+`, unknown: '?' });
 const shared = (a, b) => { const s = new Set(b || []); return (a || []).filter(x => s.has(x)).length; };
 function setCmp(a, b) {
   if (!a || !b || !a.length || !b.length) return 'unknown';
@@ -125,7 +130,7 @@ export function compare(g, p) {
   const since = g.since == null || p.since == null ? 'unknown' : g.since === p.since ? 'match' : p.since > g.since ? 'up' : 'down';
   return {
     correct: false, home, type, motive: setCmp(g.motive, p.motive), since, targets: setCmp(g.targets, p.targets),
-    tools: bucket(shared(g.tools, p.tools), TOOL_CUTS), tricks: bucket(shared(g.tricks, p.tricks), TRICK_CUTS),
+    tools: bucketOf(g.tools, p.tools, TOOL_CUTS), tricks: bucketOf(g.tricks, p.tricks, TRICK_CUTS),
   };
 }
 
@@ -145,8 +150,8 @@ export function cells(mode, g, f) {
     since: { text: g.since ? String(g.since) : '?', arrow: f.since === 'up' ? '↑' : f.since === 'down' ? '↓' : '',
       say: `first seen ${g.since || 'unknown'}: ${f.since === 'up' ? 'culprit is newer' : f.since === 'down' ? 'culprit is older' : f.since}` },
     targets: { text: OVERLAP[f.targets], say: `targets: ${OVERLAP_SAY[f.targets]}` },
-    tools: { text: f.tools === 'match' ? 'Same' : cap(f.tools), say: `shared tools: ${f.tools === 'match' ? 'all' : f.tools}` },
-    tricks: { text: f.tricks === 'match' ? 'Same' : cap(f.tricks), say: `shared techniques: ${f.tricks === 'match' ? 'all' : f.tricks}` },
+    tools: { text: f.tools === 'match' ? 'Same' : range(TOOL_CUTS)[f.tools], say: `shared tools: ${f.tools === 'match' ? 'all' : f.tools === 'unknown' ? 'unknown' : range(TOOL_CUTS)[f.tools].replace('–', ' to ')}` },
+    tricks: { text: f.tricks === 'match' ? 'Same' : range(TRICK_CUTS)[f.tricks], say: `shared techniques: ${f.tricks === 'match' ? 'all' : f.tricks === 'unknown' ? 'unknown' : range(TRICK_CUTS)[f.tricks].replace('–', ' to ')}` },
   };
   return MODES[mode].cols.map(k => ({ k, tone: TONE[f[k]], ...all[k] }));
 }
