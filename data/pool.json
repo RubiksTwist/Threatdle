@@ -1,5 +1,5 @@
 {
- "version": "9bdd0c8011",
+ "version": "060e270447",
  "actors": [
   {
    "id": "G0001",
@@ -358,8 +358,8 @@
     "Military",
     "Individuals",
     "Hospitality",
-    "Telecommunications",
     "Energy",
+    "Telecommunications",
     "Transportation",
     "NGOs",
     "Civil society",
@@ -3010,8 +3010,8 @@
     "Private sector",
     "Finance",
     "Government",
-    "Telecommunications",
     "Hospitality",
+    "Telecommunications",
     "Energy"
    ],
    "profile": "Iranian state spies",
@@ -7515,8 +7515,8 @@
     "Government",
     "Military",
     "Manufacturing",
-    "Food and agriculture",
     "Healthcare",
+    "Food and agriculture",
     "Pharmaceuticals"
    ],
    "profile": "North Korean spies, thieves and saboteurs",

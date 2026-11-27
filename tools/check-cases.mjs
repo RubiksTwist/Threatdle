@@ -6,7 +6,9 @@ import { buildPool, buildCases } from './export.mjs';
 
 // HOME_FROM: in SOC Analyst no clue before clue 3 gives the culprit's country or naming family. Opening on "tied to Iran"
 // left 7 of 52 groups, and the Browse sheet is grouped by country, so the first guess was nearly free.
-export const LADDER_AT = 4, LADDER_MAX = 5, ANALYST_MAX_CLUES = 7, HOME_FROM = 3, CLOSE_MAX = 2;
+// OPEN_MAX: Most Wanted groups that may still fit the opening clues on facts. It is the "possible" count, the first number a
+// player sees. Without it the opening left a median of 28 of 52 (a quarter of cases 41 or more) and clue 3 dropped it to 7.
+export const LADDER_AT = 4, LADDER_MAX = 5, ANALYST_MAX_CLUES = 7, HOME_FROM = 3, CLOSE_MAX = 2, OPEN_MAX = 20;
 // A clue gives the country when its facts say so or its words name the culprit's own country ("Russia's military spy agency").
 // A victim's country ("went after Ukraine") is left to the player to reason about.
 const OWN = { RU: 'Russia|Russian|Moscow|Kremlin', CN: 'China|Chinese|Beijing', IR: 'Iran|Iranian|Tehran', KP: 'North Korea|North Korean|Pyongyang' };
@@ -21,9 +23,7 @@ export const SCORES = new URL('../data/clue-scores.json', import.meta.url);
 export const loadScores = () => (existsSync(SCORES) ? JSON.parse(readFileSync(SCORES, 'utf8')) : {});
 export const scoreOf = (scores, c, k) => scores[c.id]?.[k.text];
 // GIVEAWAY: a reader sure at 50+ was right 68 times in 71 (blind test, 2026-11-27), so such a clue never opens a case.
-// OPEN_FITS: one opening clue must narrow the field to this many groups for a reader, so a case never opens on two lines
-// like "it spies for a government" that fit 30 groups.
-export const GIVEAWAY = 50, OPEN_FITS = 15;
+export const GIVEAWAY = 50;
 const SOFTWARE = new Set(JSON.parse(readFileSync(new URL('../data/source/attack-software.json', import.meta.url), 'utf8')).map(s => s.id));
 
 // Most Wanted groups that still fit after each clue, on facts a player can see. The culprit always counts.
@@ -50,14 +50,13 @@ export function deadCloser(c, byId) {
   return n > 1 && fitAfter(c, byId, n) >= fitAfter(c, byId, n - 1) && !newFact(c.clues[n - 1].facts, c.clues.slice(0, -1));
 }
 
-// The SOC Analyst opening, as a well-read player sees it: not a giveaway, and not empty.
+// The SOC Analyst opening, as a well-read player sees it: no giveaway. (OPEN_MAX keeps it from being empty.)
 export function openingReads(c, scores) {
   const s = c.clues.map(k => scoreOf(scores, c, k));
   const missing = s.filter(x => !x).length;
   if (missing) return [`reader scores: ${missing} clue${missing > 1 ? 's' : ''} unscored (node tools/clue-scores.mjs)`];
   const open = s.slice(0, MODES.analyst.open), bad = [];
   open.forEach((x, i) => { if (x.tell >= GIVEAWAY) bad.push(`opening: clue ${i + 1} gives the group away to a reader (sure ${x.tell}%)`); });
-  if (Math.min(...open.map(x => x.fits)) > OPEN_FITS) bad.push(`opening: every opening clue is vague (fits ${open.map(x => x.fits).join(', ')} groups to a reader)`);
   return bad;
 }
 
@@ -116,6 +115,8 @@ export function checkCase(c, byId, all = [c], scores = null) {
   if (c.mode === 'analyst' && n >= LADDER_AT) {
     const fit = ladder(c, byId)[LADDER_AT - 1];
     if (fit > LADDER_MAX) bad.push(`ladder: ${fit} Most Wanted groups still fit after clue ${LADDER_AT} (max ${LADDER_MAX})`);
+    const opened = ladder(c, byId)[MODES.analyst.open - 1];
+    if (opened > OPEN_MAX) bad.push(`opening: ${opened} Most Wanted groups still fit the opening clues (max ${OPEN_MAX})`);
     if (homeAt(c, byId) < HOME_FROM) bad.push(`opening: clue ${homeAt(c, byId)} gives the country or naming family (not before clue ${HOME_FROM})`);
     if (LEANS_BACK.test(c.clues[0].text)) bad.push('opening: clue 1 points back at an earlier clue');
     if (scores) bad.push(...openingReads(c, scores));

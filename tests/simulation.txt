@@ -81,3 +81,18 @@ Blind reader (a model agent playing from memory, no answer key) on each case's o
   new order, clues 1-2:              right 44 of 73, sure 30, of them right 27; median groups it fits 4
 A second clue is what makes a reader sure: even pairs whose clues a reader cannot place alone gave a sure, right read 16% of the time.
 Stricter per-clue limits barely move it (giveaway at 30%: 27% sure-and-right, 17 cases to redraft; at 20%: 23%, 25 cases).
+
+## Round 6: SOC Analyst opening clues leave 20 Most Wanted groups or fewer on facts (20 cases reworded or given a sharper clue)
+SOC Analyst   player    | mean  median P90 | 1    2    3    4    5    6-9  10+
+SOC Analyst   random    | 26.47 26     47  | 2%   2%   2%   2%   2%   8%   83%
+SOC Analyst   newcomer  | 2.69  3      4   | 10%  35%  35%  14%  5%   0%   0%
+SOC Analyst   tracker   | 2.91  3      4   | 10%  26%  35%  21%  7%   0%   0%
+SOC Analyst   ideal     | 2.08  2      3   | 3%   86%  11%  0%   0%   0%   0%
+Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold
+Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   1%   97%
+Threat Hunter newcomer  | 37%    5                   | 1%   3%   5%   7%   10%  11%  63%
+Threat Hunter tracker   | 97%    4                   | 1%   14%  33%  28%  16%  6%   3%
+Threat Hunter ideal     | 100%   3                   | 0%   14%  57%  29%  0%   0%   0%
+"Possible" count after the opening pair: median 28 (quartiles 19-41, max 52) before, median 11 (quartiles 9-18, max 20) now.
+After clue 3: median 7 both times; after clue 4: median 3 before, 2 now.
+Blind reader on the new opening pairs: right 49 of 73, sure 30, of them right 28 (Round 5 order: 44, 30, 27).

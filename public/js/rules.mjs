@@ -8,7 +8,7 @@
 
 // open: clues shown before the first guess. SOC Analyst opens on two, so a case never starts on one vague line.
 // trackRows: whether the suspect tracker also reads the rows. SOC Analyst's follows the clues only, so reading the rows is the
-// player's skill (simulated mean 3.2 guesses on the list alone, 3.0 reading Home and Type). Threat Hunter's reads both: without it a newcomer wins 37% of games.
+// player's skill (simulated mean 2.9 guesses on the list alone, 2.7 reading Home and Type). Threat Hunter's reads both: without it a newcomer wins 37% of games.
 export const MODES = {
   analyst: { name: 'SOC Analyst', max: null, open: 2, cols: ['home', 'type', 'motive', 'since', 'targets'], who: 'analysts', trackRows: false },
   hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools', 'tricks'], who: 'hunters', trackRows: true },
