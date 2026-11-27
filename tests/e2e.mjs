@@ -61,6 +61,7 @@ async function run(browser, vp) {
   const a = await open(browser, vp, { mode: 'analyst', streak });
   check(`analyst ${tag} how-to shows inline`, await a.page.isVisible('.howto'));
   check(`analyst ${tag} case number`, /Case #\d+/.test(await a.page.textContent('.case')));
+  check(`analyst ${tag} opens on two clues`, (await a.page.locator('.clue').count()) === 2);
   await shot(a.page, `analyst-first-${tag}.png`); await axe(a.page, `analyst first ${tag}`);
   await a.page.click('#howOk');
   const [w1] = wrong('analyst', 1);
@@ -93,7 +94,7 @@ async function run(browser, vp) {
   await a.page.waitForFunction(() => document.querySelectorAll('.rows > li').length === 2);
   check(`analyst ${tag} two rows, newest first`, (await a.page.textContent('.rows > li:first-child .fn')) === name(w2));
   check(`tracker ${tag} count never grows`, +(await a.page.textContent('.poss b')) <= live);
-  check(`analyst ${tag} third clue declassified`, (await a.page.locator('.clue').count()) === 3);
+  check(`analyst ${tag} two misses declassify two more clues`, (await a.page.locator('.clue').count()) === 4);
   check(`analyst ${tag} rows have 5 cells`, (await a.page.locator('.rows > li:first-child .fc').count()) === 5);
   await shot(a.page, `analyst-mid-${tag}.png`); await axe(a.page, `analyst mid ${tag}`);
   await type(a.page, 'analyst', culprit.analyst);

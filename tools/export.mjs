@@ -8,7 +8,7 @@
 // Usage: node tools/export.mjs
 import { readFileSync, writeFileSync, readdirSync, renameSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { checkCase, ladder } from './check-cases.mjs';
+import { checkCase, ladder, loadScores } from './check-cases.mjs';
 import { FAMILIES } from '../public/js/rules.mjs';
 
 const read = p => JSON.parse(readFileSync(new URL('../' + p, import.meta.url), 'utf8'));
@@ -119,7 +119,7 @@ if (import.meta.main) {
   const pool = buildPool();
   const byId = Object.fromEntries(pool.actors.map(a => [a.id, a]));
   const cases = buildCases();
-  const problems = new Map(cases.map(c => [c.id, checkCase(c, byId, cases)]));
+  const scores = loadScores(), problems = new Map(cases.map(c => [c.id, checkCase(c, byId, cases, scores)]));
   write('data/pool.json', json(pool));
   write('public/pool.json', JSON.stringify({ version: pool.version, actors: pool.actors.map(({ tools, tricks, ...a }) => a) }) + '\n');
   write('data/cases.json', json({ cases: cases.map(({ batch, ...c }) => c) }));

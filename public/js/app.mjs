@@ -29,7 +29,7 @@ const statusOf = m => games[m]?.view?.status ?? 'playing';
 function suspects(m) {
   const g = games[m];
   if (!g?.today) return new Set();
-  return new Set(possible(m, m === 'analyst' ? ROSTER : POOL, g.view?.clues ?? [g.today.clue1], g.view?.rows ?? [], byId).map(a => a.id));
+  return new Set(possible(m, m === 'analyst' ? ROSTER : POOL, g.view?.clues ?? g.today.clues, g.view?.rows ?? [], byId).map(a => a.id));
 }
 const finished = m => statusOf(m) !== 'playing';
 
@@ -103,7 +103,7 @@ function row(m, r, latest) {
 // Inline how-to on the first view of each mode, never an overlay.
 const HOWTO = {
   analyst: () => [`Who hacked them? Guess from the ${ROSTER.length} Most Wanted.`, [
-    'Read the clue. Type a group, or tap <b>Browse</b> and pick one.',
+    'Read the clues. Type a group, or tap <b>Browse</b> and pick one.',
     'Each wrong guess unlocks a clue and adds a row. Green = same as the culprit. Amber = close. ↑ ↓ = the culprit showed up later or earlier.',
     'No limit. Your score is how many guesses it took.'],
     'Nicknames hint at home: Bear = Russia, Panda = China, Kitten = Iran, Chollima = N. Korea, Spider = crime.'],
@@ -177,7 +177,7 @@ function render() {
     $('#board').innerHTML = `<p class="loading">${g?.error === 'no case scheduled today' ? 'No case is filed for today. Check back tomorrow.' : "Couldn't open today's case file. Check your connection and reload."}</p>`;
     return padForBar(null);
   }
-  const v = g.view, n = g.today.clueCount, clues = v?.clues ?? [g.today.clue1], rows = v?.rows ?? [], used = g.guesses.length;
+  const v = g.view, n = g.today.clueCount, clues = v?.clues ?? g.today.clues, rows = v?.rows ?? [], used = g.guesses.length;
   let h = howto(mode);
   if (finished(mode)) h += endScreen(mode);
   const left = suspects(mode).size;
@@ -251,7 +251,7 @@ async function accuse(id) {
   const m = mode, g = games[m];
   if (!g?.today || g.busy || finished(m) || g.guesses.includes(id)) return;
   g.busy = true;
-  const guesses = [...g.guesses, id], before = (g.view?.clues ?? [g.today.clue1]).length;
+  const guesses = [...g.guesses, id], before = (g.view?.clues ?? g.today.clues).length;
   let r;
   try { r = await api('/api/guess', { mode: m, day: g.today.day, guesses, playerId }); } catch { r = { status: 0 }; }
   g.busy = false;

@@ -32,4 +32,6 @@ data/review.md
 data/schedule.json
 data/schedule.drafts.json
 data/review-baseline.json
+# What each clue gives away to a reader (tools/clue-scores.mjs). Keyed by case, so it ties clues to answers.
+data/clue-scores.json
 tests/screenshots/

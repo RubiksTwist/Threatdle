@@ -25,3 +25,13 @@ test('a closer that narrows, or states a new fact, or adds a tradecraft detail i
 test('no clue may use a filled alias such as HOODOO', () => {
   assert.ok(checkCase(hunter(clue('Google tracks this group as HOODOO.')), byId).some(p => p.includes('names the culprit (HOODOO)')));
 });
+
+test('SOC Analyst never opens on a clue a reader recognizes, nor on two vague ones', async () => {
+  const { openingReads } = await import('../tools/check-cases.mjs');
+  const c = { id: 'c-0000bbbb', clues: [clue('Spies for a government.'), clue('Hacked hotels.'), clue('Blacked out a power grid.')] };
+  const reads = (...s) => ({ 'c-0000bbbb': Object.fromEntries(c.clues.map((k, i) => [k.text, s[i]])) });
+  assert.deepEqual(openingReads(c, reads({ tell: 0, fits: 40 }, { tell: 0, fits: 8 }, { tell: 90, fits: 1 })), []);
+  assert.match(openingReads(c, reads({ tell: 0, fits: 40 }, { tell: 60, fits: 1 }, { tell: 0, fits: 8 }))[0], /clue 2 gives the group away/);
+  assert.match(openingReads(c, reads({ tell: 0, fits: 40 }, { tell: 0, fits: 30 }, { tell: 90, fits: 1 }))[0], /every opening clue is vague/);
+  assert.match(openingReads(c, {})[0], /3 clues unscored/);
+});

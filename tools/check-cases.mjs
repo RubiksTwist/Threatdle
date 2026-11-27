@@ -1,7 +1,7 @@
 // Checks drafted cases: shape, facts, leaks, verbatim vendor text, and the SOC Analyst elimination ladder.
 // Usage: node tools/check-cases.mjs [data/drafts/batch.json ...]   (no args = every draft). Exits 1 on any failure.
-import { readFileSync } from 'node:fs';
-import { KINDS, COUNTRY, TYPES, MOTIVES, SECTORS, isMode, isDay, fits } from '../public/js/rules.mjs';
+import { readFileSync, existsSync } from 'node:fs';
+import { KINDS, COUNTRY, TYPES, MOTIVES, SECTORS, MODES, isMode, isDay, fits } from '../public/js/rules.mjs';
 import { buildPool, buildCases } from './export.mjs';
 
 // HOME_FROM: in SOC Analyst no clue before clue 3 gives the culprit's country or naming family. Opening on "tied to Iran"
@@ -15,6 +15,15 @@ export const homeAt = (c, byId) => c.clues.findIndex(k => k.facts?.home || k.fac
 // A clue that points back at an earlier one ("the same group", "also", "another of its interests", "that country's spy service")
 // cannot open a case.
 export const LEANS_BACK = /\b(?:also|another|again|same|too|as well|th(?:at|e) (?:country|government|nation|state)(?:'s)?)\b/i;
+// What a well-read player gets from each clue alone (tools/clue-scores.mjs). Keyed by case and clue text, so reordering keeps
+// a score and rewording a clue drops it. tell = the blind reader's confidence when its guess was right, else 0; fits = groups it fits.
+export const SCORES = new URL('../data/clue-scores.json', import.meta.url);
+export const loadScores = () => (existsSync(SCORES) ? JSON.parse(readFileSync(SCORES, 'utf8')) : {});
+export const scoreOf = (scores, c, k) => scores[c.id]?.[k.text];
+// GIVEAWAY: a reader sure at 50+ was right 68 times in 71 (blind test, 2026-11-27), so such a clue never opens a case.
+// OPEN_FITS: one opening clue must narrow the field to this many groups for a reader, so a case never opens on two lines
+// like "it spies for a government" that fit 30 groups.
+export const GIVEAWAY = 50, OPEN_FITS = 15;
 const SOFTWARE = new Set(JSON.parse(readFileSync(new URL('../data/source/attack-software.json', import.meta.url), 'utf8')).map(s => s.id));
 
 // Most Wanted groups that still fit after each clue, on facts a player can see. The culprit always counts.
@@ -41,6 +50,17 @@ export function deadCloser(c, byId) {
   return n > 1 && fitAfter(c, byId, n) >= fitAfter(c, byId, n - 1) && !newFact(c.clues[n - 1].facts, c.clues.slice(0, -1));
 }
 
+// The SOC Analyst opening, as a well-read player sees it: not a giveaway, and not empty.
+export function openingReads(c, scores) {
+  const s = c.clues.map(k => scoreOf(scores, c, k));
+  const missing = s.filter(x => !x).length;
+  if (missing) return [`reader scores: ${missing} clue${missing > 1 ? 's' : ''} unscored (node tools/clue-scores.mjs)`];
+  const open = s.slice(0, MODES.analyst.open), bad = [];
+  open.forEach((x, i) => { if (x.tell >= GIVEAWAY) bad.push(`opening: clue ${i + 1} gives the group away to a reader (sure ${x.tell}%)`); });
+  if (Math.min(...open.map(x => x.fits)) > OPEN_FITS) bad.push(`opening: every opening clue is vague (fits ${open.map(x => x.fits).join(', ')} groups to a reader)`);
+  return bad;
+}
+
 const words = s => s.toLowerCase().replace(/[^a-z0-9$ ]+/g, ' ').split(/\s+/).filter(Boolean);
 function sharedRun(a, b) {
   const x = words(a), y = words(b);
@@ -65,7 +85,8 @@ const FACTS = {
   family: v => /^[A-Z][a-z]+$/.test(v),
 };
 
-export function checkCase(c, byId, all = [c]) {
+// scores: the reader scores, or null to skip the reader checks (unit tests on made-up cases).
+export function checkCase(c, byId, all = [c], scores = null) {
   const bad = [];
   if (!/^c-[0-9a-f]{8}$/.test(c.id || '')) bad.push('id must be c- plus 8 hex digits');
   if (all.filter(x => x.id === c.id).length > 1) bad.push('duplicate id');
@@ -97,6 +118,7 @@ export function checkCase(c, byId, all = [c]) {
     if (fit > LADDER_MAX) bad.push(`ladder: ${fit} Most Wanted groups still fit after clue ${LADDER_AT} (max ${LADDER_MAX})`);
     if (homeAt(c, byId) < HOME_FROM) bad.push(`opening: clue ${homeAt(c, byId)} gives the country or naming family (not before clue ${HOME_FROM})`);
     if (LEANS_BACK.test(c.clues[0].text)) bad.push('opening: clue 1 points back at an earlier clue');
+    if (scores) bad.push(...openingReads(c, scores));
     const last = ladder(c, byId).at(-1);
     if (last > CLOSE_MAX) bad.push(`closing: ${last} Most Wanted groups still fit after the last clue (max ${CLOSE_MAX})`);
   }
@@ -113,12 +135,12 @@ export function checkCase(c, byId, all = [c]) {
 if (import.meta.main) {
   const pool = buildPool();
   const byId = Object.fromEntries(pool.actors.map(a => [a.id, a]));
-  const every = buildCases();
+  const every = buildCases(), scores = loadScores();
   const files = process.argv.slice(2);
   const cases = files.length ? files.flatMap(f => JSON.parse(readFileSync(f, 'utf8')).cases) : every;
   let failed = 0;
   for (const c of cases) {
-    const bad = checkCase(c, byId, files.length ? cases.concat(every.filter(x => !cases.some(y => y.id === x.id))) : every);
+    const bad = checkCase(c, byId, files.length ? cases.concat(every.filter(x => !cases.some(y => y.id === x.id))) : every, scores);
     const fit = c.mode === 'analyst' && byId[c.culprit] ? ` fit ${ladder(c, byId).join('>')}` : '';
     console.log(`${bad.length ? 'FAIL' : 'ok  '} ${c.id} ${c.mode} ${byId[c.culprit]?.name ?? c.culprit}${fit}${bad.length ? '\n     ' + bad.join('\n     ') : ''}`);
     if (bad.length) failed++;

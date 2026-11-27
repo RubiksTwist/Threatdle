@@ -1,5 +1,5 @@
 {
- "version": "36455090a6",
+ "version": "9bdd0c8011",
  "actors": [
   {
    "id": "G0001",
@@ -892,8 +892,8 @@
    ],
    "since": 2008,
    "targets": [
-    "Technology",
     "Education",
+    "Technology",
     "Civil society",
     "Government",
     "NGOs",
@@ -3823,8 +3823,8 @@
    "since": 2013,
    "targets": [
     "Private sector",
-    "Education",
     "Pharmaceuticals",
+    "Education",
     "Individuals",
     "Energy",
     "Defense"
@@ -5443,8 +5443,8 @@
     "Education",
     "Government",
     "Individuals",
-    "Energy",
     "NGOs",
+    "Energy",
     "Healthcare"
    ],
    "profile": "North Korean spies who phish think tanks",

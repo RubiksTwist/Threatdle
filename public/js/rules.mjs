@@ -6,11 +6,12 @@
 // Case   = { id, mode, culprit, reviewed, clues: Clue[], story, report }
 // Row    = { id, name, home, correct, cells: Cell[] }   Cell = { k, text, tone, arrow?, say }
 
+// open: clues shown before the first guess. SOC Analyst opens on two, so a case never starts on one vague line.
 // trackRows: whether the suspect tracker also reads the rows. SOC Analyst's follows the clues only, so reading the rows is the
-// player's skill (simulated median 4 guesses, 3 with rows tracked). Threat Hunter's reads both: without it a newcomer wins 37% of games.
+// player's skill (simulated mean 3.2 guesses on the list alone, 3.0 reading Home and Type). Threat Hunter's reads both: without it a newcomer wins 37% of games.
 export const MODES = {
-  analyst: { name: 'SOC Analyst', max: null, cols: ['home', 'type', 'motive', 'since', 'targets'], who: 'analysts', trackRows: false },
-  hunter: { name: 'Threat Hunter', max: 6, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools', 'tricks'], who: 'hunters', trackRows: true },
+  analyst: { name: 'SOC Analyst', max: null, open: 2, cols: ['home', 'type', 'motive', 'since', 'targets'], who: 'analysts', trackRows: false },
+  hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools', 'tricks'], who: 'hunters', trackRows: true },
 };
 export const isMode = m => Object.hasOwn(MODES, m);
 export const other = m => (m === 'hunter' ? 'analyst' : 'hunter');
@@ -151,17 +152,17 @@ export function cells(mode, g, f) {
 }
 
 // ---------- a game, recomputed from the guess list ----------
-// Clue k (1-based) shows once k-1 guesses are wrong. Row i compares guess i with the culprit folded with the clues shown when it was made.
+// The mode's opening clues show before any guess, and each wrong guess shows one more. Row i compares guess i with the culprit folded with the clues shown when it was made.
 export function play(mode, kase, guesses, byId) {
-  const n = kase.clues.length, max = MODES[mode].max, culprit = byId[kase.culprit];
+  const n = kase.clues.length, { max, open } = MODES[mode], culprit = byId[kase.culprit];
   const at = k => fold(culprit, kase.clues.slice(0, Math.min(n, k)));
   const rows = guesses.map((id, i) => {
-    const g = id === culprit.id ? at(i + 1) : byId[id];
-    return { id, name: displayName(g), home: g.home, correct: id === culprit.id, cells: cells(mode, g, compare(g, at(i + 1))) };
+    const g = id === culprit.id ? at(i + open) : byId[id];
+    return { id, name: displayName(g), home: g.home, correct: id === culprit.id, cells: cells(mode, g, compare(g, at(i + open))) };
   });
   const solved = guesses.at(-1) === culprit.id;
   const status = solved ? 'solved' : max && guesses.length >= max ? 'cold' : 'playing';
-  const shown = status === 'playing' ? Math.min(n, guesses.length + 1) : n;
+  const shown = status === 'playing' ? Math.min(n, guesses.length + open) : n;
   return { rows, status, tries: guesses.length, clues: kase.clues.slice(0, shown).map(shownClue), clueCount: n };
 }
 
@@ -178,7 +179,7 @@ export function possible(mode, candidates, clues, rows, byId, trackRows = MODES[
     if (r.correct) return r.id === x.id;
     if (r.id === x.id) return false;
     if (!trackRows) return true;
-    const g = byId[r.id], got = cells(mode, g, compare(g, fold(x, clues.slice(0, i + 1))));
+    const g = byId[r.id], got = cells(mode, g, compare(g, fold(x, clues.slice(0, i + MODES[mode].open))));
     return cols.every(k => { const a = got.find(c => c.k === k), b = r.cells.find(c => c.k === k); return a.tone === b.tone && (a.arrow || '') === (b.arrow || ''); });
   }));
 }
