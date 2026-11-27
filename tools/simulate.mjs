@@ -5,8 +5,8 @@
 //   random   taps any Most Wanted group it has not tried (Hunter: any group).
 //   newcomer knows no group facts. Without the tracker it reads the clues against the Browse cards (home, profile, targets)
 //            and the Home and Type cells of its rows, then guesses any group that still looks possible.
-//   tracker  the same newcomer with the suspect tracker: it guesses any group the tracker still lists.
-//   ideal    knows every public card and picks the guess that splits the suspects best.
+//   tracker  guesses any group the page's suspect tracker still lists (SOC Analyst's follows the clues only, Threat Hunter's the rows too).
+//   ideal    knows every public card, reads every row, and picks the guess that splits the suspects best.
 import { readFileSync } from 'node:fs';
 import { MODES, fits, fitsAll, fold, compare, play, possible } from '../public/js/rules.mjs';
 import { buildPool, buildCases } from './export.mjs';
@@ -54,7 +54,7 @@ function game(mode, kase, who, R) {
     const left = options.filter(a => !guesses.includes(a.id));
     const pickFrom = who === 'random' ? left
       : who === 'newcomer' ? left.filter(x => looksPossible(mode, x, g))
-        : possible(mode, left, g.clues, g.rows, byId);
+        : possible(mode, left, g.clues, g.rows, byId, who === 'ideal' || MODES[mode].trackRows);
     const p = pickFrom.length ? pickFrom : left;
     guesses.push((who === 'ideal' ? bestSplit(mode, p, left, g.clues) : p[Math.floor(R() * p.length)]).id);
   }

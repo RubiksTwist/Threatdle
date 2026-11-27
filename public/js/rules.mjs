@@ -6,9 +6,11 @@
 // Case   = { id, mode, culprit, reviewed, clues: Clue[], story, report }
 // Row    = { id, name, home, correct, cells: Cell[] }   Cell = { k, text, tone, arrow?, say }
 
+// trackRows: whether the suspect tracker also reads the rows. SOC Analyst's follows the clues only, so reading the rows is the
+// player's skill (simulated median 4 guesses, 3 with rows tracked). Threat Hunter's reads both: without it a newcomer wins 37% of games.
 export const MODES = {
-  analyst: { name: 'SOC Analyst', max: null, cols: ['home', 'type', 'motive', 'since', 'targets'], who: 'analysts' },
-  hunter: { name: 'Threat Hunter', max: 6, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools', 'tricks'], who: 'hunters' },
+  analyst: { name: 'SOC Analyst', max: null, cols: ['home', 'type', 'motive', 'since', 'targets'], who: 'analysts', trackRows: false },
+  hunter: { name: 'Threat Hunter', max: 6, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools', 'tricks'], who: 'hunters', trackRows: true },
 };
 export const isMode = m => Object.hasOwn(MODES, m);
 export const other = m => (m === 'hunter' ? 'analyst' : 'hunter');
@@ -167,14 +169,15 @@ export function play(mode, kase, guesses, byId) {
 export const shownClue = c => { const { tools, ...facts } = c.facts || {}; return { kind: c.kind, text: c.text, facts }; };
 
 // The suspect tracker: which candidates the player can still believe, from what the page already shows.
-// A candidate stays if it fits every shown clue and, for each row, comparing that guess with the candidate (folded with
-// the clues shown when the row was made) gives the row the player got. Tools and Tricks need server data, so they are skipped.
-// The culprit always stays: the server built each row the same way from the same public facts.
-export function possible(mode, candidates, clues, rows, byId) {
+// A candidate stays if it fits every shown clue, was not guessed wrong, and (when the mode tracks rows) for each row, comparing
+// that guess with the candidate (folded with the clues shown when the row was made) gives the row the player got. Tools and
+// Tricks need server data, so they are skipped. The culprit always stays: the server built each row the same way from the same public facts.
+export function possible(mode, candidates, clues, rows, byId, trackRows = MODES[mode].trackRows) {
   const cols = MODES[mode].cols.filter(k => k !== 'tools' && k !== 'tricks');
   return candidates.filter(x => fitsAll(x, clues) && rows.every((r, i) => {
     if (r.correct) return r.id === x.id;
     if (r.id === x.id) return false;
+    if (!trackRows) return true;
     const g = byId[r.id], got = cells(mode, g, compare(g, fold(x, clues.slice(0, i + 1))));
     return cols.every(k => { const a = got.find(c => c.k === k), b = r.cells.find(c => c.k === k); return a.tone === b.tone && (a.arrow || '') === (b.arrow || ''); });
   }));

@@ -36,13 +36,23 @@ test('on every drafted case the culprit is never ruled out, and the suspect list
   }
 });
 
-test('a row rules out a group whose own comparison would differ', () => {
+test('in Threat Hunter a row rules out a group whose own comparison would differ', () => {
+  const kase = cases.find(c => c.mode === 'hunter');
+  const before = possible('hunter', pub, play('hunter', kase, [], serverById).clues, [], byId).length;
+  const wrong = pub.find(a => a.id !== kase.culprit && a.home && a.type && a.since);
+  const g = play('hunter', kase, [wrong.id], serverById);
+  const after = possible('hunter', pub, g.clues.slice(0, 1), g.rows, byId);
+  assert.ok(!after.some(a => a.id === wrong.id), 'the guessed group is out');
+  assert.ok(after.length < before - 1, `${before} -> ${after.length}`);
+});
+
+test('in SOC Analyst a row rules out only the group guessed; reading the rest of the row is the player\'s job', () => {
   const kase = cases.find(c => c.mode === 'analyst');
   const roster = pub.filter(a => a.roster);
-  const before = possible('analyst', roster, play('analyst', kase, [], serverById).clues, [], byId).length;
-  const wrong = roster.find(a => a.id !== kase.culprit);
+  const clue1 = play('analyst', kase, [], serverById).clues;
+  const before = possible('analyst', roster, clue1, [], byId);
+  const wrong = before.find(a => a.id !== kase.culprit);
   const g = play('analyst', kase, [wrong.id], serverById);
-  const after = possible('analyst', roster, g.clues.slice(0, 1), g.rows, byId);
-  assert.ok(!after.some(a => a.id === wrong.id), 'the guessed group is out');
-  assert.ok(after.length < before, `${before} -> ${after.length}`);
+  const after = possible('analyst', roster, clue1, g.rows, byId);
+  assert.deepEqual(after.map(a => a.id), before.filter(a => a.id !== wrong.id).map(a => a.id));
 });
