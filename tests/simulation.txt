@@ -96,3 +96,32 @@ Threat Hunter ideal     | 100%   3                   | 0%   14%  57%  29%  0%   
 "Possible" count after the opening pair: median 28 (quartiles 19-41, max 52) before, median 11 (quartiles 9-18, max 20) now.
 After clue 3: median 7 both times; after clue 4: median 3 before, 2 now.
 Blind reader on the new opening pairs: right 49 of 73, sure 30, of them right 28 (Round 5 order: 44, 30, 27).
+
+## Round 7: Victims replaces Type, Tricks goes; cells describe the guess (Since amber within 2 years, Targets ignore Government)
+The newcomer now reads Home, Motive and Victims (it read Home and Type).
+Before (Round 6 board):
+SOC Analyst   player    | mean  median P90 | 1    2    3    4    5    6-9  10+
+SOC Analyst   random    | 26.47 26     47  | 2%   2%   2%   2%   2%   8%   83%
+SOC Analyst   newcomer  | 2.69  3      4   | 10%  35%  35%  14%  5%   0%   0%
+SOC Analyst   tracker   | 2.91  3      4   | 10%  26%  35%  21%  7%   0%   0%
+SOC Analyst   ideal     | 2.08  2      3   | 3%   86%  11%  0%   0%   0%   0%
+Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold
+Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   1%   97%
+Threat Hunter newcomer  | 37%    5                   | 1%   3%   5%   7%   10%  11%  63%
+Threat Hunter tracker   | 97%    4                   | 1%   14%  33%  28%  16%  6%   3%
+Threat Hunter ideal     | 100%   3                   | 0%   14%  57%  29%  0%   0%   0%
+After:
+SOC Analyst   player    | mean  median P90 | 1    2    3    4    5    6-9  10+
+SOC Analyst   random    | 26.47 26     47  | 2%   2%   2%   2%   2%   8%   83%
+SOC Analyst   newcomer  | 2.26  2      3   | 10%  57%  29%  4%   0%   0%   0%
+SOC Analyst   tracker   | 2.91  3      4   | 10%  26%  35%  21%  7%   0%   0%
+SOC Analyst   ideal     | 1.99  2      2   | 3%   96%  1%   0%   0%   0%   0%
+Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold
+Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   1%   97%
+Threat Hunter newcomer  | 78%    4                   | 1%   7%   17%  20%  20%  13%  22%
+Threat Hunter tracker   | 100%   3                   | 1%   25%  48%  21%  4%   0%   0%
+Threat Hunter ideal     | 100%   2                   | 1%   54%  45%  0%   0%   0%   0%
+Threat Hunter got markedly easier: the newcomer wins 78% (was 37%), the tracker never goes cold (was 3%) and solves in a median 3 (was 4).
+Dropping one column at a time (N=50) shows where it comes from. Without Victims the Hunter newcomer wins 46%: Victims carries most of the newcomer's gain.
+Without Since the Hunter tracker is back to 97%, median 4: amber within 2 years carries the tracker's gain. Without Targets it stays at 100%, median 3.
+SOC Analyst's tracker does not read rows, so it is unchanged. Victims are known for 48 of 52 Most Wanted groups; the USA is the main victim of 24.
