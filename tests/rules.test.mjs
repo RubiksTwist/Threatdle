@@ -69,11 +69,11 @@ test('fold adds clue facts to the culprit without dropping its own', () => {
 });
 
 test('play: a row folds only the clues shown when it was made', () => {
-  // Cozy Bear guessed first: only clue 1 (telecoms) is shown, so targets compare with Government, Military, Telecommunications.
+  // Cozy Bear guessed first: only the two opening clues (telecoms, state) are shown, so targets compare with Government, Military, Telecommunications.
   const g = R.play('analyst', kase, ['G2'], byId);
   assert.equal(g.rows[0].cells.find(c => c.k === 'targets').text, 'Some');
   assert.equal(g.status, 'playing');
-  assert.deepEqual(g.clues.map(c => c.text), ['Hit telecoms.', 'A state actor.']);
+  assert.deepEqual(g.clues.map(c => c.text), ['Hit telecoms.', 'A state actor.', 'From Russia.']);
   // A guess that shares telecoms only matches through the fold.
   const tel = A('G5', { targets: ['Telecommunications'], roster: true });
   const g2 = R.play('analyst', kase, ['G5'], { ...byId, G5: tel });

@@ -27,7 +27,7 @@ function looksPossible(mode, x, g) {
   if (!fitsAll(x, g.clues)) return false;
   return g.rows.every((r, i) => {
     if (r.id === x.id) return false;
-    const f = compare(byId[r.id], fold(x, g.clues.slice(0, i + 1)));
+    const f = compare(byId[r.id], fold(x, g.clues.slice(0, i + MODES[mode].open)));
     return ['home', 'type'].every(k => r.cells.find(c => c.k === k).tone === { match: 'hit', near: 'near', partial: 'near', miss: 'miss', unknown: 'unk' }[f[k]]);
   });
 }

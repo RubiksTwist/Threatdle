@@ -21,12 +21,13 @@ const memory = () => {
 const game = createGame({ pool: { actors }, cases, schedule });
 const post = (store, o, now = NOW) => game.guess({ mode: 'analyst', day: '2026-12-02', playerId: 'player-0001', guesses: [], ...o }, now, store);
 
-test('today serves only the first clue, the case number and yesterday', async () => {
+test('today serves only the opening clues (two in SOC Analyst, one in Threat Hunter), the case number and yesterday', async () => {
   const r = await game.today('analyst', NOW, memory());
   assert.equal(r.status, 200);
   assert.equal(r.body.day, '2026-12-02');
   assert.equal(r.body.caseNumber, 2);
-  assert.deepEqual(r.body.clue1, { kind: 'victim', text: 'clue 1', facts: {} });
+  assert.deepEqual(r.body.clues, [{ kind: 'victim', text: 'clue 1', facts: {} }, { kind: 'victim', text: 'clue 2', facts: {} }]);
+  assert.deepEqual((await game.today('hunter', NOW, memory())).body.clues.map(c => c.text), ['clue 1']);
   assert.equal(r.body.clueCount, 5);
   assert.equal(r.body.yesterday.name, 'G2');
   assert.equal(r.body.msUntilNext, Date.parse('2026-12-03T05:00:00Z') - NOW);
@@ -66,7 +67,7 @@ test('a wrong guess returns a row and the next clue but no answer', async () => 
   assert.equal(r.body.status, 'playing');
   assert.equal(r.body.rows.length, 1);
   assert.equal(r.body.rows[0].cells.length, 5);
-  assert.deepEqual(r.body.clues.map(c => c.text), ['clue 1', 'clue 2']);
+  assert.deepEqual(r.body.clues.map(c => c.text), ['clue 1', 'clue 2', 'clue 3']);
   assert.equal(r.body.result, undefined);
   assert.ok(!JSON.stringify(r.body).includes('G1'));
   assert.equal(store.keys.size, 0, 'nothing is recorded before the end');
