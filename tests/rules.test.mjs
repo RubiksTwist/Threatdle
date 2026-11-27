@@ -49,7 +49,8 @@ test('compare: targets and motive as same, some or none', () => {
 test('compare: tools and tricks come as none/some/many buckets', () => {
   assert.equal(R.compare(cozy, bear).tools, 'some');
   assert.equal(R.compare(A('t', { tools: ['S1', 'S2', 'S3', 'S9'] }), bear).tools, 'many');
-  assert.equal(R.compare(panda, bear).tools, 'none');
+  assert.equal(R.compare(A('w', { tools: ['S9'] }), bear).tools, 'none');
+  assert.equal(R.compare(panda, bear).tools, 'unknown', 'ATT&CK lists no software for panda');
   const many = Array.from({ length: 10 }, (_, i) => 'T' + i);
   assert.equal(R.compare(A('u', { tricks: many }), A('v', { tricks: many })).tricks, 'many');
   assert.equal(R.compare(A('u', { tricks: many.slice(0, 9) }), A('v', { tricks: many })).tricks, 'some');
@@ -189,4 +190,16 @@ test('sectionOf files groups by nickname home, then by country', () => {
   assert.equal(R.sectionOf(spider), 'crime');
   assert.equal(R.sectionOf(A('q', { nickname: 'Midnight Blizzard', home: null })), 'RU');
   assert.equal(R.sectionOf(A('r', { home: 'VN' })), 'other');
+});
+
+test('Tools and Tricks show how many the guess shares as a range, and ? when ATT&CK lists none for a side', () => {
+  const cul = A('C1', { tools: ['S1', 'S2', 'S3'], tricks: Array.from({ length: 12 }, (_, i) => 'T' + i) });
+  const cell = (g, k) => R.cells('hunter', g, R.compare(g, cul)).find(c => c.k === k);
+  assert.equal(cell(A('G1', { tools: ['S9'], tricks: ['T99'] }), 'tools').text, '0');
+  assert.equal(cell(A('G2', { tools: ['S1', 'S9'], tricks: ['T0'] }), 'tools').text, '1–2');
+  assert.equal(cell(A('G3', { tools: ['S1', 'S2', 'S3', 'S4'] }), 'tools').text, '3+');
+  assert.equal(cell(A('G4', { tools: [], tricks: [] }), 'tools').text, '?');
+  assert.equal(cell(A('G4', { tools: [], tricks: [] }), 'tools').tone, 'unk');
+  assert.equal(cell(A('G5', { tricks: ['T0'] }), 'tricks').text, '1–9');
+  assert.equal(cell(A('G6', { tricks: Array.from({ length: 10 }, (_, i) => 'T' + i) }), 'tricks').text, '10+');
 });
