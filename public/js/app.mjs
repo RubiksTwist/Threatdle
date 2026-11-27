@@ -29,9 +29,13 @@ const statusOf = m => games[m]?.view?.status ?? 'playing';
 function suspects(m) {
   const g = games[m];
   if (!g?.today) return new Set();
-  return new Set(possible(m, m === 'analyst' ? ROSTER : POOL, g.view?.clues ?? g.today.clues, g.view?.rows ?? [], byId).map(a => a.id));
+  return new Set(possible(m, listOf(m), g.view?.clues ?? g.today.clues, g.view?.rows ?? [], byId).map(a => a.id));
 }
 const finished = m => statusOf(m) !== 'playing';
+// The groups a mode guesses from: the Most Wanted in SOC Analyst, every group in Threat Hunter.
+const listOf = m => (m === 'analyst' ? ROSTER : POOL);
+// Search ignores case, spaces and punctuation, so "apt 28", "APT-28" and "apt28" all find APT28.
+const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, '');
 
 async function loadToday(m) {
   const t = await api(`/api/today?mode=${m}`);
@@ -108,7 +112,7 @@ const HOWTO = {
     'No limit. Your score is how many guesses it took.'],
     'Nicknames hint at home: Bear = Russia, Panda = China, Kitten = Iran, Chollima = N. Korea, Spider = crime.'],
   hunter: () => ['Name the hacker group behind a real case.', [
-    'Type any group or nickname (Fancy Bear, APT28, Lazarus), then <b>Accuse</b>.',
+    'Type any group, nickname or APT number (Fancy Bear, APT28, Lazarus), or tap <b>Browse</b> and pick one.',
     'Each wrong accusation unlocks a clue and adds a row. Green = same as the culprit. Amber = close. ↑ ↓ = the culprit showed up later or earlier.',
     `You get ${MODES.hunter.max} accusations. Run out and the case goes cold.`],
     "Rows compare with the culprit as today's report describes it, so trust the clues."],
@@ -171,8 +175,8 @@ function render() {
     done.className = 'done ' + s;
     b.querySelector('.mt i').classList.toggle('hid', s !== 'playing');
   }
-  const bar = mode === 'hunter' ? $('#hbar') : $('#rbar');
-  $('#hbar').hidden = $('#rbar').hidden = true;
+  const bar = $('#bar');
+  bar.hidden = true;
   if (!g || !g.today) {
     $('#board').innerHTML = `<p class="loading">${g?.error === 'no case scheduled today' ? 'No case is filed for today. Check back tomorrow.' : "Couldn't open today's case file. Check your connection and reload."}</p>`;
     return padForBar(null);
@@ -194,13 +198,13 @@ function render() {
       ${rows.length ? `<div class="fbr ${mode === 'analyst' ? 'r5' : ''} head" aria-hidden="true"><span class="fn"></span>${legend}</div>
         <ol class="rows">${rows.slice().reverse().map((r, i) => row(mode, r, i === 0 && fresh.row)).join('')}</ol>
         <p class="fkey"><i class="sw hit"></i>Same <i class="sw near"></i>Close <i class="sw miss"></i>No <span>↑ culprit is newer · ↓ older</span></p>`
-      : mode === 'analyst' ? `<p class="empty">Not sure? <b>Browse</b> the ${ROSTER.length} Most Wanted. Each guess lands here, compared with the culprit.</p>`
-        : '<p class="empty">Each accusation lands here, compared with the culprit.</p>'}
+      : `<p class="empty">Not sure? <b>Browse</b> ${mode === 'analyst' ? `the ${ROSTER.length} Most Wanted` : `all ${POOL.length} groups`}. Each ${mode === 'hunter' ? 'accusation' : 'guess'} lands here, compared with the culprit.</p>`}
     </section>
-    <p class="crowd">${g.today.solvedCount ? `${fmt(g.today.solvedCount)} ${MODES[mode].who} closed this case today` : `Be the first ${one(mode)} to close this case today`}</p>`;
+    ${finished(mode) ? '' : `<p class="crowd">${g.today.solvedCount ? `${fmt(g.today.solvedCount)} ${MODES[mode].who} closed this case today` : `Be the first ${one(mode)} to close this case today`}</p>`}`;
   $('#board').innerHTML = h;
   fresh = { row: false, clue: -1 };
   bar.hidden = finished(mode);
+  $('#browse').innerHTML = `Browse <small>${left}</small>`;
   padForBar(finished(mode) ? null : bar);
   const ok = $('#howOk');
   if (ok) ok.onclick = () => { store.set('howto:' + mode, true); render(); const b = $('.caseE'); b.setAttribute('tabindex', '-1'); b.focus(); };
@@ -242,7 +246,7 @@ function go(m) {
   if (m !== mode) { mode = m; store.set('mode', mode); }
   render();
   scrollTo({ top: 0 });
-  const t = $('#howOk') || (!finished(mode) ? $(mode === 'hunter' ? '#guess' : '#rguess') : $('#endH'));
+  const t = $('#howOk') || (!finished(mode) ? $('#guess') : $('#endH'));
   t?.focus({ preventScroll: true });
 }
 
@@ -278,15 +282,15 @@ async function accuse(id) {
 }
 
 // ---------- autocomplete over nickname, ATT&CK name and aliases ----------
-function combobox(input, list, items, none, button) {
+function combobox(input, list, items, none) {
   let shown = [], sel = 0;
   const close = clear => { list.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); shown = []; sel = 0; if (clear) input.value = ''; };
   const draw = () => {
-    const q = input.value.trim().toLowerCase();
+    const q = norm(input.value);
     if (!q) return close(false);
     const all = items().filter(x => !games[mode]?.guesses.includes(x.id)), live = suspects(mode);
-    shown = all.filter(x => x.label.toLowerCase().startsWith(q)).sort((a, b) => a.label.length - b.label.length)
-      .concat(all.filter(x => !x.label.toLowerCase().startsWith(q) && x.q.includes(q)))
+    shown = all.filter(x => x.key.startsWith(q)).sort((a, b) => a.label.length - b.label.length)
+      .concat(all.filter(x => !x.key.startsWith(q) && x.q.includes(q)))
       .map(x => ({ ...x, out: !live.has(x.id) })).sort((a, b) => a.out - b.out).slice(0, 6);
     sel = Math.min(sel, Math.max(0, shown.length - 1));
     list.innerHTML = shown.length
@@ -310,35 +314,44 @@ function combobox(input, list, items, none, button) {
   };
   input.onblur = () => setTimeout(() => { if (document.activeElement !== input) close(false); }, 150);
   list.onpointerdown = e => { const el = e.target.closest('[data-i]'); if (el) { e.preventDefault(); choose(+el.dataset.i); } };
-  if (button) button.onclick = () => choose(sel);
 }
-const entry = a => ({ id: a.id, label: displayName(a), flag: flagImg(a, 'mini'), sub: [displayName(a) !== a.name ? a.name : null, ...a.aliases.filter(x => x !== displayName(a)).slice(0, 3)].filter(Boolean).join(' · '),
-  q: [displayName(a), a.name, ...a.aliases].join(' | ').toLowerCase() });
+const names = a => [displayName(a), a.name, ...a.aliases];
+const entry = a => ({ id: a.id, label: displayName(a), key: norm(displayName(a)), flag: flagImg(a, 'mini'),
+  sub: [displayName(a) !== a.name ? a.name : null, ...a.aliases.filter(x => x !== displayName(a)).slice(0, 3)].filter(Boolean).join(' · '),
+  q: names(a).map(norm).join('|') });
+const matches = (a, q) => !q || names(a).some(n => norm(n).includes(q));
 
-// Browse: the Most Wanted, grouped by home. Groups the clues rule out sink, greyed, and hide unless asked for. Tap one to guess it.
+// Browse: the mode's groups, grouped by home. Groups the tracker rules out sink, greyed, and hide unless asked for or
+// searched for by name. Tap one to guess it.
 let showRuled = false;
 function browseHtml() {
-  const guessed = games.analyst?.guesses ?? [], live = suspects('analyst');
+  const m = mode, guessed = games[m]?.guesses ?? [], live = suspects(m), q = norm($('#rosterQ').value);
   const n = [...live].filter(id => !guessed.includes(id)).length;
-  $('#rosterLive').innerHTML = `<b>${n}</b> ${n === 1 ? 'suspect fits' : 'suspects fit'} the clues. Your rows narrow it further.`;
+  $('#rosterLive').innerHTML = `<b>${n}</b> ${n === 1 ? 'suspect fits' : 'suspects fit'} ${MODES[m].trackRows ? 'the clues and your rows.' : 'the clues. Your rows narrow it further.'}`;
   $('#showRuled').setAttribute('aria-pressed', String(showRuled));
-  return SECTIONS.map(([k, label, hint]) => {
-    const list = ROSTER.filter(a => sectionOf(a) === k).map(a => ({ a, out: guessed.includes(a.id), ruled: !live.has(a.id) }))
+  const html = SECTIONS.map(([k, label, hint]) => {
+    const list = listOf(m).filter(a => sectionOf(a) === k).map(a => ({ a, out: guessed.includes(a.id), ruled: !live.has(a.id) }))
       .sort((x, y) => x.ruled - y.ruled || displayName(x.a).localeCompare(displayName(y.a)));
-    const visible = list.filter(x => showRuled || !x.ruled), alive = list.filter(x => !x.ruled).length;
+    const visible = list.filter(x => (showRuled || q || !x.ruled) && matches(x.a, q)), alive = list.filter(x => !x.ruled).length;
     if (!visible.length) return '';
     return `<section class="rsec" aria-labelledby="rs-${k}"><h3 id="rs-${k}"><span>${esc(label)}</span><small>${esc(hint)} · ${alive} of ${list.length} possible</small></h3>
       <div class="rgrid">${visible.map(({ a, out, ruled }) => `<button class="rc ${out ? 'out' : ruled ? 'ruled' : ''}" data-id="${a.id}" ${out ? 'disabled' : ''} aria-label="${esc(displayName(a))}, ${esc(a.profile)}. ${esc(hits(a))}${out ? ', already guessed' : ruled ? ', ruled out' : ''}">
-          ${flagImg(a)}<span class="rt"><b>${esc(displayName(a))}</b><small>${esc(a.profile)}</small><small>${esc(hits(a))}</small></span>${out ? '<i>Cleared</i>' : ruled ? '<i>Ruled out</i>' : ''}</button>`).join('')}</div></section>`;
+          ${flagImg(a)}<span class="rt"><b>${esc(displayName(a))}</b><small>${esc(displayName(a) !== a.name ? a.name + ' · ' : '')}${esc(a.profile)}</small><small>${esc(hits(a))}</small></span>${out ? '<i>Cleared</i>' : ruled ? '<i>Ruled out</i>' : ''}</button>`).join('')}</div></section>`;
   }).join('');
+  return html || `<p class="rnone">No group matches “${esc($('#rosterQ').value.trim())}”.</p>`;
 }
 function setupBrowse() {
-  const dlg = $('#roster');
-  $('#browse').innerHTML = `Browse <small>${ROSTER.length}</small>`;
-  $('#rosterN').textContent = ROSTER.length;
-  $('#browse').onclick = () => { $('#rosterBody').innerHTML = browseHtml(); dlg.showModal(); $('#rosterBody').scrollTop = 0; };
+  const dlg = $('#roster'), body = $('#rosterBody'), redraw = () => { body.innerHTML = browseHtml(); };
+  // Opens on the mode's list, already searched for whatever is typed in the guess box.
+  $('#browse').onclick = () => {
+    $('#rosterT').textContent = mode === 'analyst' ? 'Most Wanted' : 'All groups';
+    $('#rosterN').textContent = listOf(mode).length;
+    $('#rosterQ').value = $('#guess').value.trim();
+    redraw(); dlg.showModal(); body.scrollTop = 0;
+  };
+  $('#rosterQ').oninput = () => { redraw(); body.scrollTop = 0; };
   $('#rosterClose').onclick = () => dlg.close();
-  $('#showRuled').onclick = () => { showRuled = !showRuled; $('#rosterBody').innerHTML = browseHtml(); };
+  $('#showRuled').onclick = () => { showRuled = !showRuled; redraw(); };
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
   $('#rosterBody').onclick = e => { const b = e.target.closest('.rc:not(:disabled)'); if (!b) return; dlg.close(); accuse(b.dataset.id); };
 }
@@ -354,9 +367,9 @@ async function start() {
   const p = await fetch('/pool.json').then(r => r.json());
   POOL = p.actors; byId = Object.fromEntries(POOL.map(a => [a.id, a])); ROSTER = POOL.filter(a => a.roster);
   $('#poolN').textContent = POOL.length;
-  const all = POOL.map(entry), roster = ROSTER.map(entry);
-  combobox($('#guess'), $('#aclist'), () => all, () => 'No group by that name. Try a nickname like Fancy Bear.', $('#go'));
-  combobox($('#rguess'), $('#raclist'), () => roster, () => `Not on the Most Wanted. Tap Browse to see all ${ROSTER.length}.`);
+  const entries = { analyst: ROSTER.map(entry), hunter: POOL.map(entry) };
+  combobox($('#guess'), $('#aclist'), () => entries[mode],
+    () => `${mode === 'analyst' ? 'Not on the Most Wanted' : 'No group by that name'}. Tap Browse to see all ${listOf(mode).length}.`);
   setupBrowse();
   $('#modes').onclick = e => { const b = e.target.closest('.mode'); if (b) go(b.dataset.mode); };
   const q = new URLSearchParams(location.search).get('mode');

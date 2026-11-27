@@ -20,25 +20,18 @@
   </div>
 </header>
 <main id="board" aria-live="off"><p class="loading">Opening today's case file…</p></main>
-<div class="hbar" id="hbar" role="region" aria-label="Accuse a group" hidden>
+<div class="hbar" id="bar" role="region" aria-label="Guess a group" hidden>
   <div class="hbar-in">
     <ul class="ac-list" id="aclist" role="listbox" aria-label="Matching groups" hidden></ul>
     <label class="vh" for="guess">Name a hacker group</label>
-    <input id="guess" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="aclist" autocomplete="off" spellcheck="false" placeholder="Name a group, e.g. Fancy Bear">
-    <button id="go" class="btn primary">Accuse</button>
-  </div>
-</div>
-<div class="hbar rbar" id="rbar" role="region" aria-label="Guess a group" hidden>
-  <div class="hbar-in">
-    <ul class="ac-list" id="raclist" role="listbox" aria-label="Matching groups" hidden></ul>
-    <label class="vh" for="rguess">Name a group from the Most Wanted</label>
-    <input id="rguess" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="raclist" autocomplete="off" spellcheck="false" placeholder="Type a group, e.g. Fancy Bear">
+    <input id="guess" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="aclist" autocomplete="off" spellcheck="false" placeholder="Group or APT number">
     <button id="browse" class="btn primary" aria-haspopup="dialog">Browse</button>
   </div>
 </div>
 <dialog id="roster" class="rdlg" aria-labelledby="rosterH">
-  <div class="rhead"><h2 id="rosterH">Most Wanted <span id="rosterN"></span></h2><p id="rosterLive" role="status"></p><button id="rosterClose" class="btn ghost sm" aria-label="Close the roster">Close</button>
-    <button id="showRuled" class="btn ghost sm tog" aria-pressed="false">Show ruled out</button></div>
+  <div class="rhead"><h2 id="rosterH"><span id="rosterT">Most Wanted</span> <span id="rosterN"></span></h2><p id="rosterLive" role="status"></p><button id="rosterClose" class="btn ghost sm" aria-label="Close the list">Close</button>
+    <div class="rtools"><label class="vh" for="rosterQ">Search the list</label><input id="rosterQ" type="search" autocomplete="off" spellcheck="false" placeholder="Search a name or APT number">
+    <button id="showRuled" class="btn ghost sm tog" aria-pressed="false">Show ruled out</button></div></div>
   <div id="rosterBody" class="rbody"></div>
 </dialog>
 <div id="sr" class="vh" role="status" aria-live="polite"></div>
