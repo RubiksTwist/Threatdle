@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Threatdle · Who hacked them?</title>
+<meta name="description" content="A daily guessing game about real hacking cases. Read the clues, name the hacker group.">
+<meta name="theme-color" content="#14130f">
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="preload" href="/fonts/special-elite.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/game.css">
+<script type="module" src="/js/app.mjs"></script>
+</head>
+<body>
+<header class="top">
+  <div class="bar1"><h1 class="brand">Threatdle</h1><p class="tag">Who hacked them?</p></div>
+  <div class="modes" id="modes" role="group" aria-label="Mode">
+    <button class="mode" data-mode="analyst" aria-pressed="false"><span class="mt">SOC Analyst<i>Easy</i><span class="done"></span></span><span class="md">Guess from the Most Wanted</span></button>
+    <button class="mode" data-mode="hunter" aria-pressed="false"><span class="mt">Threat Hunter<i>Hard</i><span class="done"></span></span><span class="md">Name any of <span id="poolN">178</span> groups</span></button>
+  </div>
+</header>
+<main id="board" aria-live="off"><p class="loading">Opening today's case file…</p></main>
+<div class="hbar" id="hbar" role="region" aria-label="Accuse a group" hidden>
+  <div class="hbar-in">
+    <ul class="ac-list" id="aclist" role="listbox" aria-label="Matching groups" hidden></ul>
+    <label class="vh" for="guess">Name a hacker group</label>
+    <input id="guess" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="aclist" autocomplete="off" spellcheck="false" placeholder="Name a group, e.g. Fancy Bear">
+    <button id="go" class="btn primary">Accuse</button>
+  </div>
+</div>
+<div class="hbar rbar" id="rbar" role="region" aria-label="Guess a group" hidden>
+  <div class="hbar-in">
+    <ul class="ac-list" id="raclist" role="listbox" aria-label="Matching groups" hidden></ul>
+    <label class="vh" for="rguess">Name a group from the Most Wanted</label>
+    <input id="rguess" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="raclist" autocomplete="off" spellcheck="false" placeholder="Type a group, e.g. Fancy Bear">
+    <button id="browse" class="btn primary" aria-haspopup="dialog">Browse</button>
+  </div>
+</div>
+<dialog id="roster" class="rdlg" aria-labelledby="rosterH">
+  <div class="rhead"><h2 id="rosterH">Most Wanted <span id="rosterN"></span></h2><p id="rosterLive" role="status"></p><button id="rosterClose" class="btn ghost sm" aria-label="Close the roster">Close</button>
+    <button id="showRuled" class="btn ghost sm tog" aria-pressed="false">Show ruled out</button></div>
+  <div id="rosterBody" class="rbody"></div>
+</dialog>
+<div id="sr" class="vh" role="status" aria-live="polite"></div>
+</body>
+</html>

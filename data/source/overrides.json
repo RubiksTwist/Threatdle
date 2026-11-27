@@ -1,0 +1,11 @@
+{
+ "why": "Most Wanted groups whose extracted facts leave a row cell blank. Each value comes from the group's ATT&CK 20.1 description, quoted in its why.",
+ "actors": {
+  "G0009": { "home": "CN", "motive": ["Espionage"], "targets": ["Government", "Defense", "Finance", "Telecommunications", "Healthcare"], "since": 2014,
+    "why": "Deep Panda is a suspected Chinese threat group known to target many industries, including government, defense, financial, and telecommunications. The intrusion into healthcare company Anthem (2014 citation)" },
+  "G0037": { "targets": ["Hospitality", "Retail"], "why": "FIN6 is a cyber crime group that has stolen payment card data and sold it for profit on underground marketplaces. This group has aggressively targeted and compromised point of sale (PoS) systems in the hospitality and retail sectors." },
+  "G0091": { "motive": ["Financial Gain"], "since": 2016, "targets": ["Finance"], "why": "Silence is a financially motivated threat actor targeting financial institutions. The group was first seen in June 2016." },
+  "G1004": { "motive": ["Financial Gain"], "why": "LAPSUS$ is cyber criminal threat group ... specializes in large-scale social engineering and extortion operations" },
+  "G1049": { "motive": ["Financial Gain"], "type": "state", "why": "AppleJeus is a North Korean state-sponsored threat group attributed to the Reconnaissance General Bureau (cryptocurrency theft)" }
+ }
+}

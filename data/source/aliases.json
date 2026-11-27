@@ -1,0 +1,1120 @@
+{
+ "source": "MISP threat-actor galaxy version 339 (7cdff317-a673-4474-84ec-4f1754947823)",
+ "actors": {
+  "G0003": {
+   "misp": [
+    "Cleaver"
+   ],
+   "add": [
+    "Operation Cleaver",
+    "Op Cleaver",
+    "Tarh Andishan",
+    "Alibaba"
+   ]
+  },
+  "G0004": {
+   "misp": [
+    "APT15"
+   ],
+   "add": [
+    "Metushy",
+    "Lurid",
+    "Social Network Team",
+    "Royal APT",
+    "BRONZE PALACE",
+    "BRONZE DAVENPORT",
+    "BRONZE IDLEWOOD",
+    "Red Vulture"
+   ]
+  },
+  "G0005": {
+   "misp": [
+    "APT12"
+   ],
+   "add": [
+    "TG-2754",
+    "BeeBus",
+    "Group 22",
+    "Calc Team",
+    "Crimson Iron",
+    "BRONZE GLOBE",
+    "Hexagon Typhoon"
+   ]
+  },
+  "G0006": {
+   "misp": [
+    "APT1"
+   ],
+   "add": [
+    "PLA Unit 61398",
+    "Byzantine Candor",
+    "Group 3",
+    "TG-8223",
+    "Brown Fox",
+    "GIF89a",
+    "ShadyRAT"
+   ]
+  },
+  "G0007": {
+   "misp": [
+    "APT28"
+   ],
+   "add": [
+    "SIG40",
+    "ATK5",
+    "Fighting Ursa",
+    "ITG05",
+    "Blue Athena",
+    "TA422",
+    "T-APT-12",
+    "APT-C-20",
+    "UAC-0028",
+    "UAC-0001",
+    "BlueDelta"
+   ]
+  },
+  "G0010": {
+   "misp": [
+    "Turla"
+   ],
+   "add": [
+    "WRAITH",
+    "Uroburos",
+    "Pfinet",
+    "TAG_0530",
+    "Hippo Team",
+    "Pacifier APT",
+    "Popeye",
+    "SIG23",
+    "MAKERSMARK",
+    "ATK13",
+    "ITG12",
+    "Blue Python",
+    "SUMMIT",
+    "UNC4210",
+    "UAC-0144",
+    "UAC-0024",
+    "UAC-0003"
+   ]
+  },
+  "G0011": {
+   "misp": [
+    "APT24"
+   ],
+   "add": [
+    "APT24",
+    "PITTY PANDA",
+    "Temp.Pittytiger"
+   ]
+  },
+  "G0012": {
+   "misp": [
+    "DarkHotel"
+   ],
+   "add": [
+    "Fallout Team",
+    "Karba",
+    "Luder",
+    "Nemim",
+    "Nemin",
+    "Tapaoux",
+    "Pioneer",
+    "Shadow Crane",
+    "APT-C-06",
+    "SIG25",
+    "TUNGSTEN BRIDGE",
+    "T-APT-02",
+    "ATK52"
+   ]
+  },
+  "G0016": {
+   "misp": [
+    "APT29",
+    "UNC2452"
+   ],
+   "add": [
+    "Group 100",
+    "Minidionis",
+    "SeaDuke",
+    "ATK7",
+    "Cloaked Ursa",
+    "TA421",
+    "ITG11",
+    "BlueBravo",
+    "UAC-0029",
+    "DarkHalo",
+    "StellarParticle",
+    "Solar Phoenix"
+   ]
+  },
+  "G0017": {
+   "misp": [
+    "DragonOK"
+   ],
+   "add": [
+    "BRONZE OVERBROOK",
+    "Shallow Taurus"
+   ]
+  },
+  "G0018": {
+   "misp": [
+    "TEMPER PANDA"
+   ],
+   "add": [
+    "TEMPER PANDA",
+    "Admin338",
+    "Team338",
+    "MAGNESIUM"
+   ]
+  },
+  "G0019": {
+   "misp": [
+    "Naikon"
+   ],
+   "add": [
+    "PLA Unit 78020",
+    "OVERRIDE PANDA",
+    "Camerashy",
+    "BRONZE GENEVA",
+    "BRONZE STERLING"
+   ]
+  },
+  "G0020": {
+   "misp": [
+    "Equation Group"
+   ],
+   "add": [
+    "Equation Group",
+    "Tilded Team",
+    "EQGRP"
+   ]
+  },
+  "G0021": {
+   "misp": [
+    "Molerats"
+   ],
+   "add": [
+    "Gaza Hackers Team",
+    "Extreme Jackal",
+    "Moonlight",
+    "ALUMINUM SARATOGA",
+    "BLACKSTEM"
+   ]
+  },
+  "G0022": {
+   "misp": [
+    "APT3"
+   ],
+   "add": [
+    "Group 6",
+    "UPS",
+    "Boyusec",
+    "BORON",
+    "BRONZE MAYFAIR",
+    "Red Sylvan",
+    "Brocade Typhoon"
+   ]
+  },
+  "G0023": {
+   "misp": [
+    "APT16"
+   ],
+   "add": [
+    "SVCMONDR"
+   ]
+  },
+  "G0024": {
+   "misp": [
+    "APT2"
+   ],
+   "add": [
+    "PLA Unit 61486",
+    "4HCrew",
+    "SULPHUR",
+    "SearchFire",
+    "TG-6952"
+   ]
+  },
+  "G0025": {
+   "misp": [
+    "APT17"
+   ],
+   "add": [
+    "Group 8",
+    "AURORA PANDA",
+    "Hidden Lynx",
+    "Tailgater Team",
+    "Dogfish",
+    "BRONZE KEYSTONE",
+    "HELIUM",
+    "Heart Typhoon"
+   ]
+  },
+  "G0026": {
+   "misp": [
+    "APT18"
+   ],
+   "add": [
+    "SCANDIUM",
+    "PLA Navy",
+    "Wekby",
+    "Satin Typhoon"
+   ]
+  },
+  "G0027": {
+   "misp": [
+    "APT27"
+   ],
+   "add": [
+    "GreedyTaotie",
+    "TEMP.Hippo",
+    "Red Phoenix",
+    "Budworm",
+    "Group 35",
+    "ZipToken",
+    "Lucky Mouse",
+    "Iron Taurus",
+    "Circle Typhoon"
+   ]
+  },
+  "G0029": {
+   "misp": [
+    "Scarlet Mimic"
+   ],
+   "add": [
+    "Golfing Taurus"
+   ]
+  },
+  "G0030": {
+   "misp": [
+    "LOTUS PANDA"
+   ],
+   "add": [
+    "LOTUS PANDA",
+    "ST Group",
+    "BRONZE ELGIN",
+    "ATK1",
+    "Red Salamander",
+    "Billbug"
+   ]
+  },
+  "G0032": {
+   "misp": [
+    "Lazarus Group"
+   ],
+   "add": [
+    "Operation DarkSeoul",
+    "Dark Seoul",
+    "Hastati Group",
+    "Unit 121",
+    "Bureau 121",
+    "NewRomanic Cyber Army Team",
+    "Subgroup: Bluenoroff",
+    "Group 77",
+    "Operation Troy",
+    "Operation GhostSecret",
+    "Operation AppleJeus",
+    "APT 38",
+    "Whois Hacking Team",
+    "Appleworm",
+    "APT-C-26",
+    "COVELLITE",
+    "ATK3",
+    "ATK117",
+    "DEV-0139",
+    "DEV-1222",
+    "TA404",
+    "Black Artemis"
+   ]
+  },
+  "G0034": {
+   "misp": [
+    "Sandworm"
+   ],
+   "add": [
+    "Sandworm",
+    "TEMP.Noble",
+    "Blue Echidna",
+    "UAC-0113",
+    "UAC-0082"
+   ]
+  },
+  "G0035": {
+   "misp": [
+    "ENERGETIC BEAR"
+   ],
+   "add": [
+    "ALLANITE",
+    "CASTLE",
+    "Group 24",
+    "Havex",
+    "Koala Team",
+    "ATK6",
+    "ITG15",
+    "Blue Kraken"
+   ]
+  },
+  "G0037": {
+   "misp": [
+    "FIN6"
+   ],
+   "add": [
+    "White Giant",
+    "GOLD FRANKLIN",
+    "ATK88",
+    "TA4557",
+    "Storm-0538"
+   ]
+  },
+  "G0038": {
+   "misp": [
+    "Stealth Falcon"
+   ],
+   "add": [
+    "FruityArmor"
+   ]
+  },
+  "G0039": {
+   "misp": [
+    "APT22"
+   ],
+   "add": [
+    "APT22",
+    "BRONZE OLIVE",
+    "Group 46"
+   ]
+  },
+  "G0040": {
+   "misp": [
+    "QUILTED TIGER"
+   ],
+   "add": [
+    "QUILTED TIGER",
+    "Sarit",
+    "APT-C-09",
+    "ZINC EMERSON",
+    "ATK11",
+    "Orange Athos",
+    "Thirsty Gemini"
+   ]
+  },
+  "G0041": {
+   "misp": [
+    "ProjectSauron"
+   ],
+   "add": [
+    "Sauron",
+    "Project Sauron"
+   ]
+  },
+  "G0045": {
+   "misp": [
+    "APT10"
+   ],
+   "add": [
+    "Menupass Team",
+    "happyyongzi",
+    "Cloud Hopper",
+    "ATK41",
+    "Granite Taurus",
+    "TA429",
+    "Purple Typhoon"
+   ]
+  },
+  "G0046": {
+   "misp": [
+    "FIN7"
+   ],
+   "add": [
+    "Calcium",
+    "ATK32",
+    "Coreid",
+    "JokerStash"
+   ]
+  },
+  "G0047": {
+   "misp": [
+    "Gamaredon Group"
+   ],
+   "add": [
+    "Blue Otso",
+    "BlueAlpha",
+    "Trident Ursa",
+    "UAC-0010",
+    "Winterflounder"
+   ]
+  },
+  "G0049": {
+   "misp": [
+    "OilRig"
+   ],
+   "add": [
+    "Twisted Kitten",
+    "APT 34",
+    "ATK40"
+   ]
+  },
+  "G0050": {
+   "misp": [
+    "APT32"
+   ],
+   "add": [
+    "OceanLotus Group",
+    "Ocean Lotus",
+    "Cobalt Kitty",
+    "Sea Lotus",
+    "APT-32",
+    "Ocean Buffalo",
+    "POND LOACH",
+    "TIN WOODLAWN",
+    "ATK17"
+   ]
+  },
+  "G0052": {
+   "misp": [
+    "CopyKittens"
+   ],
+   "add": [
+    "Slayer Kitten"
+   ]
+  },
+  "G0059": {
+   "misp": [
+    "Charming Kitten",
+    "APT35"
+   ],
+   "add": [
+    "Parastoo",
+    "iKittens",
+    "Group 83",
+    "NewsBeef",
+    "CharmingCypress",
+    "Newscaster Team",
+    "TunnelVision",
+    "COBALT MIRAGE",
+    "Agent Serpens"
+   ]
+  },
+  "G0060": {
+   "misp": [
+    "Tick"
+   ],
+   "add": [
+    "Nian",
+    "STALKER PANDA",
+    "Stalker Taurus",
+    "PLA Unit 61419",
+    "Swirl Typhoon"
+   ]
+  },
+  "G0061": {
+   "misp": [
+    "FIN8"
+   ],
+   "add": [
+    "ATK113"
+   ]
+  },
+  "G0064": {
+   "misp": [
+    "APT33"
+   ],
+   "add": [
+    "APT 33",
+    "MAGNALLIUM",
+    "Refined Kitten",
+    "COBALT TRINITY",
+    "ATK35",
+    "TA451"
+   ]
+  },
+  "G0065": {
+   "misp": [
+    "APT40"
+   ],
+   "add": [
+    "ATK29",
+    "TA423",
+    "Red Ladon",
+    "ITG09",
+    "ISLANDDREAMS"
+   ]
+  },
+  "G0066": {
+   "misp": [
+    "Beijing Group"
+   ],
+   "add": [
+    "SIG22"
+   ]
+  },
+  "G0067": {
+   "misp": [
+    "APT37"
+   ],
+   "add": [
+    "APT 37",
+    "Group 123",
+    "Operation Daybreak",
+    "Operation Erebus",
+    "Reaper Group",
+    "Red Eyes",
+    "Venus 121",
+    "ATK4",
+    "Moldy Pisces",
+    "APT-C-28"
+   ]
+  },
+  "G0068": {
+   "misp": [
+    "PLATINUM"
+   ],
+   "add": [
+    "TwoForOne",
+    "ATK33"
+   ]
+  },
+  "G0069": {
+   "misp": [
+    "MuddyWater"
+   ],
+   "add": [
+    "COBALT ULSTER",
+    "ATK51",
+    "Boggy Serpens"
+   ]
+  },
+  "G0073": {
+   "misp": [
+    "APT19"
+   ],
+   "add": [
+    "TEMP.Avengers",
+    "Group 13",
+    "BRONZE FIRESTONE",
+    "Pupa",
+    "Checkered Typhoon"
+   ]
+  },
+  "G0075": {
+   "misp": [
+    "RANCOR"
+   ],
+   "add": [
+    "Rancor group",
+    "Rancor Taurus"
+   ]
+  },
+  "G0078": {
+   "misp": [
+    "The Gorgon Group"
+   ],
+   "add": [
+    "The Gorgon Group",
+    "Subaat",
+    "ATK92",
+    "Pasty Gemini"
+   ]
+  },
+  "G0079": {
+   "misp": [
+    "DarkHydrus"
+   ],
+   "add": [
+    "LazyMeerkat",
+    "Obscure Serpens"
+   ]
+  },
+  "G0080": {
+   "misp": [
+    "Cobalt"
+   ],
+   "add": [
+    "Cobalt",
+    "Mule Libra"
+   ]
+  },
+  "G0081": {
+   "misp": [
+    "APT23"
+   ],
+   "add": [
+    "APT23",
+    "BRONZE HOBART",
+    "Red Orthrus",
+    "Earth Centaur"
+   ]
+  },
+  "G0085": {
+   "misp": [
+    "WOLF SPIDER"
+   ],
+   "add": [
+    "WOLF SPIDER"
+   ]
+  },
+  "G0087": {
+   "misp": [
+    "APT39"
+   ],
+   "add": [
+    "COBALT HICKMAN",
+    "Radio Serpens",
+    "TA454",
+    "Burgundy Sandstorm"
+   ]
+  },
+  "G0088": {
+   "misp": [
+    "TEMP.Veles"
+   ],
+   "add": [
+    "ATK91"
+   ]
+  },
+  "G0092": {
+   "misp": [
+    "TA505"
+   ],
+   "add": [
+    "SectorJ04",
+    "SectorJ04 Group",
+    "GRACEFUL SPIDER",
+    "GOLD TAHOE",
+    "Dudear",
+    "ATK103"
+   ]
+  },
+  "G0093": {
+   "misp": [
+    "GALLIUM"
+   ],
+   "add": [
+    "Red Dev 4",
+    "Alloy Taurus",
+    "PHANTOM PANDA"
+   ]
+  },
+  "G0094": {
+   "misp": [
+    "Kimsuky"
+   ],
+   "add": [
+    "Operation Stolen Pencil",
+    "Sparkling Pisces"
+   ]
+  },
+  "G0095": {
+   "misp": [
+    "El Machete"
+   ],
+   "add": [
+    "machete-apt"
+   ]
+  },
+  "G0096": {
+   "misp": [
+    "APT41"
+   ],
+   "add": [
+    "TA415",
+    "Grayfly",
+    "LEAD",
+    "WICKED SPIDER",
+    "BRONZE ATLAS",
+    "BRONZE EXPORT",
+    "Red Kelpie",
+    "Earth Baku",
+    "Amoeba",
+    "HOODOO",
+    "Winnti",
+    "Double Dragon",
+    "TG-2633",
+    "Leopard Typhoon"
+   ]
+  },
+  "G0098": {
+   "misp": [
+    "BlackTech"
+   ],
+   "add": [
+    "CIRCUIT PANDA",
+    "Temp.Overboard",
+    "HUAPI",
+    "T-APT-03",
+    "Manga Taurus",
+    "Red Djinn",
+    "Earth Hundun",
+    "Canary Typhoon",
+    "Mobwork"
+   ]
+  },
+  "G0100": {
+   "misp": [
+    "Inception Framework"
+   ],
+   "add": [
+    "Clean Ursa",
+    "OXYGEN",
+    "ATK116",
+    "Blue Odin"
+   ]
+  },
+  "G0102": {
+   "misp": [
+    "GRIM SPIDER",
+    "WIZARD SPIDER"
+   ],
+   "add": [
+    "GOLD ULRICK",
+    "Storm-0193",
+    "Trickbot LLC",
+    "UNC2053",
+    "Storm-0230"
+   ]
+  },
+  "G0103": {
+   "misp": [
+    "Mofang"
+   ],
+   "add": [
+    "Superman",
+    "BRONZE WALKER"
+   ]
+  },
+  "G0106": {
+   "misp": [
+    "Rocke"
+   ],
+   "add": [
+    "Aged Libra"
+   ]
+  },
+  "G0112": {
+   "misp": [
+    "WindShift"
+   ],
+   "add": [
+    "Windy Phoenix"
+   ]
+  },
+  "G0119": {
+   "misp": [
+    "Evil Corp"
+   ],
+   "add": [
+    "GOLD DRAKE"
+   ]
+  },
+  "G0120": {
+   "misp": [
+    "Evilnum"
+   ],
+   "add": [
+    "DeathStalker",
+    "TA4563",
+    "Jointworm",
+    "KNOCKOUT SPIDER"
+   ]
+  },
+  "G0122": {
+   "misp": [
+    "Silent Librarian"
+   ],
+   "add": [
+    "Mabna Institute",
+    "TA4900",
+    "Yellow Nabu"
+   ]
+  },
+  "G0123": {
+   "misp": [
+    "Volatile Cedar"
+   ],
+   "add": [
+    "DeftTorero"
+   ]
+  },
+  "G0125": {
+   "misp": [
+    "HAFNIUM"
+   ],
+   "add": [
+    "ATK233",
+    "Red Dev 13",
+    "MURKY PANDA"
+   ]
+  },
+  "G0127": {
+   "misp": [
+    "GOLD CABIN"
+   ],
+   "add": [
+    "Shakthak",
+    "ATK236",
+    "Monster Libra"
+   ]
+  },
+  "G0128": {
+   "misp": [
+    "APT31"
+   ],
+   "add": [
+    "JUDGMENT PANDA",
+    "BRONZE VINEWOOD",
+    "Red keres",
+    "TA412"
+   ]
+  },
+  "G0129": {
+   "misp": [
+    "MUSTANG PANDA"
+   ],
+   "add": [
+    "HoneyMyte",
+    "BASIN",
+    "Polaris"
+   ]
+  },
+  "G0130": {
+   "misp": [
+    "Flying Kitten",
+    "Rocket Kitten"
+   ],
+   "add": [
+    "SaffronRose",
+    "Saffron Rose",
+    "AjaxSecurityTeam",
+    "Group 26",
+    "Sayad",
+    "TEMP.Beanie",
+    "Thamar Reservoir",
+    "Timberworm"
+   ]
+  },
+  "G0131": {
+   "misp": [
+    "Tonto Team"
+   ],
+   "add": [
+    "COPPER",
+    "Red Beifang",
+    "PLA Unit 65017",
+    "TAG-74"
+   ]
+  },
+  "G0135": {
+   "misp": [
+    "BackdoorDiplomacy"
+   ],
+   "add": [
+    "BackDip",
+    "CloudComputating",
+    "Quarian"
+   ]
+  },
+  "G0138": {
+   "misp": [
+    "Silent Chollima"
+   ],
+   "add": [
+    "OperationTroy",
+    "Guardian of Peace",
+    "GOP",
+    "WHOis Team",
+    "Subgroup: Andariel"
+   ]
+  },
+  "G0139": {
+   "misp": [
+    "TeamTNT"
+   ],
+   "add": [
+    "Adept Libra"
+   ]
+  },
+  "G1001": {
+   "misp": [
+    "LYCEUM"
+   ],
+   "add": [
+    "COBALT LYCEUM",
+    "UNC1530",
+    "MYSTICDOME",
+    "Chrono Kitten",
+    "Storm-0133"
+   ]
+  },
+  "G1003": {
+   "misp": [
+    "SaintBear",
+    "DEV-0586"
+   ],
+   "add": [
+    "SaintBear",
+    "Nascent Ursa",
+    "Nodaria",
+    "DEV-0587",
+    "Lorec Bear",
+    "Ruinous Ursa"
+   ]
+  },
+  "G1005": {
+   "misp": [
+    "POLONIUM"
+   ],
+   "add": [
+    "UNC4453",
+    "GREATRIFT",
+    "INCENDIARY JACKAL"
+   ]
+  },
+  "G1006": {
+   "misp": [
+    "Earth Lusca"
+   ],
+   "add": [
+    "FISHMONGER",
+    "BRONZE UNIVERSITY",
+    "Red Dev 10",
+    "RedHotel",
+    "BountyGlad",
+    "Red Scylla"
+   ]
+  },
+  "G1007": {
+   "misp": [
+    "Aoqin Dragon"
+   ],
+   "add": [
+    "UNC94"
+   ]
+  },
+  "G1011": {
+   "misp": [
+    "EXOTIC LILY"
+   ],
+   "add": [
+    "DEV-0413"
+   ]
+  },
+  "G1015": {
+   "misp": [
+    "Scattered Spider"
+   ],
+   "add": [
+    "Muddled Libra",
+    "Oktapus",
+    "Scattered Swine",
+    "Scatter Swine",
+    "0ktapus",
+    "Storm-0971",
+    "DEV-0971",
+    "Starfraud"
+   ]
+  },
+  "G1016": {
+   "misp": [
+    "FIN13"
+   ],
+   "add": [
+    "TG2003"
+   ]
+  },
+  "G1017": {
+   "misp": [
+    "Volt Typhoon"
+   ],
+   "add": [
+    "Storm-0391"
+   ]
+  },
+  "G1020": {
+   "misp": [
+    "Mustard Tempest"
+   ],
+   "add": [
+    "Purple Vallhund"
+   ]
+  },
+  "G1021": {
+   "misp": [
+    "BRONZE STARLIGHT"
+   ],
+   "add": [
+    "SLIME34"
+   ]
+  },
+  "G1022": {
+   "misp": [
+    "ToddyCat"
+   ],
+   "add": [
+    "Websiic"
+   ]
+  },
+  "G1023": {
+   "misp": [
+    "APT5"
+   ],
+   "add": [
+    "TEMP.Bottle",
+    "Poisoned Flight"
+   ]
+  },
+  "G1030": {
+   "misp": [
+    "Pink Sandstorm"
+   ],
+   "add": [
+    "DEV-0022",
+    "UNC2428",
+    "Black Shadow",
+    "SPECTRAL KITTEN"
+   ]
+  },
+  "G1035": {
+   "misp": [
+    "Winter Vivern"
+   ],
+   "add": [
+    "TAG-70",
+    "TA-473"
+   ]
+  },
+  "G1037": {
+   "misp": [
+    "TA577"
+   ],
+   "add": [
+    "Hive0118"
+   ]
+  },
+  "G1041": {
+   "misp": [
+    "Sea Turtle"
+   ],
+   "add": [
+    "UNC1326"
+   ]
+  },
+  "G1044": {
+   "misp": [
+    "APT42"
+   ],
+   "add": [
+    "UNC788",
+    "CALANQUE"
+   ]
+  },
+  "G1055": {
+   "misp": [
+    "BANISHED KITTEN"
+   ],
+   "add": [
+    "DUNE",
+    "Storm-0842"
+   ]
+  }
+ }
+}

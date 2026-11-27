@@ -1,12 +1,23 @@
 {
-  "name": "threatdle-netlify-runtime",
+  "name": "threatdle",
   "private": true,
   "type": "module",
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.888.0"
-  },
   "scripts": {
-    "build:runtime": "node scripts/build-netlify-runtime.mjs",
-    "build": "npm run build:runtime"
+    "test": "node --test \"tests/*.test.mjs\"",
+    "export": "node tools/export.mjs",
+    "check": "node tools/check-cases.mjs",
+    "schedule": "node tools/schedule.mjs",
+    "schedule:drafts": "node tools/schedule.mjs --drafts --start 2026-11-20",
+    "publish": "node tools/publish.mjs",
+    "build": "node tools/build.mjs",
+    "e2e": "node tests/e2e.mjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.1165.0",
+    "@netlify/blobs": "11.1.9"
+  },
+  "devDependencies": {
+    "axe-core": "4.11.0",
+    "playwright": "1.65.1"
   }
 }
