@@ -1,17 +1,16 @@
 // Threatdle rules core. Pure functions shared by the Netlify functions, the build tools and the browser.
 //
-// Actor  = { id, name, nickname, aliases, home, type, motive, since, targets, profile, roster, tools?, tricks? }
-//          home: ISO-3166 alpha-2 or null; type: 'state' | 'crime' | 'activist' | null; tools/tricks: ATT&CK ids (server only)
+// Actor  = { id, name, nickname, aliases, home, type, motive, since, targets, victims, profile, roster, tools? }
+//          home: ISO-3166 alpha-2 or null; type: 'state' | 'crime' | 'activist' | null; tools: ATT&CK software ids (server only)
+//          targets: sectors, rarest across the pool first; victims: ISO-3166 alpha-2 codes of the countries it hit, most reported first; [] = unknown
 // Clue   = { kind, text, facts, source }   facts: { targets?, home?, type?, motive?, tools?, name? }
 // Case   = { id, mode, culprit, reviewed, clues: Clue[], story, report }
 // Row    = { id, name, home, correct, cells: Cell[] }   Cell = { k, text, tone, arrow?, say }
 
 // open: clues shown before the first guess. SOC Analyst opens on two, so a case never starts on one vague line.
-// trackRows: whether the suspect tracker also reads the rows. SOC Analyst's follows the clues only, so reading the rows is the
-// player's skill (simulated mean 2.9 guesses on the list alone, 2.7 reading Home and Type). Threat Hunter's reads both: without it a newcomer wins 37% of games.
 export const MODES = {
-  analyst: { name: 'SOC Analyst', max: null, open: 2, cols: ['home', 'type', 'motive', 'since', 'targets'], who: 'analysts', trackRows: false },
-  hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'type', 'motive', 'since', 'targets', 'tools', 'tricks'], who: 'hunters', trackRows: true },
+  analyst: { name: 'SOC Analyst', max: null, open: 2, cols: ['home', 'motive', 'since', 'victims', 'targets'], who: 'analysts' },
+  hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'motive', 'since', 'victims', 'targets', 'tools'], who: 'hunters' },
 };
 export const isMode = m => Object.hasOwn(MODES, m);
 export const other = m => (m === 'hunter' ? 'analyst' : 'hunter');
@@ -20,6 +19,9 @@ export const COUNTRY = {
   RU: 'Russia', CN: 'China', IR: 'Iran', KP: 'North Korea', KR: 'South Korea', PS: 'Palestine', LB: 'Lebanon', TR: 'Turkey', VN: 'Vietnam',
   IN: 'India', PK: 'Pakistan', BY: 'Belarus', BR: 'Brazil', US: 'USA', AE: 'UAE', NG: 'Nigeria', RO: 'Romania', UA: 'Ukraine', KZ: 'Kazakhstan',
 };
+// Names for codes COUNTRY lacks: victim countries reach well beyond the hackers' homes.
+const REGION_NAME = new Intl.DisplayNames(['en'], { type: 'region' });
+export const countryName = c => COUNTRY[c] || REGION_NAME.of(c);
 // Same country = match; same part of the world = near.
 export const REGION = {
   RU: 'Europe', BY: 'Europe', RO: 'Europe', UA: 'Europe', CN: 'East Asia', KP: 'East Asia', KR: 'East Asia', VN: 'East Asia',
@@ -107,9 +109,8 @@ export function fold(a, clues) {
 // ("0", "1-2", "3+"), so it reads as "how many the guess shares with the culprit" and never as "this group has no tools".
 // Most groups share no malware: across every hunter culprit and every guess, Tools is 0 for 73% of pairs, 1-2 for 21%, 3+ for 6%.
 export const TOOL_CUTS = [1, 3];
-export const TRICK_CUTS = [1, 10];
 export const bucket = (n, [some, many]) => (n >= many ? 'many' : n >= some ? 'some' : 'none');
-// A group ATT&CK lists no software (or techniques) for is unknown, not "shares none".
+// A group ATT&CK lists no software for is unknown, not "shares none".
 const bucketOf = (a, b, cuts) => (a?.length && b?.length ? bucket(shared(a, b), cuts) : 'unknown');
 const range = ([some, many]) => ({ none: '0', some: some === many - 1 ? String(some) : `${some}–${many - 1}`, many: `${many}+`, unknown: '?' });
 const shared = (a, b) => { const s = new Set(b || []); return (a || []).filter(x => s.has(x)).length; };
@@ -118,40 +119,54 @@ function setCmp(a, b) {
   if (a.length === b.length && a.every(x => b.includes(x))) return 'match';
   return a.some(x => b.includes(x)) ? 'partial' : 'miss';
 }
+// Most groups list Government, so targets compare without it, unless it is all one side lists.
+const onlyGov = t => t?.length === 1 && t[0] === 'Government';
+const noGov = t => t?.filter(x => x !== 'Government');
+const targetCmp = (a, b) => (onlyGov(a) || onlyGov(b) ? setCmp(a, b) : setCmp(noGov(a), noGov(b)));
+// Victims: same main victim = match; the culprit also hit the guess's main victim = partial.
+const victimCmp = (a, b) => (!a?.length || !b?.length ? 'unknown' : a[0] === b[0] ? 'match' : b.includes(a[0]) ? 'partial' : 'miss');
+// Since: up or down points at the culprit; within 2 years is near and keeps its arrow.
+const sinceCmp = (a, b) => (a == null || b == null ? 'unknown' : a === b ? 'match' : (Math.abs(b - a) <= 2 ? 'near-' : '') + (b > a ? 'up' : 'down'));
 
 // Feedback for guess g against culprit profile p. A correct guess is all match.
 // A crime gang with no known country has the crime badge ($) for a home: two such gangs match, and against a country it is a miss.
 export const homeOf = a => a.home || (a.type === 'crime' ? '$' : null);
 export function compare(g, p) {
-  if (g.id === p.id) return { correct: true, home: 'match', type: 'match', motive: 'match', since: 'match', targets: 'match', tools: 'match', tricks: 'match' };
+  if (g.id === p.id) return { correct: true, home: 'match', motive: 'match', since: 'match', victims: 'match', targets: 'match', tools: 'match' };
   const gh = homeOf(g), ph = homeOf(p);
   const home = !gh || !ph ? 'unknown' : gh === ph ? 'match' : REGION[gh] && REGION[gh] === REGION[ph] ? 'near' : 'miss';
-  const type = !g.type || !p.type ? 'unknown' : g.type === p.type ? 'match' : 'miss';
-  const since = g.since == null || p.since == null ? 'unknown' : g.since === p.since ? 'match' : p.since > g.since ? 'up' : 'down';
   return {
-    correct: false, home, type, motive: setCmp(g.motive, p.motive), since, targets: setCmp(g.targets, p.targets),
-    tools: bucketOf(g.tools, p.tools, TOOL_CUTS), tricks: bucketOf(g.tricks, p.tricks, TRICK_CUTS),
+    correct: false, home, motive: setCmp(g.motive, p.motive), since: sinceCmp(g.since, p.since), victims: victimCmp(g.victims, p.victims),
+    targets: targetCmp(g.targets, p.targets), tools: bucketOf(g.tools, p.tools, TOOL_CUTS),
   };
 }
 
-const TONE = { match: 'hit', near: 'near', partial: 'near', miss: 'miss', unknown: 'unk', up: 'miss', down: 'miss', none: 'miss', some: 'near', many: 'hit' };
-const SHORT_MOTIVE = { Espionage: 'Spying', 'Financial Gain': 'Money', Sabotage: 'Damage', Hacktivism: 'Cause' };
-const cap = s => s[0].toUpperCase() + s.slice(1);
-const OVERLAP = { match: 'Same', partial: 'Some', miss: 'None', unknown: '?' };
-const OVERLAP_SAY = { match: 'same', partial: 'some overlap', miss: 'no overlap', unknown: 'unknown' };
+const TONE = { match: 'hit', near: 'near', partial: 'near', miss: 'miss', unknown: 'unk', up: 'miss', down: 'miss', 'near-up': 'near', 'near-down': 'near',
+  none: 'miss', some: 'near', many: 'hit' };
+// Cell words, short enough for a 360px phone. The page wraps a cell at each '+'.
+const SHORT_MOTIVE = { Espionage: 'Spy', 'Financial Gain': 'Money', Sabotage: 'Harm', Hacktivism: 'Cause' };
+const SHORT_SECTOR = { Government: 'Govt', Military: 'Military', Defense: 'Arms', 'Private sector': 'Firms', Finance: 'Banks', Technology: 'Tech',
+  Telecommunications: 'Telco', Energy: 'Energy', Healthcare: 'Health', Education: 'Schools', 'Civil society': 'Activist', NGOs: 'NGOs', Media: 'Media',
+  Individuals: 'People', Hospitality: 'Hotels', Retail: 'Shops', Manufacturing: 'Factory', Transportation: 'Travel', 'Critical infrastructure': 'Utility',
+  Legal: 'Law', Pharmaceuticals: 'Pharma', 'Religious organization': 'Faith', 'Food and agriculture': 'Farms' };
+const SAY = { match: 'match', partial: 'some overlap', miss: 'no overlap', unknown: 'unknown' };
+const SINCE_SAY = { up: 'culprit is newer', down: 'culprit is older', 'near-up': 'culprit is up to 2 years newer', 'near-down': 'culprit is up to 2 years older' };
+const VICTIM_SAY = { partial: 'the culprit hit it too', miss: "not one of the culprit's" };
 
 // Cells in display order for a mode. Text describes the guessed group; tone compares it with the culprit.
+// Targets text is the guess's most distinctive sector other than Government (export lists targets rarest first), plus how many more.
 export function cells(mode, g, f) {
-  const mot = (g.motive || []).map(m => SHORT_MOTIVE[m] || m);
+  const mot = g.motive || [], tg = g.targets || [], v = g.victims?.[0];
+  const top = tg.find(t => t !== 'Government') || tg[0];
   const all = {
-    home: { text: homeOf(g) || '?', say: `home ${g.home ? COUNTRY[g.home] || g.home : homeOf(g) ? 'crime gang' : 'unknown'}: ${f.home === 'near' ? 'same part of the world' : f.home}` },
-    type: { text: g.type ? cap(g.type) : '?', say: `type ${g.type || 'unknown'}: ${f.type}` },
-    motive: { text: mot.length ? mot[0] + (mot.length > 1 ? '+' : '') : '?', say: `motive ${mot.join(' and ') || 'unknown'}: ${f.motive}` },
-    since: { text: g.since ? String(g.since) : '?', arrow: f.since === 'up' ? '↑' : f.since === 'down' ? '↓' : '',
-      say: `first seen ${g.since || 'unknown'}: ${f.since === 'up' ? 'culprit is newer' : f.since === 'down' ? 'culprit is older' : f.since}` },
-    targets: { text: OVERLAP[f.targets], say: `targets: ${OVERLAP_SAY[f.targets]}` },
+    home: { text: homeOf(g) || '?', say: `home ${g.home ? countryName(g.home) : homeOf(g) ? 'crime gang' : 'unknown'}: ${f.home === 'near' ? 'same part of the world' : f.home}` },
+    motive: { text: [...mot].sort((a, b) => MOTIVES.indexOf(a) - MOTIVES.indexOf(b)).map(m => SHORT_MOTIVE[m] || m).join('+') || '?', say: `motive ${mot.join(' and ').toLowerCase() || 'unknown'}: ${SAY[f.motive]}` },
+    since: { text: g.since ? String(g.since) : '?', arrow: f.since.endsWith('up') ? '↑' : f.since.endsWith('down') ? '↓' : '',
+      say: `first seen ${g.since || 'unknown'}: ${SINCE_SAY[f.since] || f.since}` },
+    victims: { text: v || '?', say: `hit ${v ? countryName(v) : 'unknown countries'} most: ${VICTIM_SAY[f.victims] || f.victims}` },
+    targets: { text: top ? (SHORT_SECTOR[top] || top) + (tg.length > 1 ? `+${tg.length - 1}` : '') : '?',
+      say: `targets ${tg.join(', ').toLowerCase() || 'unknown'}: ${SAY[f.targets]}` },
     tools: { text: f.tools === 'match' ? 'Same' : range(TOOL_CUTS)[f.tools], say: `shared tools: ${f.tools === 'match' ? 'all' : f.tools === 'unknown' ? 'unknown' : range(TOOL_CUTS)[f.tools].replace('–', ' to ')}` },
-    tricks: { text: f.tricks === 'match' ? 'Same' : range(TRICK_CUTS)[f.tricks], say: `shared techniques: ${f.tricks === 'match' ? 'all' : f.tricks === 'unknown' ? 'unknown' : range(TRICK_CUTS)[f.tricks].replace('–', ' to ')}` },
   };
   return MODES[mode].cols.map(k => ({ k, tone: TONE[f[k]], ...all[k] }));
 }
@@ -175,15 +190,16 @@ export function play(mode, kase, guesses, byId) {
 export const shownClue = c => { const { tools, ...facts } = c.facts || {}; return { kind: c.kind, text: c.text, facts }; };
 
 // The suspect tracker: which candidates the player can still believe, from what the page already shows.
-// A candidate stays if it fits every shown clue, was not guessed wrong, and (when the mode tracks rows) for each row, comparing
-// that guess with the candidate (folded with the clues shown when the row was made) gives the row the player got. Tools and
-// Tricks need server data, so they are skipped. The culprit always stays: the server built each row the same way from the same public facts.
-export function possible(mode, candidates, clues, rows, byId, trackRows = MODES[mode].trackRows) {
-  const cols = MODES[mode].cols.filter(k => k !== 'tools' && k !== 'tricks');
+// A candidate stays if it fits every shown clue and was not guessed wrong. The page never reads the rows for the player: that is
+// the game (in Threat Hunter it would name the culprit after one accusation). The simulator's ideal player passes readRows, and
+// then a candidate also stays only if comparing each guess with it (folded with the clues shown when the row was made) gives the
+// row the player got. Tools need server data, so they are skipped. The culprit always stays: the server built each row the same way.
+export function possible(mode, candidates, clues, rows, byId, readRows = false) {
+  const cols = MODES[mode].cols.filter(k => k !== 'tools');
   return candidates.filter(x => fitsAll(x, clues) && rows.every((r, i) => {
     if (r.correct) return r.id === x.id;
     if (r.id === x.id) return false;
-    if (!trackRows) return true;
+    if (!readRows) return true;
     const g = byId[r.id], got = cells(mode, g, compare(g, fold(x, clues.slice(0, i + MODES[mode].open))));
     return cols.every(k => { const a = got.find(c => c.k === k), b = r.cells.find(c => c.k === k); return a.tone === b.tone && (a.arrow || '') === (b.arrow || ''); });
   }));

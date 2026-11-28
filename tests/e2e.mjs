@@ -137,7 +137,7 @@ async function run(browser, vp) {
   for (const [i, id] of misses.entries()) {
     await type(h.page, 'hunter', id);
     if (i === 2) {
-      check(`hunter ${tag} rows have 7 cells`, (await h.page.locator('.rows > li:first-child .fc').count()) === 7);
+      check(`hunter ${tag} rows have 6 cells`, (await h.page.locator('.rows > li:first-child .fc').count()) === 6);
       check(`hunter ${tag} meter`, (await h.page.textContent('.meter b')) === '3 left');
       check(`hunter ${tag} hint count`, +(await h.page.textContent('.poss b')) >= 1);
       await h.page.fill('#guess', 'bear');
@@ -182,7 +182,7 @@ async function run(browser, vp) {
   check(`hunter ${tag} solved`, (await hw.page.textContent('#endH')) === 'Solved');
   check(`hunter ${tag} winning row all match`, await hw.page.evaluate(() => [...document.querySelectorAll('.rows > li:first-child .fc')].every(c => c.classList.contains('hit'))));
   const ws = await hw.page.textContent('.shareE');
-  check(`hunter ${tag} win share`, /^Threatdle #\d+ · Threat Hunter 3\/6 · 🔥2\n/.test(ws) && ws.split('\n')[3] === '🟩'.repeat(7), ws.split('\n')[0]);
+  check(`hunter ${tag} win share`, /^Threatdle #\d+ · Threat Hunter 3\/6 · 🔥2\n/.test(ws) && ws.split('\n')[3] === '🟩'.repeat(6), ws.split('\n')[0]);
   check(`hunter ${tag} better-than only at 50% or more`, !(await hw.page.locator('.better').count()) || +(await hw.page.textContent('.better b')).replace('%', '') >= 50);
   check(`hunter ${tag} distribution highlights my bar`, (await hw.page.textContent('.dist li.me span')) === '3');
   check(`hunter ${tag} crowd line`, /You're the [\d,]+(st|nd|rd|th) hunter/.test(await hw.page.textContent('.crowdEnd')));

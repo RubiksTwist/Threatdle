@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createGame } from '../netlify/lib/game.mjs';
 
-const A = (id, o = {}) => ({ id, name: id, nickname: null, aliases: [], home: 'RU', type: 'state', motive: ['Espionage'], since: 2010, targets: ['Government'], profile: 'p', roster: true, tools: ['S1'], tricks: ['T1'], ...o });
+const A = (id, o = {}) => ({ id, name: id, nickname: null, aliases: [], home: 'RU', type: 'state', motive: ['Espionage'], since: 2010, targets: ['Government'], profile: 'p', roster: true, tools: ['S1'], ...o });
 const actors = [A('G1', { nickname: 'Fancy Bear' }), A('G2'), A('G3'), A('G4', { roster: false }), ...Array.from({ length: 8 }, (_, i) => A('X' + i, { roster: false }))];
 const clues = n => Array.from({ length: n }, (_, i) => ({ kind: 'victim', text: `clue ${i + 1}`, facts: {}, source: { quote: 'secret vendor quote' } }));
 const cases = [
@@ -106,7 +106,7 @@ test('a hunter who misses six times goes cold, is recorded, and still sees the c
   assert.equal(r.body.status, 'cold');
   assert.equal(r.body.result.culprit.id, 'G4');
   assert.equal(r.body.result.rank, null);
-  assert.equal(r.body.rows[0].cells.length, 7);
+  assert.equal(r.body.rows[0].cells.length, 6);
   const w = await post(store, { mode: 'hunter', playerId: 'player-0002', guesses: ['G4'] }, NOW + 5);
   assert.ok(w.body.rows[0].cells.every(c => c.tone === 'hit'), 'the winning row is all match');
   assert.equal(w.body.result.betterThan, 100);

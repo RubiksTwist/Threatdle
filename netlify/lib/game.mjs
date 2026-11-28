@@ -70,7 +70,7 @@ export function createGame({ pool, cases, schedule }) {
 }
 
 function profile(a, kase) {
-  const { tools, tricks, ...p } = fold(a, kase.clues);
+  const { tools, ...p } = fold(a, kase.clues);
   return { ...p, display: displayName(p) };
 }
 
