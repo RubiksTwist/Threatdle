@@ -8,11 +8,9 @@
 // Row    = { id, name, home, correct, cells: Cell[] }   Cell = { k, text, tone, arrow?, say }
 
 // open: clues shown before the first guess. SOC Analyst opens on two, so a case never starts on one vague line.
-// trackRows: whether the suspect tracker also reads the rows. SOC Analyst's follows the clues only, so reading the rows is the
-// player's skill (simulated mean 2.9 guesses on the list alone, 2.3 reading Home, Motive and Victims). Threat Hunter's reads both: without it a newcomer wins 78% of games.
 export const MODES = {
-  analyst: { name: 'SOC Analyst', max: null, open: 2, cols: ['home', 'motive', 'since', 'victims', 'targets'], who: 'analysts', trackRows: false },
-  hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'motive', 'since', 'victims', 'targets', 'tools'], who: 'hunters', trackRows: true },
+  analyst: { name: 'SOC Analyst', max: null, open: 2, cols: ['home', 'motive', 'since', 'victims', 'targets'], who: 'analysts' },
+  hunter: { name: 'Threat Hunter', max: 6, open: 1, cols: ['home', 'motive', 'since', 'victims', 'targets', 'tools'], who: 'hunters' },
 };
 export const isMode = m => Object.hasOwn(MODES, m);
 export const other = m => (m === 'hunter' ? 'analyst' : 'hunter');
@@ -192,15 +190,16 @@ export function play(mode, kase, guesses, byId) {
 export const shownClue = c => { const { tools, ...facts } = c.facts || {}; return { kind: c.kind, text: c.text, facts }; };
 
 // The suspect tracker: which candidates the player can still believe, from what the page already shows.
-// A candidate stays if it fits every shown clue, was not guessed wrong, and (when the mode tracks rows) for each row, comparing
-// that guess with the candidate (folded with the clues shown when the row was made) gives the row the player got. Tools
-// need server data, so they are skipped. The culprit always stays: the server built each row the same way from the same public facts.
-export function possible(mode, candidates, clues, rows, byId, trackRows = MODES[mode].trackRows) {
+// A candidate stays if it fits every shown clue and was not guessed wrong. The page never reads the rows for the player: that is
+// the game (in Threat Hunter it would name the culprit after one accusation). The simulator's ideal player passes readRows, and
+// then a candidate also stays only if comparing each guess with it (folded with the clues shown when the row was made) gives the
+// row the player got. Tools need server data, so they are skipped. The culprit always stays: the server built each row the same way.
+export function possible(mode, candidates, clues, rows, byId, readRows = false) {
   const cols = MODES[mode].cols.filter(k => k !== 'tools');
   return candidates.filter(x => fitsAll(x, clues) && rows.every((r, i) => {
     if (r.correct) return r.id === x.id;
     if (r.id === x.id) return false;
-    if (!trackRows) return true;
+    if (!readRows) return true;
     const g = byId[r.id], got = cells(mode, g, compare(g, fold(x, clues.slice(0, i + MODES[mode].open))));
     return cols.every(k => { const a = got.find(c => c.k === k), b = r.cells.find(c => c.k === k); return a.tone === b.tone && (a.arrow || '') === (b.arrow || ''); });
   }));

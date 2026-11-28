@@ -125,3 +125,13 @@ Threat Hunter got markedly easier: the newcomer wins 78% (was 37%), the tracker 
 Dropping one column at a time (N=50) shows where it comes from. Without Victims the Hunter newcomer wins 46%: Victims carries most of the newcomer's gain.
 Without Since the Hunter tracker is back to 97%, median 4: amber within 2 years carries the tracker's gain. Without Targets it stays at 100%, median 3.
 SOC Analyst's tracker does not read rows, so it is unchanged. Victims are known for 48 of 52 Most Wanted groups; the USA is the main victim of 24.
+
+## Round 8: Threat Hunter's tracker stops reading the rows
+In play, one accusation left a single suspect on Hunter's list: the tracker was solving the rows for the player. Now it follows the clues only, as SOC Analyst's does.
+The "tracker" player only taps groups the list still shows. The ideal player reads every row exactly. The newcomer reads Home, Motive and Victims itself. Only the tracker changes.
+Threat Hunter player    | win    median when solved | 1    2    3    4    5    6    cold
+Threat Hunter random    | 3%     4                   | 1%   1%   1%   1%   1%   1%   97%
+Threat Hunter newcomer  | 78%    4                   | 1%   7%   17%  20%  20%  13%  22%
+Threat Hunter tracker   | 16%    6                   | 1%   0%   1%   1%   2%   11%  84%
+Threat Hunter ideal     | 100%   2                   | 1%   54%  45%  0%   0%   0%   0%
+SOC Analyst is unchanged. The list now only says how many groups fit the clues. Reading the board is what wins: the tracker player goes cold 84% of the time, the newcomer 22%.

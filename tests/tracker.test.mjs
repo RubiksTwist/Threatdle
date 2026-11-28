@@ -36,23 +36,25 @@ test('on every drafted case the culprit is never ruled out, and the suspect list
   }
 });
 
-test('in Threat Hunter a row rules out a group whose own comparison would differ', () => {
+for (const mode of ['analyst', 'hunter']) {
+  test(`in ${mode} a row rules out only the group guessed; reading the rest of the row is the player's job`, () => {
+    const kase = cases.find(c => c.mode === mode);
+    const list = mode === 'analyst' ? pub.filter(a => a.roster) : pub;
+    const clues = play(mode, kase, [], serverById).clues;
+    const before = possible(mode, list, clues, [], byId);
+    const wrong = before.find(a => a.id !== kase.culprit);
+    const g = play(mode, kase, [wrong.id], serverById);
+    const after = possible(mode, list, clues, g.rows, byId);
+    assert.deepEqual(after.map(a => a.id), before.filter(a => a.id !== wrong.id).map(a => a.id));
+  });
+}
+
+test('reading the rows (the simulated ideal player) rules out a group whose own comparison would differ', () => {
   const kase = cases.find(c => c.mode === 'hunter');
   const before = possible('hunter', pub, play('hunter', kase, [], serverById).clues, [], byId).length;
   const wrong = pub.find(a => a.id !== kase.culprit && a.home && a.type && a.since);
   const g = play('hunter', kase, [wrong.id], serverById);
-  const after = possible('hunter', pub, g.clues.slice(0, 1), g.rows, byId);
-  assert.ok(!after.some(a => a.id === wrong.id), 'the guessed group is out');
+  const after = possible('hunter', pub, g.clues.slice(0, 1), g.rows, byId, true);
+  assert.ok(after.some(a => a.id === kase.culprit), 'the culprit stays');
   assert.ok(after.length < before - 1, `${before} -> ${after.length}`);
-});
-
-test('in SOC Analyst a row rules out only the group guessed; reading the rest of the row is the player\'s job', () => {
-  const kase = cases.find(c => c.mode === 'analyst');
-  const roster = pub.filter(a => a.roster);
-  const clue1 = play('analyst', kase, [], serverById).clues;
-  const before = possible('analyst', roster, clue1, [], byId);
-  const wrong = before.find(a => a.id !== kase.culprit);
-  const g = play('analyst', kase, [wrong.id], serverById);
-  const after = possible('analyst', roster, clue1, g.rows, byId);
-  assert.deepEqual(after.map(a => a.id), before.filter(a => a.id !== wrong.id).map(a => a.id));
 });

@@ -25,7 +25,7 @@ async function api(path, body) {
   return { status: r.status, body: await r.json().catch(() => ({})) };
 }
 const statusOf = m => games[m]?.view?.status ?? 'playing';
-// The suspect tracker: groups the player can still believe, from the clues on screen (and the rows, in Threat Hunter).
+// The suspect tracker: groups the player can still believe, from the clues on screen. Reading the rows is the player's job.
 function suspects(m) {
   const g = games[m];
   if (!g?.today) return new Set();
@@ -329,7 +329,7 @@ let showRuled = false;
 function browseHtml() {
   const m = mode, guessed = games[m]?.guesses ?? [], live = suspects(m), q = norm($('#rosterQ').value);
   const n = [...live].filter(id => !guessed.includes(id)).length;
-  $('#rosterLive').innerHTML = `<b>${n}</b> ${n === 1 ? 'suspect fits' : 'suspects fit'} ${MODES[m].trackRows ? 'the clues and your rows.' : 'the clues. Your rows narrow it further.'}`;
+  $('#rosterLive').innerHTML = `<b>${n}</b> ${n === 1 ? 'suspect fits' : 'suspects fit'} the clues. Your rows narrow it further.`;
   $('#showRuled').setAttribute('aria-pressed', String(showRuled));
   const html = SECTIONS.map(([k, label, hint]) => {
     const list = listOf(m).filter(a => sectionOf(a) === k).map(a => ({ a, out: guessed.includes(a.id), ruled: !live.has(a.id) }))

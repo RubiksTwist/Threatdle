@@ -55,7 +55,7 @@ function game(mode, kase, who, R) {
     const left = options.filter(a => !guesses.includes(a.id));
     const pickFrom = who === 'random' ? left
       : who === 'newcomer' ? left.filter(x => looksPossible(mode, x, g))
-        : possible(mode, left, g.clues, g.rows, byId, who === 'ideal' || MODES[mode].trackRows);
+        : possible(mode, left, g.clues, g.rows, byId, who === 'ideal');
     const p = pickFrom.length ? pickFrom : left;
     guesses.push((who === 'ideal' ? bestSplit(mode, p, left, g.clues) : p[Math.floor(R() * p.length)]).id);
   }
